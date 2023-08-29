@@ -1,11 +1,11 @@
 import React from "react";
-import HeroSection from "./component/Body/Hero/HeroSection";
 import "./App.css";
+import LandingPage from "./Pages/LandingPage";
 
 const App = () => {
   return (
     <>
-      <HeroSection />
+      <LandingPage />
     </>
   );
 };

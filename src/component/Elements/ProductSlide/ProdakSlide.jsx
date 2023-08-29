@@ -1,5 +1,5 @@
 import React from "react";
-import Prodak from "./Carousel/Prodak";
+import Prodak from "./Prodak";
 import "react-multi-carousel/lib/styles.css";
 import Carousel from "react-multi-carousel";
 
