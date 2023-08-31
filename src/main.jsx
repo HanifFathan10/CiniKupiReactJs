@@ -1,10 +1,35 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import LandingPage from "./Pages/LandingPage";
+import ErrorPage from "./Pages/404";
+import CoffePage from "./Pages/CoffePage";
+import DrinkPage from "./Pages/DrinkPage";
+import DessertPage from "./Pages/DessertPage";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <LandingPage />,
+    errorElement: <ErrorPage/>,
+  },
+  {
+    path: "/coffe",
+    element: <CoffePage/>
+  },
+  {
+    path: "/drink",
+    element: <DrinkPage/>
+  },
+  {
+    path: "/dessert",
+    element: <DessertPage/>
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-      <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );

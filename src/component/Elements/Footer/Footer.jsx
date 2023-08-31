@@ -21,7 +21,7 @@ const ContactForm = () => {
           </div>
           <div className="flex justify-center gap-5 md:gap-16 mt-5">
             {/* Product */}
-            <FooterList title="Product" item={<ListItems classnameLi="mb-4 underline-offset-2 rounded-lg hover:text-slate-500 cursor-pointer transition duration-500" classnameUl="text-start text-sm  uppercase" />} />
+            <FooterList title="Product" item={<ListItems classnameLi="mb-4 underline-offset-2 rounded-lg hover:text-slate-500 cursor-pointer transition duration-500" classnameUl="text-start text-sm uppercase" />} />
             {/* Information */}
             <FooterList title="Information" item={<InformationList/>} />
             {/* Navigation */}

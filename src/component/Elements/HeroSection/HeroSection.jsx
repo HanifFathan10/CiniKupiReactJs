@@ -1,6 +1,5 @@
 import React from "react";
 import HeroImage from "./hero-pattern.jpg";
-import Button from "../Button/Button";
 
 const HeroSection = () => {
   const bgImageStyle = {
@@ -17,7 +16,6 @@ const HeroSection = () => {
             Cini<span className="text-zinc-500">Kupi</span>
           </h1>
           <p className="text-xs md:text-sm font-mono mb-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus ex nobis illo quod odit earum fugit a voluptate eveniet consequuntur.</p>
-          <Button background="bg-teal-600 md:ml-3" text="Detail Products" />
         </div>
       </div>
     </div>
