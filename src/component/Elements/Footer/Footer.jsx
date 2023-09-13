@@ -7,7 +7,7 @@ import InformationList from "./FooterList/InformationList/InformationList";
 
 const ContactForm = () => {
   return (
-    <footer class="bg-neutral-100 text-center dark:bg-neutral-600 lg:text-left">
+    <footer class="bg-neutral-100 text-center dark:bg-neutral-600 lg:text-left z-[2]">
       <div class="flex items-center justify-center border-b-2 border-neutral-200 p-6 dark:border-neutral-500 sm:justify-between">
         <div class="mr-12 hidden sm:block">
           <span className="text-teal-500 italic">Get connected with us on social networks :</span>
@@ -29,7 +29,7 @@ const ContactForm = () => {
           </div>
         </div>
       </div>
-      <div class="p-4 text-center bg-neutral-700 text-neutral-200 text-xs md:text-sm">
+      <div class="p-2 text-center bg-neutral-700 text-neutral-200 text-[10px] md:text-[12px]">
         © 2023 Copyright :{" "}
         <a class="text-neutral-800 dark:text-neutral-400" href="https://instagram.com/haniffthn__">
           Haniep Fathan Riziq

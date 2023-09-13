@@ -7,6 +7,7 @@ import ErrorPage from "./Pages/404";
 import CoffePage from "./Pages/CoffePage";
 import DrinkPage from "./Pages/DrinkPage";
 import DessertPage from "./Pages/DessertPage";
+import DetailPage from "./Pages/DetailPage";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/dessert",
     element: <DessertPage/>
+  },
+  {
+    path: "/:id",
+    element: <DetailPage/>
   },
 ]);
 

@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "react-multi-carousel/lib/styles.css";
 import Carousel from "react-multi-carousel";
 import Prodak from "../Prodak";
+import { getImage } from "../../../../services/product.service";
 
 const DrinkSlide = () => {
+  const [gambar, setGambar] = useState([]);
+
+  useEffect(() => {
+    getImage((data) => {
+      setGambar(data);
+    });
+  }, []);
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -29,11 +37,11 @@ const DrinkSlide = () => {
   return (
     <div className="text-black bg-slate-700 px-5 py-10">
       <Carousel responsive={responsive}>
-        <Prodak name="Ocean Lemon Tea" price="Rp19.999" image="ImageDrink/drink1.jpg" alt="OceanLemon" />
-        <Prodak name="Green Tea sfulsh" price="Rp21.000" image="ImageDrink/drink2.jpg" alt="Greentea" />
-        <Prodak name="Mix Berry fruit" price="Rp35.000" image="ImageDrink/drink3.jpg" alt="MixBerry" />
-        <Prodak name="Vanilla Choco Cream" price="Rp23.000" image="ImageDrink/drink4.jpg" alt="VanilaChoco" />
-        <Prodak name="Ice Mango Hawai" price="Rp22.500" image="ImageDrink/drink5.jpg" alt="IceMango" />
+        {gambar.map((image) => {
+          if (image.category === "drink") {
+            return <Prodak key={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
+          }
+        })}
       </Carousel>
     </div>
   );

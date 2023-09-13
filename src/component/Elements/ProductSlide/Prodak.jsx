@@ -1,20 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-const Prodak = ({ name, price, image, alt }) => {
+const Prodak = ({ name, price, image, alt, _id }) => {
   return (
-    <div className="bg-gradient-to-r from-teal-600 to-slate-700 rounded-md p-4 mx-4 h-full flex flex-wrap justify-center content-between">
-      <div className="pb-3">
-        <img src={image} alt={alt} className="rounded-ss-lg rounded-br-xl max-w-[200px]" />
+    <div className="bg-gradient-to-t from-neutral-300 to-zinc-600 rounded-md p-4 mx-4 h-full flex flex-wrap justify-center content-between">
+      <div className="pb-4">
+        <img src={image} alt={alt} className="rounded-ss-lg rounded-br-xl w-[230px] object-cover" />
       </div>
-      <div>
-        <h2 className="font-bold text-xl ml-6">{name}</h2>
-        <p className="text-[10px] sm:text-xs ml-6">
-          some about description, you can click{" "}
-          <a href="#!" className="text-slate-900">
-            here...
-          </a>
-        </p>
-        <p className="text-sm sm:text-md font-semibold ml-6">{price}</p>
+      <div className="flex flex-col justify-center w-full items-center">
+        <Link to={`/${_id}`} className="flex-none font-bold text-lg sm:text-sm">{name}</Link>
+        <h3 className="text-xs italic">Rp{" "}{price}</h3>
       </div>
     </div>
   );

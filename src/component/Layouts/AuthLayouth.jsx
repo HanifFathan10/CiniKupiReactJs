@@ -1,10 +1,18 @@
-import React from 'react'
-import LandingFirst from '../Fragment/LandingFirst'
+import React from "react";
+import NavigationBar from "../Elements/NavigasiBar/NavigationBar";
+import HeroSection from "../Elements/HeroSection/HeroSection";
+import Footer from "../Elements/Footer/Footer";
 
-const AuthLayouth = () => {
+const AuthLayouth = (props) => {
+  const { children, trigger } = props;
   return (
-    <LandingFirst/>
-  )
-}
+    <div className="text-white w-full min-h-screen">
+      <NavigationBar />
+      <HeroSection />
+      {children}
+      <Footer />
+    </div>
+  );
+};
 
-export default AuthLayouth
+export default AuthLayouth;
