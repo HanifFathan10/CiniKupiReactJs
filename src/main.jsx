@@ -8,12 +8,22 @@ import CoffePage from "./Pages/CoffePage";
 import DrinkPage from "./Pages/DrinkPage";
 import DessertPage from "./Pages/DessertPage";
 import DetailPage from "./Pages/DetailPage";
+import LoginPage from "./Pages/LoginPage";
+import RegisterPage from "./Pages/RegisterPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <LandingPage />,
     errorElement: <ErrorPage/>,
+  },
+  {
+    path: "/login",
+    element: <LoginPage/>
+  },
+  {
+    path: "/register",
+    element: <RegisterPage/>
   },
   {
     path: "/coffe",
