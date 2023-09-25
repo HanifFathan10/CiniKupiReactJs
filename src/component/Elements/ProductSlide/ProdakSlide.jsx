@@ -4,7 +4,7 @@ import "react-multi-carousel/lib/styles.css";
 import Carousel from "react-multi-carousel";
 import { getImage } from "../../../services/product.service";
 
-const ProdakSlide = () => {
+const ProdakSlide = ({ type }) => {
   const [gambar, setGambar] = useState([]);
 
   useEffect(() => {
@@ -12,6 +12,7 @@ const ProdakSlide = () => {
       setGambar(data);
     });
   }, []);
+
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -34,12 +35,19 @@ const ProdakSlide = () => {
       items: 1,
     },
   };
+
   return (
     <div className="text-black bg-slate-700 px-5 py-10 block">
       <Carousel responsive={responsive} className="">
         {gambar.map((image) => {
-          if (image.category !== "default") {
-            return <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />
+          if (image.category !== "default" && type === "default") {
+            return <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
+          } else if (image.category === "coffe" && type === "coffe") {
+            return <Prodak key={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
+          } else if (image.category === "drink" && type == "drink") {
+            return <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
+          } else if (image.category === "dessert" && type == "dessert") {
+            return <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
           }
         })}
       </Carousel>

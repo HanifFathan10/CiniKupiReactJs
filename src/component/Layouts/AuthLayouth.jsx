@@ -3,8 +3,7 @@ import NavigationBar from "../Elements/NavigasiBar/NavigationBar";
 import HeroSection from "../Elements/HeroSection/HeroSection";
 import Footer from "../Elements/Footer/Footer";
 
-const AuthLayouth = (props) => {
-  const { children, trigger } = props;
+const AuthLayouth = ({children}) => {
   return (
     <div className="text-white w-full min-h-screen">
       <NavigationBar />

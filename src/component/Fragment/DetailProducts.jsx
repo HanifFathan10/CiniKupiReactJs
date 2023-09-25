@@ -1,12 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getImageById } from "../../services/product.service";
-import NavigationBar from "../Elements/NavigasiBar/NavigationBar";
-import Footer from '../Elements/Footer/Footer';
+import Button from "../Elements/Button/Button";
 
-const DetailProducts = (props) => {
+const DetailProducts = () => {
   const { id } = useParams();
   const [images, setImages] = useState({});
+  const [count, setCount] = useState(0);
+  const Navigate = useNavigate();
+
+  const handleOrder = () => {
+    Navigate("/coomingsoon");
+  };
+
+  function handlePlus() {
+    if (count !== 20) {
+      setCount(count + 1);
+    }
+  }
+
+  function handleMinus() {
+    if (count !== 0) {
+      setCount(count - 1);
+    }
+  }
 
   useEffect(() => {
     getImageById(id, (data) => {
@@ -15,23 +32,31 @@ const DetailProducts = (props) => {
   }, [id]);
 
   return (
-    <>
-      <div className="flex flex-col justify-center items-center w-full min-h-screen bg-slate-300">
-        <div className="-mb-20 z-[1] mt-10">
-          <img src={images.image} alt={images.category} className="w-[180px] rounded-full shadow-md" />
-        </div>
-        <div className="flex flex-col justify-center max-w-xs bg-slate-500 rounded-md">
-          <div className="pt-24 mb-4 px-6 flex flex-col justify-center items-center">
-            <h1 className="text-md font-bold">{images.name}</h1>
-            <h3 className="text-xs italic mb-3">{images.price}</h3>
-            <p className="text-xs ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio vel distinctio, eius nam eveniet placeat maiores porro. Animi, dolorum eum?</p>
-            <Link to="/" className="text-sm font-bold bg-emerald-300 px-3 py-1 rounded-lg mt-2 font-sans">
-              Order Here!
-            </Link>
+    <div className="w-full min-h-screen flex justify-center items-center bg-[#ffffff]">
+      <div className="max-w-md mx-auto rounded-xl bg-white shadow-md overflow-hidden md:max-w-2xl my-12">
+        <div className="md:flex">
+          <div className="p-8 md:shrink-0 md:p-0">
+            <img className="max-h-xs w-full object-contain md:object-cover md:h-full md:w-48" src={images.image} alt={images.name} />
+          </div>
+          <div className="pt-8 px-8">
+            <div className="flex justify-between">
+              <h1 className="uppercase tracking-wide text-2xl mb-2 font-bold">{images.name}</h1>
+              <h2 className="text-md italic">{images.category}</h2>
+            </div>
+            <h3 className="block mt-1 text-lg leading-tight font-normal text-black">Rp. {images.price}</h3>
+            <p className="mt-2 text-slate-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero doloremque earum dolore amet quos ex consequatur cum enim laboriosam? Recusandae!</p>
+            <div className="flex flex-wrap justify-between py-4 px-1 mt-4 md:mt-14">
+              <div className="flex justify-center items-center">
+                <Button background="bg-slate-400 px-3 py-1" text="-" onClick={handleMinus} />
+                <p className="mx-2">{count}</p>
+                <Button background="bg-slate-400 px-3 py-1" text="+" onClick={handlePlus} />
+              </div>
+              <Button background="bg-cyan-600 text-white font-bold px-4 py-3" text="Order Now" onClick={handleOrder} />
+            </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

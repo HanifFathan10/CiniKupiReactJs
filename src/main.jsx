@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -10,6 +10,7 @@ import DessertPage from "./Pages/DessertPage";
 import DetailPage from "./Pages/DetailPage";
 import LoginPage from "./Pages/LoginPage";
 import RegisterPage from "./Pages/RegisterPage";
+import CoomingSoon from "./Pages/CoomingSoon";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
   {
     path: "/:id",
     element: <DetailPage/>
+  },
+  {
+    path: "/coomingsoon",
+    element: <CoomingSoon/>
   },
 ]);
 

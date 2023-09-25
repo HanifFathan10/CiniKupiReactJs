@@ -4,7 +4,7 @@ import Footer from "../Elements/Footer/Footer";
 
 const AuthDetail = ({children}) => {
   return (
-    <div className="text-[#222222] w-full min-h-screen">
+    <div className="w-full min-h-screen">
       <NavigationBar />
       {children}
       <Footer />

@@ -1,16 +1,16 @@
 import React from 'react'
-import ListImageCoffe from '../component/Elements/ProductItems/ListImages/ListImageCoffe'
 import AuthLayouth from '../component/Layouts/AuthLayouth'
 import LandingFirst from '../component/Fragment/LandingFirst'
-import CoffeSlide from '../component/Elements/ProductSlide/CoffeSlide/CoffeSlide'
+import ListImages from '../component/Elements/ProductItems/ListImages/ListImages'
+import ProdakSlide from '../component/Elements/ProductSlide/ProdakSlide'
 
 const CoffePage = () => {
   return (
     <AuthLayouth>
       <LandingFirst title="Coffe">
-        <ListImageCoffe/>
+        <ListImages type="coffe"/>
       </LandingFirst>
-      <CoffeSlide></CoffeSlide>
+      <ProdakSlide type="coffe"/>
     </AuthLayouth>
   )
 }
