@@ -23,8 +23,6 @@ const ListImages = ({ type }) => {
               return <img key={image._id} src={image.image} alt={image.name} className="h-full w-full rounded-lg grayscale transition duration-500 ease-in-out cursor-pointer hover:scale-110 hover:grayscale-0" />;
             } else if (image.category === "dessert" && type === "dessert") {
               return <img key={image._id} src={image.image} alt={image.name} className="h-full w-full rounded-lg grayscale transition duration-500 ease-in-out cursor-pointer hover:scale-110 hover:grayscale-0" />;
-            } else {
-              return [];
             }
           })}
         </div>

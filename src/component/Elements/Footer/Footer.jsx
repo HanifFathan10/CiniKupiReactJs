@@ -7,8 +7,8 @@ import InformationList from "./FooterList/InformationList/InformationList";
 
 const ContactForm = () => {
   return (
-    <footer className="bg-neutral-100 text-center dark:bg-neutral-600 lg:text-left z-[2]">
-      <div className="flex items-center justify-center border-b-2 border-neutral-200 p-6 dark:border-neutral-500 sm:justify-between">
+    <footer className="text-center bg-neutral-600 lg:text-left z-[2]">
+      <div className="flex items-center justify-center border-b-2 border-neutral-300 p-6 sm:justify-between">
         <div className="mr-12 hidden sm:block">
           <span className="text-teal-500 italic">Get connected with us on social networks :</span>
         </div>
