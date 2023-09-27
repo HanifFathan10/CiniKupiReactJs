@@ -3,15 +3,19 @@ import AuthLayouth from "../component/Layouts/AuthLayouth";
 import ProdakSlide from "../component/Elements/ProductSlide/ProdakSlide";
 import LandingFirst from "../component/Fragment/LandingFirst";
 import ListImages from "../component/Elements/ProductItems/ListImages/ListImages";
+import { HeadMetaData } from "../component/Elements/HeadMetaData";
 
 const LandingPage = () => {
   return (
-    <AuthLayouth>
-      <LandingFirst title="Product">
-        <ListImages type='default' />
-      </LandingFirst>
-      <ProdakSlide type="default" />
-    </AuthLayouth>
+    <>
+      <HeadMetaData metaDescription="Home Page by CiniKupi" />
+      <AuthLayouth>
+        <LandingFirst title="Product">
+          <ListImages type="default" />
+        </LandingFirst>
+        <ProdakSlide type="default" />
+      </AuthLayouth>
+    </>
   );
 };
 
