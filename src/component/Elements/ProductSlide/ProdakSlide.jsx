@@ -36,20 +36,55 @@ const ProdakSlide = ({ type }) => {
     },
   };
 
+  const filterDefault = () => {
+    gambar
+      .filter((image) => image.category !== "default")
+      .map((image) => {
+        return <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
+      });
+  };
+  const filterCoffe = () => {
+    gambar
+      .filter((image) => image.category === "coffe")
+      .map((image) => {
+        return <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
+      });
+  };
+  const filterDrink = () => {
+    gambar
+      .filter((image) => image.category === "drink")
+      .map((image) => {
+        return <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
+      });
+  };
+  const filterDessert = () => {
+    gambar
+      .filter((image) => image.category === "dessert")
+      .map((image) => {
+        return <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
+      });
+  };
+
   return (
     <div className="text-black bg-slate-700 px-5 py-10 block">
       <Carousel responsive={responsive} className="">
-        {gambar.map((image) => {
-          if (image.category !== "default" && type === "default") {
-            return <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
-          } else if (image.category === "coffe" && type === "coffe") {
-            return <Prodak key={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
-          } else if (image.category === "drink" && type == "drink") {
-            return <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
-          } else if (image.category === "dessert" && type == "dessert") {
-            return <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
-          }
-        })}
+        {gambar
+          .filter((image) => {
+            if (image.category !== "default" && type === "default") {
+              return true;
+            } else if (image.category === "coffe" && type === "coffe") {
+              return true;
+            } else if (image.category === "drink" && type === "drink") {
+              return true;
+            } else if (image.category === "dessert" && type === "dessert") {
+              return true;
+            } else {
+              return false;
+            }
+          })
+          .map((image) => (
+            <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />
+          ))}
       </Carousel>
     </div>
   );
