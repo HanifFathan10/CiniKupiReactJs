@@ -36,35 +36,6 @@ const ProdakSlide = ({ type }) => {
     },
   };
 
-  const filterDefault = () => {
-    gambar
-      .filter((image) => image.category !== "default")
-      .map((image) => {
-        return <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
-      });
-  };
-  const filterCoffe = () => {
-    gambar
-      .filter((image) => image.category === "coffe")
-      .map((image) => {
-        return <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
-      });
-  };
-  const filterDrink = () => {
-    gambar
-      .filter((image) => image.category === "drink")
-      .map((image) => {
-        return <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
-      });
-  };
-  const filterDessert = () => {
-    gambar
-      .filter((image) => image.category === "dessert")
-      .map((image) => {
-        return <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />;
-      });
-  };
-
   return (
     <div className="text-black bg-slate-700 px-5 py-10 block">
       <Carousel responsive={responsive} className="">
@@ -83,7 +54,14 @@ const ProdakSlide = ({ type }) => {
             }
           })
           .map((image) => (
-            <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />
+            <Prodak
+              key={image._id}
+              _id={image._id}
+              name={image.name}
+              image={image.image}
+              price={image.price}
+              alt={image.name}
+            />
           ))}
       </Carousel>
     </div>

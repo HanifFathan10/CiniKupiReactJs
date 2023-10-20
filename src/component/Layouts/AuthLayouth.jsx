@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const AuthLayouth = ({ children }) => {
   const Navigate = useNavigate();
   useEffect(() => {
-    const token = localStorage.getItem("accesToken")
+    const token = localStorage.getItem("accesToken");
     if (!token) {
       Navigate("/login");
     }

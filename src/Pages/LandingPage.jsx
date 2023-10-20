@@ -10,7 +10,7 @@ const LandingPage = () => {
     <>
       <HeadMetaData metaDescription="Home Page by CiniKupi" />
       <AuthLayouth>
-        <LandingFirst title="Product">
+        <LandingFirst title="Best Product">
           <ListImages type="default" />
         </LandingFirst>
         <ProdakSlide type="default" />

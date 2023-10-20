@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 
 const NavigasiList = ({ classnameLi, classnameA }) => {
+  document.getElementById("menu");
   const Links = [
     { name: "HOME", link: "/" },
-    { name: "MENU", link: "/" },
-    { name: "PRODUCT", link: "/" },
-    { name: "CONTACT", link: "/contact" },
+    { name: "MENU", link: "#menu" },
+    { name: "PRODUCT", link: "#product" },
   ];
   return (
     <>

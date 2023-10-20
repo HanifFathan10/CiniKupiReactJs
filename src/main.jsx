@@ -16,35 +16,35 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <LandingPage />,
-    errorElement: <ErrorPage/>,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/login",
-    element: <LoginPage/>
+    element: <LoginPage />,
   },
   {
     path: "/register",
-    element: <RegisterPage/>
+    element: <RegisterPage />,
   },
   {
     path: "/coffe",
-    element: <CoffePage/>
+    element: <CoffePage />,
   },
   {
     path: "/drink",
-    element: <DrinkPage/>
+    element: <DrinkPage />,
   },
   {
     path: "/dessert",
-    element: <DessertPage/>
+    element: <DessertPage />,
   },
   {
     path: "/:id",
-    element: <DetailPage/>
+    element: <DetailPage />,
   },
   {
     path: "/coomingsoon",
-    element: <CoomingSoon/>
+    element: <CoomingSoon />,
   },
 ]);
 
