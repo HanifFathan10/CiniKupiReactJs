@@ -4,7 +4,7 @@ const NavigasiList = ({ classnameLi, classnameA }) => {
   document.getElementById("menu");
   const Links = [
     { name: "HOME", link: "/" },
-    { name: "MENU", link: "#menu" },
+    { name: "MENU", link: "/menu" },
     { name: "PRODUCT", link: "#product" },
   ];
   return (

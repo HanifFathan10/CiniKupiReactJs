@@ -11,26 +11,37 @@ const FormRegister = () => {
   const [confirmPassword, setConfirmPassword] = useState();
   const Navigate = useNavigate();
   const [msg, setMsg] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const data = {
-      username: username,
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
+      username: e.target.username.value,
+      email: e.target.email.value,
+      password: e.target.password.value,
+      confirmPassword: e.target.confirmPassword.value,
     };
+
     Register(data, (status, res) => {
       if (status) {
-        Navigate("/login");
+        setSuccess(res.data.message);
+        setTimeout(() => {
+          setSuccess("");
+          Navigate("/login");
+        }, 2000);
       } else {
         setMsg(res.response.data.message);
+        setTimeout(() => {
+          setMsg("");
+        }, 2000);
       }
     });
   };
   return (
     <form onSubmit={handleSubmit}>
-      <p className="text-lg">{msg}</p>
+      {msg && <p className="mb-2 text-center text-red-400 font-semibold">{msg}</p>}
+      {success && <p className="mb-2 text-center text-green-500 font-semibold">{success}</p>}
       <InputForm htmlfor="username" value={username} onChange={(e) => setUsername(e.target.value)} placehoder="haniffathan10" type="text" name="username" id="username">
         Username
       </InputForm>
@@ -47,7 +58,7 @@ const FormRegister = () => {
         Confirm Password
       </InputForm>
 
-      <Button type="submit" background="bg-slate-400 inline-block rounded bg-primary px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white" text="Sign Up" />
+      <Button type="submit" background="w-full bg-slate-700 inline-block rounded px-7 pb-2.5 pt-3 text-sm font-semibold uppercase text-white hover:bg-slate-500" text="Register" />
     </form>
   );
 };

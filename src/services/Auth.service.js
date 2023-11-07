@@ -4,19 +4,24 @@ export const Login = (data, callback) => {
   axios
     .post("https://cini-kupi-react-js-api.vercel.app/api/v1/login", data)
     .then((res) => {
-      callback(true, res.data.accesToken)
+      callback(true, res)
+      console.log(true, res);
     })
     .catch((error) => {
-      callback(false, error)
+      callback(false, error);
+      console.log(false, error);
     });
 };
 
 export const Register = (data, callback) => {
-  axios.post('https://cini-kupi-react-js-api.vercel.app/api/v1/users', data)
-  .then((res) => {
-    callback(true, res);
-  })
-  .catch((error) => {
-    callback(false, error);
-  });
-}
+  axios
+    .post("https://cini-kupi-react-js-api.vercel.app/api/v1/register", data)
+    .then((res) => {
+      callback(true, res);
+      console.log(true, res)
+    })
+    .catch((error) => {
+      callback(false, error);
+      console.log(false, error)
+    });
+};
