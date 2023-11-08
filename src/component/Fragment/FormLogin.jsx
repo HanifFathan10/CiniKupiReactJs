@@ -2,7 +2,7 @@ import InputForm from "../Elements/InputForm";
 import Button from "../Elements/Button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Login } from "../../services/Auth.service";
+import AuthService, { Login } from "../../services/Auth.service";
 
 const FormLogin = () => {
   const [email, setEmail] = useState();
@@ -38,7 +38,7 @@ const FormLogin = () => {
   const handleAuthLogin = (e) => {
     e.preventDefault();
 
-    window.location.href = "https://cini-kupi-react-js-api.vercel.app/auth/google";
+    AuthService.loginWithOAuth2();
 
     if (!localStorage.getItem("accessToken")) {
       Navigate("/login");
