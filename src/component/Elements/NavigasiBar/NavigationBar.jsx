@@ -8,11 +8,9 @@ import { Logout } from "../../../services/AuthService";
 const NavigationBar = ({ classname, color }) => {
   const Navigate = useNavigate();
   const handleLogout = () => {
-    Logout((status, res)=> {
-      if(status) {
-        Navigate("/login")
-      }
-    })
+    Logout()
+    localStorage.removeItem("acessToken")
+    Navigate("/login")
   };
   return (
     <div className={`shadow-md bg-transparent w-full fixed top-0 left-0 z-[9999] ${classname}`}>
