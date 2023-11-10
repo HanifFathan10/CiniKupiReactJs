@@ -2,5 +2,5 @@
   "cleanUrls": true,
   "buildCommand": "vite build",
   "version": 2,
-  "builds": { "src": ["*.jsx", "*.js"], "use": "@vercel/node" }
+  "builds": { "src": "*.js", "use": "@vercel/node" }
 }
