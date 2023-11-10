@@ -1,8 +1,8 @@
 import InputForm from "../Elements/InputForm";
 import Button from "../Elements/Button/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import AuthService, { Login } from "../../services/Auth.service";
+import { Login } from "../../services/AuthService";
 
 const FormLogin = () => {
   const [email, setEmail] = useState();
@@ -35,15 +35,13 @@ const FormLogin = () => {
     }
   };
 
-  const handleAuthLogin = (e) => {
-    e.preventDefault();
-
-    AuthService.loginWithOAuth2();
+  const auth = () => {
+    window.location.href = "http://localhost:5000/auth/google"
 
     if (!localStorage.getItem("accessToken")) {
       Navigate("/login");
     }
-  };
+  }
 
   return (
     <form onSubmit={handleLogin} className="flex flex-col">
@@ -61,10 +59,10 @@ const FormLogin = () => {
       <div className="flex flex-col items-center">
         <h2 className="py-2">Or Login With</h2>
       </div>
-      <Link onClick={handleAuthLogin} className="flex justify-center item-center bg-[#eaeaea] rounded px-7 pb-2.5 pt-3 text-sm font-semibold uppercase gap-2 text-[#212121] hover:text-[#ffffff] hover:bg-slate-800 transition-all">
+      <button onClick={() => auth()} type="button" className="flex justify-center item-center bg-[#eaeaea] rounded px-7 pb-2.5 pt-3 text-sm font-semibold uppercase gap-2 text-[#212121] hover:text-[#ffffff] hover:bg-slate-800 transition-all">
         <img src="images/google.png" alt="google" width={20} height={20} />
         <h1>Google</h1>
-      </Link>
+      </button>
     </form>
   );
 };

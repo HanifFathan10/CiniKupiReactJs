@@ -2,10 +2,11 @@ import { useState, useTransition } from "react";
 import ListImages from "../Elements/ProductItems/ListImages/ListImages";
 import TabButton from "../Elements/ProductItems/TabButton/TabButton";
 
+
 const LandingFirst = ({ title }) => {
   const [tab, setTab] = useState("default");
   const [isPending, startTransition] = useTransition();
-
+  
   const TAB_LIST = [
     {
       title: "default",
@@ -34,6 +35,8 @@ const LandingFirst = ({ title }) => {
       setTab(id);
     });
   };
+
+  
   return (
     <div className="flex bg-[#212121] min-h-screen justify-center items-center shadow-lg" id="menu">
       <div className="w-full pt-16 md:pt-20 px-4 max-w-sm md:max-w-lg mb-24">

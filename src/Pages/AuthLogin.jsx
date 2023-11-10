@@ -1,24 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function AuthSuccessPage() {
+const HandleAuthSuccess = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const accessToken = urlParams.get("accessToken");
+    const accessToken = urlParams.get('accessToken');
+    console.log(accessToken)
 
     if (accessToken) {
-      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem('accessToken', accessToken);
+      console.log("access token in localstorage: ", accessToken)
     }
 
-    window.location.href = accessToken ? "/" : "login";
-  }, []);
+    navigate('/');
+  }, [navigate]);
 
   return (
-    <section className="w-full min-h-screen flex justify-center items-center">
-      <div className="flex justify-center items-center">
-        <h1 className="font-bold text-xl text-slate-500">Login Success</h1>
-      </div>
-    </section>
+    <div>
+      <p>Redirecting...</p>
+    </div>
   );
-}
+};
 
-export default AuthSuccessPage;
+export default HandleAuthSuccess;
+
