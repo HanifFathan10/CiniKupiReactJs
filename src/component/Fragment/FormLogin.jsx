@@ -36,7 +36,7 @@ const FormLogin = () => {
   };
 
   const auth = () => {
-    window.location.href = "http://localhost:5000/auth/google"
+    window.location.href = "https://cini-kupi-react-js-api.vercel.app/auth/google"
 
     if (!localStorage.getItem("accessToken")) {
       Navigate("/login");
