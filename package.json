@@ -1,7 +1,6 @@
 {
   "name": "cini-kupi-reactjs",
   "private": true,
-  "proxy": "https://cini-kupi-react-js-api.vercel.app",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
