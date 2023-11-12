@@ -20,8 +20,8 @@ const FormLogin = () => {
 
     Login(data, (status, res) => {
       if (status) {
-        localStorage.setItem("accessToken", res);
-        Navigate("/");
+        localStorage.setItem("accessToken", res.data.accessToken);
+        Navigate("/")
       } else {
         setMsg(res.response.data.message);
         setTimeout(() => {

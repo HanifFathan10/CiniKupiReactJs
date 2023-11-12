@@ -2,7 +2,6 @@ import { useState, useTransition } from "react";
 import ListImages from "../Elements/ProductItems/ListImages/ListImages";
 import TabButton from "../Elements/ProductItems/TabButton/TabButton";
 
-
 const LandingFirst = ({ title }) => {
   const [tab, setTab] = useState("default");
   const [isPending, startTransition] = useTransition();

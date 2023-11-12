@@ -4,6 +4,10 @@
     {
       "src": "/auth-success",
       "dest": "/"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/"
     }
   ]
 }

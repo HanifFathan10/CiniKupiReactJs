@@ -3,14 +3,20 @@ import Navigasi from "./Navigasi";
 import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
 import { Logo } from "../Logo/Logo";
-import { Logout } from "../../../services/AuthService";
+import axios from "axios";
 
 const NavigationBar = ({ classname, color }) => {
   const Navigate = useNavigate();
-  const handleLogout = () => {
-    Logout()
-    localStorage.removeItem("acessToken")
-    Navigate("/login")
+  const handleLogout = async () => {
+    await axios
+      .post("https://cini-kupi-react-js-api.vercel.app/api/v1/logout", "", { withCredentials : true })
+      .then((res) => {
+        Navigate("/login");
+        localStorage.removeItem("accessToken");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
     <div className={`shadow-md bg-transparent w-full fixed top-0 left-0 z-[9999] ${classname}`}>
