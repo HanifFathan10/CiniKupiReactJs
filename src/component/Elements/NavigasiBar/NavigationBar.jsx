@@ -9,7 +9,7 @@ const NavigationBar = ({ classname, color }) => {
   const Navigate = useNavigate();
   const handleLogout = async () => {
     await axios
-      .post(`${import.meta.env.SERVER_URL}/api/v1/logout`, "", { withCredentials: true })
+      .post("http://localhost:5000/api/v1/logout", "", { withCredentials: true })
       .then((res) => {
         Navigate("/login");
         localStorage.removeItem("accessToken");
