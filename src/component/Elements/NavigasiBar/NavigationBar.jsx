@@ -9,7 +9,7 @@ const NavigationBar = ({ classname, color }) => {
   const Navigate = useNavigate();
   const handleLogout = async () => {
     await axios
-      .post("http://localhost:5000/api/v1/logout", "", { withCredentials : true })
+      .post("https://cini-kupi-react-js-api.vercel.app/api/v1/logout", "", { withCredentials : true })
       .then((res) => {
         Navigate("/login");
         localStorage.removeItem("accessToken");
