@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const Login = (data, callback) => {
   axios
-    .post("https://cini-kupi-react-js-api.vercel.app/api/v1/login", data, { withCredentials: true })
+    .post("http://localhost:5000/api/v1/login", data, { withCredentials: true })
     .then((res) => {
       callback(true, res);
     })
