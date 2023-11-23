@@ -21,9 +21,7 @@ const HeroSection = () => {
             Cini<span className="text-zinc-500">Kupi</span>
           </h1>
           <p className="text-xs md:text-sm font-mono mb-3">
-            Mari menikmati secangkir kopi dan nikmatilah dengan selembar kertas
-            puisi yang akan dihiasi oleh rintik hujan yang seakan tahu jika hati
-            sudah tak ada siapa siapa lagi
+            Mari menikmati secangkir kopi, seperti halnya sebuah kopi, semahal dan seindah apapun tampilannya dalam sebuah cangkir. tak akan bisa menyembunyikan rasa pahit.
           </p>
         </div>
       </div>

@@ -3,6 +3,7 @@ import NavigationBar from "../Elements/NavigasiBar/NavigationBar";
 import Footer from "../Elements/Footer/Footer";
 import MenuList from "../Elements/Menu/MenuList/MenuList";
 import { useNavigate } from "react-router-dom";
+import PopUpOrder from "../Elements/PopUpOrder/PopUpOrder";
 
 const AuthMenu = ({ children, title }) => {
   const Navigate = useNavigate();
@@ -31,6 +32,7 @@ const AuthMenu = ({ children, title }) => {
         </div>
       </div>
       <Footer />
+      <PopUpOrder />
     </div>
   );
 };

@@ -19,6 +19,7 @@ import Oatmeal from "./Pages/MenuPage/Oatmeal";
 import Snack from "./Pages/MenuPage/Snack";
 import MenuCoffeBeans from "./Pages/MenuPage/MenuCoffeBeans";
 import HandleAuthSuccess from "./Pages/AuthLogin";
+import CartPage from "./Pages/MenuPage/CartPage";
 
 const router = createBrowserRouter([
   {
@@ -83,13 +84,13 @@ const router = createBrowserRouter([
     element: <MenuCoffeBeans />,
   },
   {
+    path: "/menu/cart",
+    element: <CartPage />,
+  },
+  {
     path: "/auth-success",
     element: <HandleAuthSuccess />,
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-      <RouterProvider router={router} />
-  </React.StrictMode>
-);
+ReactDOM.createRoot(document.getElementById("root")).render(<RouterProvider router={router} />);

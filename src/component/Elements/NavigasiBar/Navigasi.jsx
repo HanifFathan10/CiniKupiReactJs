@@ -1,15 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import NavigasiList from "./NavigasiList/NavigasiList";
 
 const Navigasi = () => {
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    const handleDocumentClick = (event) => {
+      if (event.target.closest('.toggle-button') === null) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('click', handleDocumentClick);
+    return () => {
+      document.removeEventListener('click', handleDocumentClick);
+    };
+  }, []);
+
+  const handleToggleClick = () => {
+    setOpen((open) => !open);
+  };
+
   return (
     <>
       <div
-        onClick={() => setOpen(!open)}
-        className="text-2xl absolute right-6 top-5 cursor-pointer md:hidden"
+        onClick={handleToggleClick}
+        className="text-2xl absolute right-6 top-5 cursor-pointer md:hidden toggle-button"
       >
         <ion-icon name={open ? "close" : "menu"} />
       </div>
@@ -20,7 +36,7 @@ const Navigasi = () => {
       >
         <NavigasiList
           classnameLi="md:ml-8 md:my-0 my-5"
-          classnameA="text-md font-semibold px-2 hover:text-slate-600 duration-500"
+          classnameA="text-md text-[#ffffff] font-semibold px-2 hover:text-slate-600 duration-500"
         />
       </ul>
     </>
