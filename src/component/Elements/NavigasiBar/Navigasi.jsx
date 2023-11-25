@@ -36,7 +36,7 @@ const Navigasi = () => {
       >
         <NavigasiList
           classnameLi="md:ml-8 md:my-0 my-5"
-          classnameA="text-md text-[#ffffff] font-semibold px-2 hover:text-slate-600 duration-500"
+          classnameA="text-md max-md:text-[#ffffff] font-semibold px-2 hover:text-slate-600 duration-500"
         />
       </ul>
     </>

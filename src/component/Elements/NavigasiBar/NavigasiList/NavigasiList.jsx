@@ -4,7 +4,7 @@ const NavigasiList = ({ classnameLi, classnameA }) => {
   const Links = [
     { name: "HOME", link: "/" },
     { name: "MENU", link: "/menu" },
-    { name: "PRODUCT", link: "" },
+    { name: "ORDER", link: "/menu/cart" },
   ];
   return (
     <>

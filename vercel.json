@@ -5,5 +5,13 @@
       "src": "/auth-success",
       "dest": "/"
     }
-  ]
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
 }

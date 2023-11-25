@@ -5,13 +5,13 @@ import { useShallow } from "zustand/react/shallow";
 const Cart = ({ product, _id, name }) => {
   const [removeFromCart, addFromCart] = addToCart(useShallow((state) => [state.removeFromCart, state.addFromCart]));
   return (
-    <section className="flex justify-center px-4 py-2">
-      <div className="flex container gap-5 p-5 shadow-md rounded-lg bg-[#ffffff]">
-        <div className="bg-[#212121] h-24 w-24 md:h-32 md:w-32 lg:h-40 lg:w-40 rounded-full border border-[#cba258] overflow-hidden flex items-center justify-center">
-          <img src={product.image} className="w-14 md:w-20 lg:w-24" />
+    <section className="flex px-4 py-2 w-full justify-center">
+      <div className="grid grid-flow-col w-full max-w-lg items-center justify-start gap-3 px-5 py-3 shadow-md rounded-lg bg-[#ffffff]">
+        <div className="bg-[#212121] h-24 w-24 md:h-32 md:w-32 lg:h-40 lg:w-40 rounded-full border border-[#cba258] overflow-clip flex items-center justify-center">
+          <img src={product.image} className="w-16 md:w-24 lg:w-28" />
         </div>
         <div className="flex flex-col">
-          <h1 className="font-bold text-lg sm:text-xl lg:text-2xl">{product.name}</h1>
+          <h1 className="font-bold text-lg sm:text-xl lg:text-2xl leading-normal">{product.name}</h1>
           {/* <h3 className="font-extralight text-xs lg:text-base my-2">{}</h3> */}
           <div className="w-fit rounded full md:text-lg flex gap-1 mb-1 text-sm text-[#cba258]">
             <h1>200</h1>

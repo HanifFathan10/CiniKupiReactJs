@@ -20,6 +20,8 @@ import Snack from "./Pages/MenuPage/Snack";
 import MenuCoffeBeans from "./Pages/MenuPage/MenuCoffeBeans";
 import HandleAuthSuccess from "./Pages/AuthLogin";
 import CartPage from "./Pages/MenuPage/CartPage";
+import { SkeletonTheme } from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const router = createBrowserRouter([
   {
@@ -93,4 +95,8 @@ const router = createBrowserRouter([
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById("root")).render(<RouterProvider router={router} />);
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <SkeletonTheme baseColor="#444" highlightColor="#202020" borderRadius={100}>
+    <RouterProvider router={router} />
+  </SkeletonTheme>
+);
