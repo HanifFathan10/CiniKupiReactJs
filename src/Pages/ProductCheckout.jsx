@@ -16,7 +16,7 @@ const ProductCheckout = () => {
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
-    const product = await axios.get(`http://localhost:5000/api/v1/nested/${_id}`).then((res) => res.data.data.product[0]);
+    const product = await axios.get(`https://cini-kupi-react-js-api.vercel.app/api/v1/nested/${_id}`).then((res) => res.data.data.product[0]);
     cart(product);
   };
 
