@@ -32,8 +32,8 @@ const FooterList = ({ title, id }) => {
   ];
 
   return (
-    <div id={id} onClick={handleOpen} className="cursor-pointer">
-      <div className="flex px-5 my-5 justify-between">
+    <div id={id} className="cursor-pointer">
+      <div onClick={handleOpen} className="flex px-5 my-5 justify-between">
         <h6 className="font-base uppercase text-black italic">{title}</h6>
         {open ? (
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -45,7 +45,7 @@ const FooterList = ({ title, id }) => {
           </svg>
         )}
       </div>
-      <div className="flex flex-col" onClick={handleOpen}>
+      <div className="flex flex-col">
         {LIST_TAB.map((listTab) => id === listTab.id && <div key={listTab.id}>{listTab.content}</div>)}
       </div>
     </div>

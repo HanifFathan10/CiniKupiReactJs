@@ -44,7 +44,7 @@ const CartProduct = () => {
         </div>
       </div>
       <div className="">
-        <div className="bg-[#eaeaea] min-h-screen w-full flex flex-col justify-center">{count >= 1 ? <>{Array.isArray(cartItems) && cartItems.map((cart, index) => <Cart key={index} product={cart} name={cart.name} _id={cart} />)}</> : <Order />}</div>
+        <div className="bg-[#eaeaea] min-h-screen w-full flex flex-col items-center justify-center">{count >= 1 ? <>{Array.isArray(cartItems) && cartItems.map((cart, index) => <Cart key={index} product={cart} name={cart.name} _id={cart} />)}</> : <Order />}</div>
         <div className="">
           <Footer />
         </div>

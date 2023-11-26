@@ -1,19 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 const Prodak = ({ name, price, image, alt, _id }) => {
+  const Navigate = () => {
+    window.location.href = `/product/${_id}`
+  }
   return (
-    <div className="bg-gradient-to-t from-neutral-300 to-zinc-600 rounded-md p-4 mx-4 h-full flex flex-wrap justify-center content-between">
-      <div className="pb-4">
-        <Link to={`/${_id}`}>
-          <img src={image} alt={alt} className="rounded-ss-lg rounded-br-xl w-[230px] object-cover" />
-        </Link>
-      </div>
-      <div className="flex flex-col justify-center w-full items-center">
-        <Link to={`/${_id}`} className="flex-none font-bold text-lg sm:text-sm">
-          {name}
-        </Link>
-        <h3 className="text-xs italic">Rp {price}</h3>
+    <div className="flex justify-center items-center px-6 md:px-0 py-9 mx-auto">
+      <div className="max-w-[280px] grid grid-cols-2 place-content-center place-items-center rounded-xl p-4 bg-gradient-to-b from-[#1f3933] to-[#cba258]">
+        <button onClick={Navigate} className="w-32 md:w-36 h-40 md:h-40 flex justify-center items-center overflow-hidden">
+          <img src={image} alt={alt} className="bg-cover w-24" />
+        </button>
+        <div className="px-4 text-[#eaeaea]">
+          <h1 className="font-bold text-xl mb-2 uppercase leading-none">{name}</h1>
+          <h3 className="line-lamp-3 font-semibold text-xs">Rp. {price}</h3>
+        </div>
       </div>
     </div>
   );

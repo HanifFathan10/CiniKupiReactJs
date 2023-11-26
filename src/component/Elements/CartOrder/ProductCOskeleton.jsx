@@ -16,10 +16,10 @@ const ProductCOskeleton = () => {
       <div className="w-full flex flex-col justify-center items-center bg-[#1e3932] text-[#ffffff] py-6 px-2 md:mt-10">
         <div className="md:w-4/5">
           <Skeleton width={80} height={35} />
-          <Skeleton width={200} height={20} count={4} />
+          <Skeleton width={300} height={20} count={4} />
           <Skeleton width={160} height={20} />
           <div className="flex w-full justify-end">
-            <Skeleton width={200} height={40} />
+            <Skeleton width={120} height={40} />
           </div>
         </div>
       </div>

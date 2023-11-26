@@ -96,7 +96,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <SkeletonTheme baseColor="#444" highlightColor="#202020" borderRadius={100}>
+  <SkeletonTheme baseColor="#202020" highlightColor="#444">
     <RouterProvider router={router} />
   </SkeletonTheme>
 );

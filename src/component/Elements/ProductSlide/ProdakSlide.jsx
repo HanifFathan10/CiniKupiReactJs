@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react";
 import Prodak from "./Prodak";
 import "react-multi-carousel/lib/styles.css";
 import Carousel from "react-multi-carousel";
-import { getImage } from "../../../services/product.service";
+import { getImageMenu, reproduce } from "../../../services/Menu.service";
+import "react-multi-carousel/lib/styles.css";
 
-const ProdakSlide = ({ type }) => {
+const ProdakSlide = () => {
   const [gambar, setGambar] = useState([]);
 
   useEffect(() => {
-    getImage((data) => {
-      setGambar(data);
+    getImageMenu((data) => {
+      const product = data.flatMap((item) => item.product);
+      const result = reproduce(product, 6);
+      setGambar(result.data);
     });
   }, []);
 
@@ -37,34 +40,13 @@ const ProdakSlide = ({ type }) => {
   };
 
   return (
-    <div className="text-black bg-slate-700 px-5 py-10 block">
-      <Carousel responsive={responsive} className="">
-        {gambar
-          .filter((image) => {
-            if (image.category !== "default" && type === "default") {
-              return true;
-            } else if (image.category === "coffe" && type === "coffe") {
-              return true;
-            } else if (image.category === "drink" && type === "drink") {
-              return true;
-            } else if (image.category === "dessert" && type === "dessert") {
-              return true;
-            } else {
-              return false;
-            }
-          })
-          .map((image) => (
-            <Prodak
-              key={image._id}
-              _id={image._id}
-              name={image.name}
-              image={image.image}
-              price={image.price}
-              alt={image.name}
-            />
-          ))}
+    <>
+      <Carousel responsive={responsive} removeArrowOnDeviceType={["mobile"]}>
+        {gambar.map((image) => (
+          <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />
+        ))}
       </Carousel>
-    </div>
+    </>
   );
 };
 
