@@ -17,14 +17,8 @@ const ProdakSlide = () => {
   }, []);
 
   const responsive = {
-    superLargeDesktop: {
-      // the naming can be any, depends on you.
-      breakpoint: { max: 4000, min: 1280 },
-      items: 4,
-    },
-    // md -> xl
     desktop: {
-      breakpoint: { max: 1280, min: 768 },
+      breakpoint: { max: 4280, min: 768 },
       items: 3,
     },
     // sm -> md
@@ -41,7 +35,7 @@ const ProdakSlide = () => {
 
   return (
     <>
-      <Carousel responsive={responsive} removeArrowOnDeviceType={["mobile"]}>
+      <Carousel responsive={responsive} className="my-6">
         {gambar.map((image) => (
           <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />
         ))}

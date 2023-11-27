@@ -8,13 +8,17 @@ const AuthUsers = ({ children, type }) => {
           {type == "login" ? (
             <img
               src="images/login.jpg"
-              className="max-w-xs md:max-w-md"
+              width={'auto'}
+              height={'auto'}
+              className="md:max-w-md"
               alt="Sample image"
             />
           ) : (
             <img
               src="images/register.jpg"
-              className="max-w-xs md:max-w-sm"
+              width={'auto'}
+              height={'auto'}
+              className="md:max-w-sm"
               alt="Sample image"
             />
           )}

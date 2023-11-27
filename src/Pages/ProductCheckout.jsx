@@ -7,17 +7,52 @@ import { useShallow } from "zustand/react/shallow";
 import axios from "axios";
 import ProductCOskeleton from "../component/Elements/CartOrder/ProductCOskeleton";
 import ProdakSlide from "../component/Elements/ProductSlide/ProdakSlide";
+import { useToast } from "@chakra-ui/react";
 
 const ProductCheckout = () => {
   const { _id } = useParams();
   const [images, setImages] = useState({});
-  const cart = addToCart(useShallow((state) => state.addToCart));
   const [isLoading, setIsLoading] = useState(true);
+  const [cart, cartItems] = addToCart(useShallow((state) => [state.addToCart, state.cartItems]));
+  const toast = useToast();
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
-    const product = await axios.get(`https://cini-kupi-react-js-api.vercel.app/api/v1/nested/${_id}`).then((res) => res.data.data.product[0]);
-    cart(product);
+
+    // Popup addtocart
+
+    const lengthItems = cartItems.length === 20;
+    if (lengthItems) {
+      const id = "max-order";
+      !toast.isActive(id) &&
+        toast({
+          id,
+          title: "Maximum order is 20 items. Please adjust your order.",
+          containerStyle: {
+            marginTop: "80px",
+            fontSize: "12px",
+          },
+          status: "error",
+          position: "top",
+          isClosable: true,
+        });
+    } else {
+      const product = await axios.get(`https://cini-kupi-react-js-api.vercel.app/api/v1/nested/${_id}`).then((res) => res.data.data.product[0]);
+      cart(product);
+      const id = "success-order";
+      !toast.isActive(id) &&
+        toast({
+          id,
+          title: "Success add to cart",
+          containerStyle: {
+            marginTop: "80px",
+          },
+          status: "success",
+          position: "top",
+          duration: 1500,
+          isClosable: true,
+        });
+    }
   };
 
   useEffect(() => {
@@ -40,7 +75,7 @@ const ProductCheckout = () => {
               </div>
             </div>
             <div className="flex w-full h-full flex-col justify-center max-md:items-center mt-10 md:mt-0 text-[#ffffff]">
-              <h1 className="text-lg md:text-xl lg:text-3xl font-bold border-b-2 w-fit border-[#cba258]">{images.name}</h1>
+              <h1 className="text-lg md:text-xl lg:text-3xl uppercase font-bold border-b-2 w-fit border-[#cba258]">{images.name}</h1>
               <h2 className="text-lg md:text-2xl font-extralight my-2">Rp. {images.price}</h2>
             </div>
           </div>
@@ -55,12 +90,12 @@ const ProductCheckout = () => {
                 <p className="text-xs lg:text-base text-[#b2b4a1]">{images.descriptions}</p>
               </div>
               <div>
-                {images.sugar ? (
+                {!images.fat && !images.calories && !images.sugar ? (
+                  ""
+                ) : (
                   <h3 className="text-xs font-semibold">
                     {images.calories} Calories, {images.sugar}g sugar, {images.fat}g fat
                   </h3>
-                ) : (
-                  ""
                 )}
               </div>
               <div className="flex w-full justify-end">
@@ -72,6 +107,9 @@ const ProductCheckout = () => {
                 </Link>
               </div>
             </div>
+          </div>
+          <div className="-mb-10 ml-4 mt-20 md:ml-10">
+            <h1 className="font-bold text-lg text-[#eaeaea] border-b-4 border-[#00754a] w-fit">Recommended Product</h1>
           </div>
           <ProdakSlide />
         </section>

@@ -20,6 +20,7 @@ import Snack from "./Pages/MenuPage/Snack";
 import MenuCoffeBeans from "./Pages/MenuPage/MenuCoffeBeans";
 import HandleAuthSuccess from "./Pages/AuthLogin";
 import CartPage from "./Pages/MenuPage/CartPage";
+import { ChakraProvider } from '@chakra-ui/react'
 import { SkeletonTheme } from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
 
@@ -96,7 +97,9 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <SkeletonTheme baseColor="#202020" highlightColor="#444">
-    <RouterProvider router={router} />
-  </SkeletonTheme>
+  <ChakraProvider>
+    <SkeletonTheme baseColor="#202020" highlightColor="#444">
+      <RouterProvider router={router} />
+    </SkeletonTheme>
+  </ChakraProvider>
 );

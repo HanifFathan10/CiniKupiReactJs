@@ -5,7 +5,6 @@ export const getImage = (callback) => {
     .get("https://cini-kupi-react-js-api.vercel.app/api/v1/post")
     .then((res) => {
       callback(res.data);
-      console.log(res.data)
     })
     .catch((error) => {
       console.log(error);

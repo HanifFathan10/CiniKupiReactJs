@@ -1,14 +1,8 @@
 import React from "react";
-import HeroImage from "./hero-pattern.jpg";
 
 const HeroSection = () => {
-  const bgImageStyle = {
-    backgroundImage: `url("${HeroImage}")`,
-    backgroundSize: "cover",
-    height: "100vh",
-  };
   return (
-    <div className="w-full min-h-screen flex items-center text-white px-8 py-10 bg-center" style={bgImageStyle}>
+    <div className="w-full min-h-screen flex items-center text-white px-8 py-10 bg-center bg-hero-pattern bg-cover">
       <div className="md:ml-10">
         <div className="max-w-xs md:max-w-sm md:ml-0 justify-center">
           <h2 className="text-sm md:text-[14px] italic text-zinc-300 uppercase font-semibold">Lebih jujur pahitnya kopi daripada ucapanmu</h2>
