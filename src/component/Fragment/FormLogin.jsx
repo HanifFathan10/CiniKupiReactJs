@@ -60,7 +60,7 @@ const FormLogin = () => {
         <h2 className="py-2">Or Login With</h2>
       </div>
       <button onClick={() => auth()} type="button" className="flex justify-center item-center bg-[#eaeaea] rounded px-7 pb-2.5 pt-3 text-sm font-semibold uppercase gap-2 text-[#212121] hover:text-[#ffffff] hover:bg-slate-800 transition-all">
-        <img src="images/google.webp" alt="google" width={20} height={20} />
+        <img fetchpriority="high" src="images/google.webp" alt="icon" width={20} height={20} />
         <h1>Google</h1>
       </button>
     </form>
