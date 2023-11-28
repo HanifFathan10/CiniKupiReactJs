@@ -1,6 +1,6 @@
 export const Logo = ({ color = "#222222" }) => {
   return (
-    <a href="/" className="flex items-center font-bold text-xl italic gap-2">
+    <a href="/" className="flex items-center font-bold text-xl gap-2">
       <svg fill={color} height="30px" width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 425.762 425.762" xmlSpace="preserve">
         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
         <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>

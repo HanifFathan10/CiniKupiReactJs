@@ -86,7 +86,7 @@ const ProductCheckout = () => {
                 <Star />
                 <h1>Items</h1>
               </div>
-              <div className="mb-4 md:w-[560px]">
+              <div className="mb-4 max-w-xs md:max-w-sm">
                 <p className="text-xs lg:text-base text-[#b2b4a1]">{images.descriptions}</p>
               </div>
               <div>
