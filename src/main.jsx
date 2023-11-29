@@ -83,7 +83,7 @@ const router = createBrowserRouter([
     element: <Snack />,
   },
   {
-    path: "/menu/coffe-beans/",
+    path: "/menu/coffe-beans",
     element: <MenuCoffeBeans />,
   },
   {

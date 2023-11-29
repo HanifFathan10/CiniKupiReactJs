@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const PromoRight = ({ image, title, description, alt, button }) => {
+const PromoRight = ({ image, title, description, alt, button, to }) => {
   return (
     <>
       <section>
@@ -11,7 +11,7 @@ const PromoRight = ({ image, title, description, alt, button }) => {
             <div className="py-5 max-w-md flex flex-col justify-center items-center gap-3 px-4">
               <h1 className="font-bold text-3xl text-center">{title}</h1>
               <h3 className="font-semibold text-xl text-center">{description}</h3>
-              <Link className="px-5 py-3 font-semibold rounded-full border border-secondary">{button}</Link>
+              <Link to={to} className="px-5 py-3 font-semibold rounded-full border border-secondary hover:bg-secondary transition-all">{button}</Link>
             </div>
           </div>
         </div>

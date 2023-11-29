@@ -1,5 +1,15 @@
 import axios from "axios";
 
+export const reproduce = (data, gap) => {
+  const first = ~~(Math.random() * (data.length - gap) + 1);
+  const last = first + gap;
+
+  const response = {
+    data: data.slice(first, last),
+  };
+  return response;
+};
+
 export const getImageMenu = (callback) => {
   axios
     .get("https://cini-kupi-react-js-api.vercel.app/api/v1/menu")
@@ -9,16 +19,6 @@ export const getImageMenu = (callback) => {
     .catch((error) => {
       console.log(error);
     });
-};
-
-export const reproduce = (data, gap) => {
-  const first = ~~(Math.random() * (data.length - gap) + 1);
-  const last = first + gap;
-
-  const response = {
-    data: data.slice(first, last),
-  };
-  return response;
 };
 
 export const getImageMenuById = (_id, callback) => {

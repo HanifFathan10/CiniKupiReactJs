@@ -4,7 +4,6 @@ import { getNestedMenuById } from "../services/Menu.service";
 import AuthDetail from "../component/Layouts/AuthDetail";
 import { addToCart } from "../Store/AddToCart";
 import { useShallow } from "zustand/react/shallow";
-import axios from "axios";
 import ProductCOskeleton from "../component/Elements/CartOrder/ProductCOskeleton";
 import ProdakSlide from "../component/Elements/ProductSlide/ProdakSlide";
 import { useToast } from "@chakra-ui/react";
@@ -17,10 +16,8 @@ const ProductCheckout = () => {
   const [cart, cartItems] = addToCart(useShallow((state) => [state.addToCart, state.cartItems]));
   const toast = useToast();
 
-  const handleAddToCart = async (e) => {
+  const handleAddToCart = (e) => {
     e.preventDefault();
-
-    // Popup addtocart
 
     const lengthItems = cartItems.length === 20;
     if (lengthItems) {
@@ -38,8 +35,10 @@ const ProductCheckout = () => {
           isClosable: true,
         });
     } else {
-      const product = await axios.get(`https://cini-kupi-react-js-api.vercel.app/api/v1/nested/${_id}`).then((res) => res.data.data.product[0]);
-      cart(product);
+      getNestedMenuById(_id, (res) => {
+        return cart(res.product[0]);
+      });
+
       const id = "success-order";
       !toast.isActive(id) &&
         toast({
