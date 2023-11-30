@@ -5,6 +5,7 @@ export const addToCart = create(
   persist(
     (set) => ({
       cartItems: [],
+      user: null,
       addToCart: (product) => {
         set((state) => ({ cartItems: [...state.cartItems, product] }));
       },
@@ -23,6 +24,7 @@ export const addToCart = create(
       addFromCart: (name) => {
         set((state) => ({ cartItems: [...state.cartItems, name] }));
       },
+      login: (userData) => set({ user: userData }),
     }),
     {
       name: "ADD_TO_CART",

@@ -3,12 +3,15 @@ import Button from "../Elements/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Login } from "../../services/AuthService";
+import { addToCart } from "../../Store/AddToCart";
+import { useShallow } from "zustand/react/shallow";
 
 const FormLogin = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [msg, setMsg] = useState("");
   const Navigate = useNavigate();
+  const login = addToCart(useShallow((state)=> state.login))
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -22,6 +25,7 @@ const FormLogin = () => {
       if (status) {
         localStorage.setItem("accessToken", res.data.accessToken);
         Navigate("/")
+        login(res.data.data.username)
       } else {
         setMsg(res.response.data.message);
         setTimeout(() => {
