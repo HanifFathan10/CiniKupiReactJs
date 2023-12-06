@@ -10,16 +10,18 @@ const AuthUsers = ({ children, type }) => {
               src="images/login.webp"
               width={220}
               height={220}
-              className="md:w-80"
+              className="md:w-96"
               alt="Sample image"
+              fetchpriority="high"
             />
           ) : (
             <img
               src="images/register.webp"
               width={220}
               height={220}
-              className="md:w-80"
+              className="md:w-96"
               alt="Sample image"
+              fetchpriority="high"
             />
           )}
         </div>
