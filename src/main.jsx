@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import './index.css'
+import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LandingPage from "./Pages/LandingPage";
 import ErrorPage from "./Pages/404";
@@ -20,9 +20,10 @@ import Snack from "./Pages/MenuPage/Snack";
 import MenuCoffeBeans from "./Pages/MenuPage/MenuCoffeBeans";
 import HandleAuthSuccess from "./Pages/AuthLogin";
 import CartPage from "./Pages/MenuPage/CartPage";
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider } from "@chakra-ui/react";
 import { SkeletonTheme } from "react-loading-skeleton";
-import 'react-loading-skeleton/dist/skeleton.css'
+import "react-loading-skeleton/dist/skeleton.css";
+import OrderStatus from "./Pages/OrderStatus";
 
 const router = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
   {
     path: "/auth-success",
     element: <HandleAuthSuccess />,
+  },
+  {
+    path: "/order-status",
+    element: <OrderStatus />,
   },
 ]);
 

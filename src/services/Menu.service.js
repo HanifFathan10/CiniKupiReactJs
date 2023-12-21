@@ -45,7 +45,9 @@ export const getNestedMenuById = (_id, callback) => {
 
 export const getImageMenuByNameurl = (nameurl, callback) => {
   axios
-    .get(`https://cini-kupi-react-js-api.vercel.app/api/v1/menu/product/${nameurl}`)
+    .get(
+      `https://cini-kupi-react-js-api.vercel.app/api/v1/menu/product/${nameurl}`
+    )
     .then((res) => {
       callback(res.data);
     })

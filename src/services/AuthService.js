@@ -2,7 +2,9 @@ import axios from "axios";
 
 export const Login = (data, callback) => {
   axios
-    .post("https://cini-kupi-react-js-api.vercel.app/api/v1/login", data, { withCredentials: true })
+    .post("https://cini-kupi-react-js-api.vercel.app/api/v1/login", data, {
+      withCredentials: true,
+    })
     .then((res) => {
       callback(true, res);
     })
@@ -27,7 +29,9 @@ export const Register = (data, callback) => {
 
 export const Logout = (callback) => {
   axios
-    .post("https://cini-kupi-react-js-api.vercel.app/api/v1/logout", "", { withCredentials: true })
+    .post("https://cini-kupi-react-js-api.vercel.app/api/v1/logout", "", {
+      withCredentials: true,
+    })
     .then((res) => {
       callback(true, res);
       console.log(true, res);
