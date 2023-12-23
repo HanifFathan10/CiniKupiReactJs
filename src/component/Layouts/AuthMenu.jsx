@@ -1,23 +1,21 @@
-import React, { useEffect } from "react";
+import React from "react";
 import NavigationBar from "../Elements/NavigasiBar/NavigationBar";
 import Footer from "../Elements/Footer/Footer";
 import MenuList from "../Elements/Menu/MenuList/MenuList";
-import { useNavigate } from "react-router-dom";
 import PopUpOrder from "../Elements/PopUpOrder/PopUpOrder";
+import { useScrollTop } from "../../Hooks/useScrollTop";
 
 const AuthMenu = ({ children, title }) => {
-  const Navigate = useNavigate();
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      Navigate("/login");
-    }
-  }, []);
+  useScrollTop();
   return (
     <div className="text-white w-full min-h-screen">
-      <NavigationBar classname={"text-[#212121]"} />
+      <NavigationBar
+        classname={"text-dark"}
+        color={"text-dark"}
+        background={"bg-dark"}
+      />
       <div className="bg-[#ffffff] flex justify-center item-center min-h-screen border border-x-4 w-full">
-        <div className="mt-24 text-[#212121] container flex">
+        <div className="mt-24 text-dark container flex">
           <nav className="hidden lg:block mx-16">
             <ul>
               <li className="mt-6">

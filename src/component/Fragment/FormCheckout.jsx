@@ -5,6 +5,7 @@ import { Payment } from "../../Store/Payment";
 import { useShallow } from "zustand/react/shallow";
 import { addToCart } from "../../Store/AddToCart";
 import { PaymentRequest } from "../../services/PaymentService";
+import { useNavigate } from "react-router-dom";
 
 const FormCheckout = () => {
   const [name, setName] = useState("");
@@ -13,8 +14,11 @@ const FormCheckout = () => {
   const [pay, setPay] = useState({});
   const resultPayment = Payment(useShallow((state) => state.resultPayment));
   const cartItems = addToCart(useShallow((state) => state.cartItems));
+  const accessToken = localStorage.getItem("accessToken");
+  const Navigate = useNavigate();
 
   const handleCheckout = async () => {
+    if (!accessToken) return Navigate("/login");
     const data = {
       customer_name: name,
       customer_email: email,
@@ -82,29 +86,33 @@ const FormCheckout = () => {
   return (
     <div className="px-3 py-6 bg-primary text-light">
       <h1 className="font-bold mb-3">CUSTOMER DETAILS</h1>
-      <InputForm
-        onChange={(e) => setName(e.target.value)}
-        value={name}
-        htmlfor="name"
-        placehoder="Your Name"
-        type="text"
-        name="name"
-        className="max-w-xs"
-      >
-        Your Name
-      </InputForm>
+      <form action="">
+        <InputForm
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+          htmlfor="name"
+          placehoder="Your Name"
+          type="text"
+          name="name"
+          id="name"
+          className="max-w-xs"
+        >
+          Your Name
+        </InputForm>
 
-      <InputForm
-        onChange={(e) => setEmail(e.target.value)}
-        value={email}
-        htmlfor="email"
-        placehoder="haniffathan@example.com"
-        type="email"
-        name="email"
-        className="max-w-xs"
-      >
-        Your Email
-      </InputForm>
+        <InputForm
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          htmlfor="email"
+          placehoder="haniffathan@example.com"
+          type="email"
+          name="email"
+          id="email"
+          className="max-w-xs"
+        >
+          Your Email
+        </InputForm>
+      </form>
 
       <button
         onClick={() => handleCheckout()}

@@ -1,19 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import NavigationBar from "../Elements/NavigasiBar/NavigationBar";
 import Footer from "../Elements/Footer/Footer";
-import { useNavigate } from "react-router-dom";
+import { useScrollTop } from "../../Hooks/useScrollTop";
 
 const AuthLayouth = ({ children }) => {
-  const Navigate = useNavigate();
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      Navigate("/login");
-    }
-  }, []);
+  useScrollTop();
   return (
     <div className="text-white w-full min-h-screen">
-      <NavigationBar color={'#ffffff'} />
+      <NavigationBar color={"#ffffff"} background={"bg-light"} />
       {children}
       <Footer />
     </div>
