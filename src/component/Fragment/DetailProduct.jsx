@@ -35,15 +35,13 @@ const DetailProduct = ({
   const handleAddToCart = (e) => {
     e.preventDefault();
 
-    const isEveryItemQuantityEight = cartItems.every(
-      (item) => item.quantity === 8
-    );
-    if (isEveryItemQuantityEight) {
+    const maxLength = cartItems.length === 20;
+    if (maxLength) {
       const id = "max-order";
       !toast.isActive(id) &&
         toast({
           id,
-          title: "Maximum order is 8 items. Please adjust your order.",
+          title: "Maximum order is 20 items. Please adjust your order.",
           containerStyle: {
             marginTop: "80px",
             fontSize: "12px",

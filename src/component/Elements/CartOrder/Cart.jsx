@@ -24,10 +24,11 @@ const Cart = ({ product, qty, removeById }) => {
           id,
           title: "Maximum order is 8 items. Please adjust your order.",
           containerStyle: {
+            marginTop: "80px",
             fontSize: "12px",
           },
           status: "error",
-          position: "bottom-left",
+          position: "top",
           isClosable: true,
         })
       : updateQty(qty);

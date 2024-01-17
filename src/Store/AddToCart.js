@@ -26,11 +26,7 @@ export const addToCart = create(
               return { cartItems: state.cartItems };
             }
           } else {
-            if (product.quantity <= 8) {
-              return { cartItems: [...state.cartItems, product] };
-            } else {
-              return { cartItems: state.cartItems };
-            }
+            return { cartItems: [...state.cartItems, product] };
           }
         });
       },
