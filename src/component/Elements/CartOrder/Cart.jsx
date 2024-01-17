@@ -14,9 +14,11 @@ const Cart = ({ product, qty, removeById }) => {
   const toast = useToast();
 
   const handleAddToCart = () => {
-    const lengthItems = cartItems[0].quantity === 8;
+    const isEveryItemQuantityEight = cartItems.every(
+      (item) => item.quantity === 8
+    );
     const id = "max-order";
-    lengthItems
+    isEveryItemQuantityEight
       ? !toast.isActive(id) &&
         toast({
           id,
@@ -37,7 +39,7 @@ const Cart = ({ product, qty, removeById }) => {
           <img src={product.image} className="w-16 md:w-24 lg:w-28" />
         </div>
         <div className="flex flex-col">
-          <h1 className="font-bold text-lg sm:text-xl lg:text-2xl leading-normal uppercase">
+          <h1 className="font-bold text-base sm:text-xl lg:text-2xl leading-normal uppercase">
             {product.name}
           </h1>
           <div className="w-fit rounded full md:text-lg flex gap-1 mb-1 text-sm text-[#cba258]">
@@ -61,7 +63,7 @@ const Cart = ({ product, qty, removeById }) => {
                 />
               </svg>
             </button>
-            <h1 className="text-dark mt-[5px]">{product.quantity}</h1>
+            <h1 className="text-dark text-center">{product.quantity}</h1>
             <button onClick={() => handleAddToCart()}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 
 export const useScrollTop = () => {
+  const scrollTop = () => {
+    scrollTo({ top: 0, behavior: "smooth" });
+  };
   useEffect(() => {
-    const scrollTop = () => {
-      scrollTo({ top: 0, behavior: "smooth" });
-    };
     scrollTop();
-  }, []);
+  }, [scrollTop]);
 };

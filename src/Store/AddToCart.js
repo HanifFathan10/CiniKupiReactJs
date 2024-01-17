@@ -13,14 +13,24 @@ export const addToCart = create(
 
           if (existingProductIndex !== -1) {
             const updatedCart = [...state.cartItems];
-            updatedCart[existingProductIndex] = {
-              ...updatedCart[existingProductIndex],
-              quantity:
-                updatedCart[existingProductIndex].quantity + product.quantity,
-            };
-            return { cartItems: updatedCart };
+            const newQuantity =
+              updatedCart[existingProductIndex].quantity + product.quantity;
+
+            if (newQuantity <= 8) {
+              updatedCart[existingProductIndex] = {
+                ...updatedCart[existingProductIndex],
+                quantity: newQuantity,
+              };
+              return { cartItems: updatedCart };
+            } else {
+              return { cartItems: state.cartItems };
+            }
           } else {
-            return { cartItems: [...state.cartItems, product] };
+            if (product.quantity <= 8) {
+              return { cartItems: [...state.cartItems, product] };
+            } else {
+              return { cartItems: state.cartItems };
+            }
           }
         });
       },

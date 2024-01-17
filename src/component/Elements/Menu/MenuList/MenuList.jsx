@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getImageMenu } from "../../../../services/Menu.service";
 import { Link } from "react-router-dom";
-import Skeleton from "react-loading-skeleton";
+import { Skeleton } from "@chakra-ui/react";
 
 const MenuList = () => {
   const [image, setImage] = useState([]);
@@ -17,17 +17,53 @@ const MenuList = () => {
   const CartMenu = ({ title, id }) => {
     return (
       <>
-        <span className="text-md font-semibold text-xl border-b-2 border-[#eaeaea]-400">{title || <Skeleton height={20} width={120} />}</span>
+        <span className="text-md font-semibold text-xl border-b-2 border-[#eaeaea]-400">
+          {isLoading ? (
+            <Skeleton
+              width={20}
+              height={5}
+              startColor="#444"
+              endColor="#202020"
+            />
+          ) : (
+            title
+          )}
+        </span>
         <ul id={id} className="py-3 px-2">
           {isLoading ? (
-            <Skeleton width={120} height={16} count={4} />
+            <>
+              <Skeleton
+                width={32}
+                height={4}
+                marginY={3}
+                startColor="#444"
+                endColor="#202020"
+              />
+              <Skeleton
+                width={32}
+                height={4}
+                marginY={3}
+                startColor="#444"
+                endColor="#202020"
+              />
+              <Skeleton
+                width={32}
+                height={4}
+                marginY={3}
+                startColor="#444"
+                endColor="#202020"
+              />
+            </>
           ) : (
             <>
               {image.map((img, index) => {
                 if (img.category === "drinks" && id === "drinks") {
                   return (
                     <li key={index} className="my-3">
-                      <Link to={`/menu/drink/${img.nameurl}`} className="font-extralight">
+                      <Link
+                        to={`/menu/drink/${img.nameurl}`}
+                        className="font-extralight"
+                      >
                         {img.name}
                       </Link>
                     </li>
@@ -35,15 +71,24 @@ const MenuList = () => {
                 } else if (img.category === "food" && id === "food") {
                   return (
                     <li key={index} className="my-3">
-                      <Link to={`/menu/food/${img.nameurl}`} className="font-extralight">
+                      <Link
+                        to={`/menu/food/${img.nameurl}`}
+                        className="font-extralight"
+                      >
                         {img.name}
                       </Link>
                     </li>
                   );
-                } else if (img.category === "coffe beans" && id === "coffe beans") {
+                } else if (
+                  img.category === "coffe beans" &&
+                  id === "coffe beans"
+                ) {
                   return (
                     <li key={index} className="my-3">
-                      <Link to={`/menu/${img.nameurl}`} className="font-extralight">
+                      <Link
+                        to={`/menu/${img.nameurl}`}
+                        className="font-extralight"
+                      >
                         {img.name}
                       </Link>
                     </li>

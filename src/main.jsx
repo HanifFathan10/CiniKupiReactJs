@@ -20,8 +20,6 @@ import MenuCoffeBeans from "./Pages/MenuPage/MenuCoffeBeans";
 import HandleAuthSuccess from "./Pages/AuthLogin";
 import CartPage from "./Pages/MenuPage/CartPage";
 import { ChakraProvider } from "@chakra-ui/react";
-import { SkeletonTheme } from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 import OrderStatus from "./Pages/OrderStatus";
 
 const router = createBrowserRouter([
@@ -102,8 +100,6 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ChakraProvider>
-    <SkeletonTheme baseColor="#202020" highlightColor="#444">
-      <RouterProvider router={router} />
-    </SkeletonTheme>
+    <RouterProvider router={router} />
   </ChakraProvider>
 );

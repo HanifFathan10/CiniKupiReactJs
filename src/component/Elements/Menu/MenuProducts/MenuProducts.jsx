@@ -3,10 +3,9 @@ import { getImageMenu } from "../../../../services/Menu.service";
 import { Link } from "react-router-dom";
 import { Cart } from "../Cart";
 import CartSkeleton from "../CartSkeleton";
-import Skeleton from 'react-loading-skeleton'
+import { Skeleton } from "@chakra-ui/react";
 
-const MenuProducts = (props) => {
-  const { title, id } = props;
+const MenuProducts = ({ title, id }) => {
   const [image, setImage] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -18,9 +17,21 @@ const MenuProducts = (props) => {
   }, []);
   return (
     <section id={id} className="mt-6">
-      <h2 className="text-xl font-semibold mb-5">{title || <Skeleton width={90} height={20} />}</h2>
+      <h2 className="text-xl font-semibold mb-5">
+        {isLoading ? (
+          <Skeleton
+            width={32}
+            height={10}
+            startColor="#444"
+            endColor="#202020"
+            rounded={10}
+          />
+        ) : (
+          title
+        )}
+      </h2>
       <hr aria-hidden="true" className="pb-7" />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
         {isLoading ? (
           <CartSkeleton />
         ) : (
