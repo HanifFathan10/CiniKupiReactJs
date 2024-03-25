@@ -12,7 +12,7 @@ export const reproduce = (data, gap) => {
 
 export const getImageMenu = async (callback) => {
   await axios
-    .get("https://cini-kupi-react-js-api.vercel.app/api/v1/menu")
+    .get("https://cini-kupi-api.vercel.app/api/v1/menu")
     .then((res) => {
       callback(res.data);
     })
@@ -23,7 +23,7 @@ export const getImageMenu = async (callback) => {
 
 export const getImageMenuById = (_id, callback) => {
   axios
-    .get(`https://cini-kupi-react-js-api.vercel.app/api/v1/menu/${_id}`)
+    .get(`https://cini-kupi-api.vercel.app/api/v1/menu/${_id}`)
     .then((res) => {
       callback(res.data);
     })
@@ -34,7 +34,7 @@ export const getImageMenuById = (_id, callback) => {
 
 export const getNestedMenuById = (_id, callback) => {
   axios
-    .get(`https://cini-kupi-react-js-api.vercel.app/api/v1/nested/${_id}`)
+    .get(`https://cini-kupi-api.vercel.app/api/v1/nested/${_id}`)
     .then((res) => {
       callback(res.data.data);
     })
@@ -45,9 +45,7 @@ export const getNestedMenuById = (_id, callback) => {
 
 export const getImageMenuByNameurl = (nameurl, callback) => {
   axios
-    .get(
-      `https://cini-kupi-react-js-api.vercel.app/api/v1/menu/product/${nameurl}`,
-    )
+    .get(`https://cini-kupi-api.vercel.app/api/v1/menu/product/${nameurl}`)
     .then((res) => {
       callback(res.data);
     })

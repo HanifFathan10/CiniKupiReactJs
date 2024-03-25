@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const PaymentRequest = (data, callback) => {
   axios
-    .post("https://cini-kupi-react-js-api.vercel.app/api/token", data, {
+    .post("https://cini-kupi-api.vercel.app/api/token", data, {
       headers: {
         "Content-Type": "application/json",
       },
