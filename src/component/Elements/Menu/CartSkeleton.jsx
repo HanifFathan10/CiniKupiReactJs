@@ -6,7 +6,7 @@ const CartSkeleton = () => {
     <>
       <div className="mb-2">
         <div className="flex items-center gap-2">
-          <div className="flex items-center justify-center rounded-full overflow-hidden">
+          <div className="flex items-center justify-center overflow-hidden rounded-full">
             <SkeletonCircle size={24} startColor="#444" endColor="#202020" />
           </div>
           <Skeleton
@@ -20,7 +20,7 @@ const CartSkeleton = () => {
       </div>
       <div className="mb-2">
         <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center rounded-full overflow-hidden">
+          <div className="flex items-center justify-center overflow-hidden rounded-full">
             <SkeletonCircle size={24} startColor="#444" endColor="#202020" />
           </div>
           <Skeleton

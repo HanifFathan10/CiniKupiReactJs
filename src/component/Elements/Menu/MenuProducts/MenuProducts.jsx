@@ -17,7 +17,7 @@ const MenuProducts = ({ title, id }) => {
   }, []);
   return (
     <section id={id} className="mt-6">
-      <h2 className="text-xl font-semibold mb-5">
+      <h2 className="mb-5 text-xl font-semibold">
         {isLoading ? (
           <Skeleton
             width={32}
@@ -31,7 +31,7 @@ const MenuProducts = ({ title, id }) => {
         )}
       </h2>
       <hr aria-hidden="true" className="pb-7" />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+      <div className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">
         {isLoading ? (
           <CartSkeleton />
         ) : (

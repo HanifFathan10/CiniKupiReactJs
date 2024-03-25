@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import InputForm from "../Elements/InputForm";
-import { Alert, AlertIcon } from "@chakra-ui/react";
+import { Alert, AlertIcon, useToast } from "@chakra-ui/react";
 import { Payment } from "../../Store/Payment";
 import { useShallow } from "zustand/react/shallow";
 import { addToCart } from "../../Store/AddToCart";
@@ -12,13 +12,13 @@ const FormCheckout = () => {
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
   const [pay, setPay] = useState({});
+  const toast = useToast();
   const resultPayment = Payment(useShallow((state) => state.resultPayment));
   const cartItems = addToCart(useShallow((state) => state.cartItems));
   const accessToken = localStorage.getItem("accessToken");
   const Navigate = useNavigate();
 
-  const handleCheckout = async () => {
-    if (!accessToken) return Navigate("/login");
+  const handleCheckout = () => {
     const data = {
       customer_name: name,
       customer_email: email,
@@ -31,10 +31,22 @@ const FormCheckout = () => {
     };
 
     try {
-      await PaymentRequest(data, (status, res) => {
-        setToken(res.data.token);
-        setPay(res.data.customer_details);
-      });
+      if (data.customer_name === "" || data.customer_email === "") {
+        toast({
+          title: "Please input your name and email",
+          status: "warning",
+          variant: "top-accent",
+          isClosable: true,
+          position: "top",
+        });
+      } else {
+        PaymentRequest(data, (status, res) => {
+          if (status) {
+            setToken(res.data.token);
+            setPay(res.data.customer_details);
+          }
+        });
+      }
     } catch (error) {
       console.error("Error during checkout:", error);
     }
@@ -68,6 +80,7 @@ const FormCheckout = () => {
   }, [token]);
 
   useEffect(() => {
+    if (!accessToken) return Navigate("/login");
     const midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
 
     let scriptTag = document.createElement("script");
@@ -84,8 +97,8 @@ const FormCheckout = () => {
   }, []);
 
   return (
-    <div className="px-3 py-6 bg-primary text-light">
-      <h1 className="font-bold mb-3">CUSTOMER DETAILS</h1>
+    <div className="bg-primary px-3 py-6 text-light">
+      <h1 className="mb-3 font-bold">CUSTOMER DETAILS</h1>
       <form action="">
         <InputForm
           onChange={(e) => setName(e.target.value)}
@@ -115,8 +128,8 @@ const FormCheckout = () => {
       </form>
 
       <button
-        onClick={() => handleCheckout()}
-        className="bg-secondary rounded-full ring-2 ring-primary text-primary px-6 py-4 font-semibold hover:bg-light transition-all duration-300"
+        onClick={handleCheckout}
+        className="rounded-full bg-secondary px-6 py-4 font-semibold text-primary ring-2 ring-primary transition-all duration-300 hover:bg-light"
       >
         Checkout
       </button>

@@ -10,8 +10,8 @@ export const reproduce = (data, gap) => {
   return response;
 };
 
-export const getImageMenu = (callback) => {
-  axios
+export const getImageMenu = async (callback) => {
+  await axios
     .get("https://cini-kupi-react-js-api.vercel.app/api/v1/menu")
     .then((res) => {
       callback(res.data);
@@ -46,7 +46,7 @@ export const getNestedMenuById = (_id, callback) => {
 export const getImageMenuByNameurl = (nameurl, callback) => {
   axios
     .get(
-      `https://cini-kupi-react-js-api.vercel.app/api/v1/menu/product/${nameurl}`
+      `https://cini-kupi-react-js-api.vercel.app/api/v1/menu/product/${nameurl}`,
     )
     .then((res) => {
       callback(res.data);

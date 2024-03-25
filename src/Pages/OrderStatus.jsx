@@ -10,11 +10,11 @@ const OrderStatus = () => {
         title="Order Status"
         metaDescription="Order status by CiniKupi"
       />
-      <section className="w-full h-screen">
+      <section className="h-screen w-full">
         <HeaderBack title="Detail Transaction" />
-        <main className="w-full flex flex-col justify-center items-center px-4">
+        <main className="flex w-full flex-col items-center justify-center px-4">
           <div className="my-3">
-            <h1 className="font-bold text-lg">HISTORY TRANSACTION</h1>
+            <h1 className="text-lg font-bold">HISTORY TRANSACTION</h1>
           </div>
           <CartStatus />
         </main>

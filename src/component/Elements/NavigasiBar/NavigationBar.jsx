@@ -27,9 +27,9 @@ const NavigationBar = ({ classname, color, background }) => {
   return (
     <>
       <div
-        className={`shadow-md bg-transparent w-full fixed top-0 left-0 z-[9999] ${classname}`}
+        className={`fixed left-0 top-0 z-[9999] w-full bg-transparent shadow-md ${classname}`}
       >
-        <div className="flex items-center w-[90%] justify-between md:w-full md:justify-between py-4 px-7 md:px-10">
+        <div className="flex w-[90%] items-center justify-between px-7 py-4 md:w-full md:justify-between md:px-10">
           <div className="flex gap-2 text-lg">
             <Logo color={color} />
           </div>

@@ -25,26 +25,26 @@ const Navigasi = ({ background }) => {
     <>
       <div
         onClick={handleToggleClick}
-        className="text-2xl absolute right-5 top-5 cursor-pointer md:hidden flex flex-col toggle-button"
+        className="toggle-button absolute right-5 top-5 flex cursor-pointer flex-col text-2xl md:hidden"
       >
         <span
-          className={`${background} w-6 h-[4px] my-[2px] transition-all duration-300 ${
+          className={`${background} my-[2px] h-[4px] w-6 transition-all duration-300 ${
             open && "origin-top-left rotate-45"
           }`}
         ></span>
         <span
-          className={`${background} w-6 h-[4px] my-[2px] transition-all duration-300 ${
+          className={`${background} my-[2px] h-[4px] w-6 transition-all duration-300 ${
             open && "scale-0"
           }`}
         ></span>
         <span
-          className={`${background} w-6 h-[4px] my-[2px] transition-all duration-300 ${
+          className={`${background} my-[2px] h-[4px] w-6 transition-all duration-300 ${
             open && "origin-bottom-left -rotate-45"
           }`}
         ></span>
       </div>
       <ul
-        className={`md:flex md:items-center bg-[#212121] max-w-[125px] text-sm md:text-md md:pb-0 pb-2 absolute md:max-w-full md:static md:z-auto right-4 w-full md:w-auto md:bg-transparent rounded-lg md:pl-0 pl-6 transition-all duration-700 ease-in-out ${
+        className={`md:text-md absolute right-4 w-full max-w-[125px] rounded-lg bg-[#212121] pb-2 pl-6 text-sm transition-all duration-700 ease-in-out md:static md:z-auto md:flex md:w-auto md:max-w-full md:items-center md:bg-transparent md:pb-0 md:pl-0 ${
           open ? "top-20 opacity-100" : "left-[700px] opacity-0 md:opacity-100"
         }`}
       >

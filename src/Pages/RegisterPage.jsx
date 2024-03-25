@@ -5,7 +5,10 @@ import { HeadMetaData } from "../component/Elements/HeadMetaData";
 const RegisterPage = () => {
   return (
     <>
-      <HeadMetaData title="Register" metaDescription="Register Page by CiniKupi" />
+      <HeadMetaData
+        title="Register"
+        metaDescription="Register Page by CiniKupi"
+      />
       <AuthUsers type="register">
         <FormRegister></FormRegister>
       </AuthUsers>

@@ -17,7 +17,7 @@ const ListImages = ({ type }) => {
             <img
               src="images/1.jpg"
               alt="coffe1"
-              className="h-full w-full rounded-lg grayscale transition duration-500 ease-in-out cursor-pointer hover:scale-110 hover:grayscale-0"
+              className="h-full w-full cursor-pointer rounded-lg grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
             />
           ) : (
             ""
@@ -26,8 +26,8 @@ const ListImages = ({ type }) => {
         <div
           className={`${
             type === "default"
-              ? "grid grid-cols-2 text-black gap-3"
-              : "grid grid-cols-2 md:grid-cols-3 text-black gap-3"
+              ? "grid grid-cols-2 gap-3 text-black"
+              : "grid grid-cols-2 gap-3 text-black md:grid-cols-3"
           } `}
         >
           {gambar.map((image) => {
@@ -37,7 +37,7 @@ const ListImages = ({ type }) => {
                   key={image._id}
                   src={image.image}
                   alt={image.name}
-                  className="h-full w-full rounded-lg grayscale transition duration-500 ease-in-out cursor-pointer hover:scale-110 hover:grayscale-0"
+                  className="h-full w-full cursor-pointer rounded-lg grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
                 />
               );
             } else if (image.category === "coffe" && type === "coffe") {
@@ -46,7 +46,7 @@ const ListImages = ({ type }) => {
                   key={image._id}
                   src={image.image}
                   alt={image.name}
-                  className="h-full w-full rounded-lg grayscale transition duration-500 ease-in-out cursor-pointer hover:scale-110 hover:grayscale-0"
+                  className="h-full w-full cursor-pointer rounded-lg grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
                 />
               );
             } else if (image.category === "drink" && type === "drink") {
@@ -55,7 +55,7 @@ const ListImages = ({ type }) => {
                   key={image._id}
                   src={image.image}
                   alt={image.name}
-                  className="h-full w-full rounded-lg grayscale transition duration-500 ease-in-out cursor-pointer hover:scale-110 hover:grayscale-0"
+                  className="h-full w-full cursor-pointer rounded-lg grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
                 />
               );
             } else if (image.category === "dessert" && type === "dessert") {
@@ -64,7 +64,7 @@ const ListImages = ({ type }) => {
                   key={image._id}
                   src={image.image}
                   alt={image.name}
-                  className="h-full w-full rounded-lg grayscale transition duration-500 ease-in-out cursor-pointer hover:scale-110 hover:grayscale-0"
+                  className="h-full w-full cursor-pointer rounded-lg grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
                 />
               );
             }

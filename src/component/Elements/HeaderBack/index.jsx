@@ -6,12 +6,12 @@ const HeaderBack = ({ className, title }) => {
   const Navigate = useNavigate();
   return (
     <section
-      className={`w-full h-12 flex justify-between items-center bg-dark text-light px-3 py-6  shadow-md ${className}`}
+      className={`flex h-12 w-full items-center justify-between bg-dark px-3 py-6 text-light  shadow-md ${className}`}
     >
       <button onClick={() => Navigate(-1)}>
         <ArrowLeft />
       </button>
-      <h1 className="font-medium sm:text-xl underline">{title}</h1>
+      <h1 className="font-medium underline sm:text-xl">{title}</h1>
     </section>
   );
 };

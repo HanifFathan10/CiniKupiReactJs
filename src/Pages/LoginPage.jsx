@@ -7,7 +7,7 @@ const LoginPage = () => {
     <>
       <HeadMetaData title="Login" metaDescription="Login page by CiniKupi" />
       <AuthUsers type="login">
-        <FormLogin></FormLogin>
+        <FormLogin />
       </AuthUsers>
     </>
   );

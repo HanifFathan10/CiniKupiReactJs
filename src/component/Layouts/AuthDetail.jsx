@@ -7,7 +7,7 @@ import { useScrollTop } from "../../Hooks/useScrollTop";
 const AuthDetail = ({ children }) => {
   useScrollTop();
   return (
-    <div className="w-full">
+    <div className="w-full bg-primary">
       <NavigationBar
         classname={"text-[#ffffff]"}
         color={"#ffffff"}

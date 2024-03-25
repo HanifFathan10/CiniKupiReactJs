@@ -7,9 +7,9 @@ const Input = ({ placeholder, type, name, id, ref, onChange, value }) => {
       id={id}
       name={name}
       onChange={onChange}
-      required
-      className="bg-transparent p-2 border border-slate-300 rounded-md"
+      className="rounded-md border border-slate-300 bg-transparent p-2 placeholder:text-xs xl:w-72"
       placeholder={placeholder}
+      required
     />
   );
 };

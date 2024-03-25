@@ -9,13 +9,13 @@ const Cart = ({ product, qty, removeById }) => {
       state.removeFromCart,
       state.addToCart,
       state.cartItems,
-    ])
+    ]),
   );
   const toast = useToast();
 
   const handleAddToCart = () => {
     const isEveryItemQuantityEight = cartItems.every(
-      (item) => item.quantity === 8
+      (item) => item.quantity === 8,
     );
     const id = "max-order";
     isEveryItemQuantityEight
@@ -34,20 +34,20 @@ const Cart = ({ product, qty, removeById }) => {
       : updateQty(qty);
   };
   return (
-    <section className="flex px-4 py-2 w-full justify-center">
-      <div className="grid grid-flow-col w-full max-w-lg items-center justify-start gap-3 px-5 py-3 shadow-md rounded-lg bg-[#ffffff]">
-        <div className="bg-[#212121] h-24 w-24 md:h-32 md:w-32 lg:h-40 lg:w-40 rounded-full border border-[#cba258] overflow-clip flex items-center justify-center">
+    <section className="flex w-full justify-center px-4 py-2">
+      <div className="grid w-full max-w-lg grid-flow-col items-center justify-start gap-3 rounded-lg bg-[#ffffff] px-5 py-3 shadow-md">
+        <div className="flex h-24 w-24 items-center justify-center overflow-clip rounded-full border border-[#cba258] bg-[#212121] md:h-32 md:w-32 lg:h-40 lg:w-40">
           <img src={product.image} className="w-16 md:w-24 lg:w-28" />
         </div>
         <div className="flex flex-col">
-          <h1 className="font-bold text-base sm:text-xl lg:text-2xl leading-normal uppercase">
+          <h1 className="text-base font-bold uppercase leading-normal sm:text-xl lg:text-2xl">
             {product.name}
           </h1>
-          <div className="w-fit rounded full md:text-lg flex gap-1 mb-1 text-sm text-[#cba258]">
+          <div className="full mb-1 flex w-fit gap-1 rounded text-sm text-[#cba258] md:text-lg">
             <h1>200</h1>
             <h1>Items</h1>
           </div>
-          <div className="flex gap-1 item-center text-[#ffffff]">
+          <div className="item-center flex gap-1 text-[#ffffff]">
             <button onClick={() => removeFromCart(removeById)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@ const Cart = ({ product, qty, removeById }) => {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-7 h-7 lg:w-9 lg:h-9"
+                className="h-7 w-7 lg:h-9 lg:w-9"
               >
                 <path
                   strokeLinecap="round"
@@ -64,7 +64,7 @@ const Cart = ({ product, qty, removeById }) => {
                 />
               </svg>
             </button>
-            <h1 className="text-dark text-center">{product.quantity}</h1>
+            <h2 className="leading-10 text-dark">{product.quantity}</h2>
             <button onClick={() => handleAddToCart()}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -72,7 +72,7 @@ const Cart = ({ product, qty, removeById }) => {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-7 h-7 lg:w-9 lg:h-9"
+                className="h-7 w-7 lg:h-9 lg:w-9"
               >
                 <path
                   strokeLinecap="round"

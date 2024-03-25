@@ -13,6 +13,6 @@ export const Payment = create(
     }),
     {
       name: "PAYMENT_RESULT",
-    }
-  )
+    },
+  ),
 );

@@ -6,7 +6,7 @@ import { useScrollTop } from "../../Hooks/useScrollTop";
 const AuthLayouth = ({ children }) => {
   useScrollTop();
   return (
-    <div className="text-white w-full min-h-screen">
+    <div className="min-h-screen w-full text-white">
       <NavigationBar color={"#ffffff"} background={"bg-light"} />
       {children}
       <Footer />

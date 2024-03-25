@@ -18,13 +18,22 @@ const ConfirmLogout = ({ cancelRef, onClose, isOpen, handleLogout }) => {
       >
         <AlertDialogOverlay />
 
-        <AlertDialogContent>
-          <AlertDialogHeader>Yakin mau Logout?</AlertDialogHeader>
+        <AlertDialogContent borderRadius="xl" backgroundColor="#1f3933">
+          <AlertDialogHeader color="white">Yakin mau Logout?</AlertDialogHeader>
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
-              Gajadi
+            <Button
+              ref={cancelRef}
+              onClick={onClose}
+              className="hover:scale-110"
+            >
+              Cancel
             </Button>
-            <Button colorScheme="red" ml={3} onClick={handleLogout}>
+            <Button
+              colorScheme="red"
+              ml={3}
+              onClick={handleLogout}
+              className="hover:scale-110"
+            >
               Logout
             </Button>
           </AlertDialogFooter>

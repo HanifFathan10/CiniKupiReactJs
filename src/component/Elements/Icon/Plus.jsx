@@ -8,7 +8,7 @@ const Plus = () => {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
-      className="w-6 h-6"
+      className="h-6 w-6"
     >
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
     </svg>

@@ -7,7 +7,7 @@ import NoProductUI from "../Elements/CartOrder/NoProductUI";
 const ListOrder = ({ count }) => {
   const cartItems = addToCart(useShallow((state) => state.cartItems));
   return (
-    <div className="bg-[#eaeaea] min-h-screen w-full flex flex-col items-center justify-center">
+    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-[#eaeaea]">
       {count >= 1 ? (
         <>
           {Array.isArray(cartItems) &&

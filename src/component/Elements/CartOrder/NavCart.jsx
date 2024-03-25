@@ -9,7 +9,7 @@ const NavCart = () => {
         fill="#ffffff"
         height="40px"
         width="40px"
-        className="hidden md:block mr-3"
+        className="mr-3 hidden md:block"
         version="1.1"
         id="Capa_1"
         xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@ const NavCart = () => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="#ffffff"
-          className="w-6 h-6"
+          className="h-6 w-6"
         >
           <path
             strokeLinecap="round"
@@ -50,7 +50,7 @@ const NavCart = () => {
             d="M15.75 19.5L8.25 12l7.5-7.5"
           />
         </svg>
-        <h3 className="hidden md:block font-semibold ml-1">Back To Menu</h3>
+        <h3 className="ml-1 hidden font-semibold md:block">Back To Menu</h3>
       </Link>
     </nav>
   );

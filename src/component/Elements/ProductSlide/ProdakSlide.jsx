@@ -37,7 +37,14 @@ const ProdakSlide = () => {
     <>
       <Carousel responsive={responsive} className="my-6">
         {gambar.map((image) => (
-          <Prodak key={image._id} _id={image._id} name={image.name} image={image.image} price={image.price} alt={image.name} />
+          <Prodak
+            key={image._id}
+            _id={image._id}
+            name={image.name}
+            image={image.image}
+            price={image.price}
+            alt={image.name}
+          />
         ))}
       </Carousel>
     </>

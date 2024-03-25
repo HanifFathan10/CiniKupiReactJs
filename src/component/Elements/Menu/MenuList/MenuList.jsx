@@ -17,7 +17,7 @@ const MenuList = () => {
   const CartMenu = ({ title, id }) => {
     return (
       <>
-        <span className="text-md font-semibold text-xl border-b-2 border-[#eaeaea]-400">
+        <span className="text-md border-[#eaeaea]-400 border-b-2 text-xl font-semibold">
           {isLoading ? (
             <Skeleton
               width={20}
@@ -29,7 +29,7 @@ const MenuList = () => {
             title
           )}
         </span>
-        <ul id={id} className="py-3 px-2">
+        <ul id={id} className="px-2 py-3">
           {isLoading ? (
             <>
               <Skeleton

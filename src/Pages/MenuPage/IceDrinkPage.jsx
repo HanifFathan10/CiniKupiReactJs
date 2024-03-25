@@ -6,7 +6,10 @@ import { HeadMetaData } from "../../component/Elements/HeadMetaData";
 const IceDrinkPage = () => {
   return (
     <>
-      <HeadMetaData title="Ice Drinks" metaDescription="Ice Drinks Page by CiniKupi" />
+      <HeadMetaData
+        title="Ice Drinks"
+        metaDescription="Ice Drinks Page by CiniKupi"
+      />
       <AuthMenu title="Ice Drinks">
         <FragmentMenu productId="653f48b384d040c440820611" />
       </AuthMenu>

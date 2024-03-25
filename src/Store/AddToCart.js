@@ -8,7 +8,7 @@ export const addToCart = create(
       addToCart: (product) => {
         set((state) => {
           const existingProductIndex = state.cartItems.findIndex(
-            (item) => item.id === product.id
+            (item) => item.id === product.id,
           );
 
           if (existingProductIndex !== -1) {
@@ -34,7 +34,7 @@ export const addToCart = create(
       removeFromCart: (product) => {
         set((state) => {
           const indexToRemove = state.cartItems.findIndex(
-            (cart) => cart.id === product.id
+            (cart) => cart.id === product.id,
           );
 
           if (indexToRemove !== -1) {
@@ -44,12 +44,12 @@ export const addToCart = create(
               ...prevProduct[indexToRemove],
               quantity: Math.max(
                 0,
-                prevProduct[indexToRemove].quantity - product.quantity
+                prevProduct[indexToRemove].quantity - product.quantity,
               ),
             };
 
             const updatedCartItems = prevProduct.filter(
-              (item) => item.quantity > 0
+              (item) => item.quantity > 0,
             );
 
             return { cartItems: updatedCartItems };
@@ -61,6 +61,6 @@ export const addToCart = create(
     }),
     {
       name: "ADD_TO_CART",
-    }
-  )
+    },
+  ),
 );

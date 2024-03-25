@@ -10,10 +10,10 @@ const Prodak = ({ name, price, image, alt, _id }) => {
     useScrollTop;
   };
   return (
-    <div className="flex flex-col justify-center items-center max-w-7xl px-6 md:px-0 py-9 mx-auto gap-4">
+    <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-4 px-6 py-9 md:px-0">
       <button
         onClick={Navigate}
-        className="bg-[#212121] h-40 w-40 md:w-52 md:h-52 rounded-full border border-[#cba258] overflow-hidden flex items-center justify-center"
+        className="flex h-40 w-40 items-center justify-center overflow-hidden rounded-full border border-[#cba258] bg-[#212121] md:h-52 md:w-52"
       >
         <img
           src={image}
@@ -21,12 +21,12 @@ const Prodak = ({ name, price, image, alt, _id }) => {
           className="w-[132px] bg-cover bg-center p-2"
         />
       </button>
-      <div className="max-w-xs flex flex-col">
+      <div className="flex max-w-xs flex-col">
         <div className="px-4 text-[#eaeaea]">
-          <h1 className="font-bold text-xl mb-2 uppercase leading-none">
+          <h1 className="mb-2 text-xl font-bold uppercase leading-none">
             {name}
           </h1>
-          <h3 className="line-lamp-3 font-semibold text-xs">{rupiah(price)}</h3>
+          <h3 className="line-lamp-3 text-xs font-semibold">{rupiah(price)}</h3>
         </div>
       </div>
     </div>

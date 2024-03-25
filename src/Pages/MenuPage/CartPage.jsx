@@ -16,9 +16,9 @@ const CartProduct = () => {
       <HeadMetaData title="Order" metaDescription="Order page by CiniKupi" />
       <section className="grid grid-cols-1 md:grid-cols-2">
         <div className="w-full bg-[#1f3933] text-[#ffffff]">
-          <div className="md:fixed py-4 px-2 md:px-6 md:h-screen">
+          <div className="px-2 py-4 md:fixed md:h-screen md:px-6">
             <NavCart />
-            <div className="w-full h-full flex items-center px-3 py-4">
+            <div className="flex h-full w-full items-center px-3 py-4">
               <div className="flex">
                 <h1 className="text-2xl font-bold">Review Order ({count})</h1>
               </div>

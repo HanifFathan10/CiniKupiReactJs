@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const Login = (data, callback) => {
-  axios
+export const Login = async (data, callback) => {
+  await axios
     .post("https://cini-kupi-react-js-api.vercel.app/api/v1/login", data, {
       withCredentials: true,
     })

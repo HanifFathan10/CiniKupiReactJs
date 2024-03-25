@@ -1,4 +1,4 @@
-const Label = ({htmlfor, children}) => {
+const Label = ({ htmlfor, children }) => {
   return (
     <label htmlFor={htmlfor} className="mb-2 font-semibold">
       {children}

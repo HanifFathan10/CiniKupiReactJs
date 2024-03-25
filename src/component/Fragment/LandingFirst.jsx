@@ -5,7 +5,7 @@ import TabButton from "../Elements/ProductItems/TabButton/TabButton";
 const LandingFirst = ({ title }) => {
   const [tab, setTab] = useState("default");
   const [isPending, startTransition] = useTransition();
-  
+
   const TAB_LIST = [
     {
       title: "default",
@@ -35,23 +35,38 @@ const LandingFirst = ({ title }) => {
     });
   };
 
-  
   return (
-    <div className="flex bg-[#212121] min-h-screen justify-center items-center shadow-lg" id="menu">
-      <div className="w-full pt-16 md:pt-20 px-4 max-w-sm md:max-w-lg mb-24">
-        <h1 className="text-center text-3xl md:text-4xl uppercase font-semibold mb-4">{title}</h1>
-        <div className="flex justify-center items-center mb-5">
-          <TabButton selectTab={() => HandleTabChange("coffe")} active={tab === "coffe"}>
+    <div
+      className="flex min-h-screen items-center justify-center bg-[#212121] shadow-lg"
+      id="menu"
+    >
+      <div className="mb-24 w-full max-w-sm px-4 pt-16 md:max-w-lg md:pt-20">
+        <h1 className="mb-4 text-center text-3xl font-semibold uppercase md:text-4xl">
+          {title}
+        </h1>
+        <div className="mb-5 flex items-center justify-center">
+          <TabButton
+            selectTab={() => HandleTabChange("coffe")}
+            active={tab === "coffe"}
+          >
             Coffe
           </TabButton>
-          <TabButton selectTab={() => HandleTabChange("drink")} active={tab === "drink"}>
+          <TabButton
+            selectTab={() => HandleTabChange("drink")}
+            active={tab === "drink"}
+          >
             Drink
           </TabButton>
-          <TabButton selectTab={() => HandleTabChange("dessert")} active={tab === "dessert"}>
+          <TabButton
+            selectTab={() => HandleTabChange("dessert")}
+            active={tab === "dessert"}
+          >
             Dessert
           </TabButton>
         </div>
-        <div className="flex flex-row">{TAB_LIST.find((t) => t.id === tab)?.content}</div>
+        <div className="flex flex-row">
+          {TAB_LIST.find((t) => t.id === tab)?.content}
+        </div>
       </div>
     </div>
   );

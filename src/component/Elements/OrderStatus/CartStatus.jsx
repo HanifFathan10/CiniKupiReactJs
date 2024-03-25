@@ -9,11 +9,8 @@ export const CartStatus = () => {
     <Fragment>
       {transaction.map((trx, i) => {
         return (
-          <>
-            <div
-              className="flex flex-col w-full sm:max-w-lg border border-slate-500 rounded-lg px-6 py-5 gap-3 mb-3 bg-secondary shadow-md shadow-slate-600"
-              key={i}
-            >
+          <section key={i}>
+            <div className="mb-3 flex w-full flex-col gap-3 rounded-lg border border-slate-500 bg-secondary px-6 py-5 shadow-md shadow-slate-600 sm:max-w-lg">
               <div>
                 <h1 className="font-bold">Transaction ID</h1>
                 <h3 className="text-xs">{trx.transaction_details.order_id}</h3>
@@ -29,7 +26,7 @@ export const CartStatus = () => {
                 <h3>{trx.customer_details.email}</h3>
               </div>
             </div>
-            <div className="flex flex-col w-full sm:max-w-lg border border-slate-500 rounded-lg px-6 py-5 gap-3 shadow-md shadow-slate-400">
+            <div className="flex w-full flex-col gap-3 rounded-lg border border-slate-500 px-6 py-5 shadow-md shadow-slate-400 sm:max-w-lg">
               <TotalPriceStatus trx={trx} />
               <div className="flex justify-between">
                 <h1 className="font-bold">Total</h1>
@@ -39,7 +36,7 @@ export const CartStatus = () => {
               </div>
             </div>
             <br />
-          </>
+          </section>
         );
       })}
     </Fragment>

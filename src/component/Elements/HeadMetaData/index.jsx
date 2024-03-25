@@ -1,6 +1,11 @@
 import Helmet from "react-helmet";
 
-export const HeadMetaData = ({ title = "Hello welcome guyss", metaDescription, ogImageUrl = "images/banner.png", pathname = "" }) => {
+export const HeadMetaData = ({
+  title = "Hello welcome guyss",
+  metaDescription,
+  ogImageUrl = "images/banner.png",
+  pathname = "",
+}) => {
   const defaultTitle = "CiniKupi";
   const baseUrl = "https://cini-kupi.vercel.app";
   const pageUrl = new URL(pathname, baseUrl).toString();
