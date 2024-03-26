@@ -44,8 +44,7 @@ const FormLogin = () => {
   };
 
   const auth = () => {
-    window.location.href =
-      "https://cini-kupi-react-js-api.vercel.app/auth/google";
+    window.location.href = "https://cini-kupi-api.vercel.app/auth/google";
 
     if (!localStorage.getItem("accessToken")) {
       Navigate("/login");
@@ -92,7 +91,7 @@ const FormLogin = () => {
       </div>
 
       <button
-        onClick={() => auth()}
+        onClick={auth}
         type="button"
         className="item-center flex justify-center gap-2 rounded bg-[#eaeaea] px-7 pb-2.5 pt-3 text-sm font-semibold uppercase text-[#212121] transition duration-300 hover:scale-105 hover:bg-slate-800 hover:text-[#ffffff]"
       >

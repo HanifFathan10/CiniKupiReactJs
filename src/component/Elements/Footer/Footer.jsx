@@ -29,7 +29,7 @@ const ContactForm = () => {
         </div>
       </div>
       <div className="bg-[#212121] p-5 text-center text-[10px] text-[#ffffff] md:text-[12px]">
-        © 2023{" "}
+        © 2024{" "}
         <span className="italic">
           Cini<span className="text-teal-700">Kupi</span>
         </span>{" "}

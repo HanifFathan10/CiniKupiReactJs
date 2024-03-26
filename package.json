@@ -1,7 +1,10 @@
 {
-  "name": "cini-kupi-reactjs",
+  "name": "cini-kupi",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "author": "Hanif Fathan Riziq",
+  "license": "MIT",
+  "description": "CiniKupi",
   "type": "module",
   "scripts": {
     "dev": "vite",
