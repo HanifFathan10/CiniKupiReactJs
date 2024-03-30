@@ -1,8 +1,56 @@
-# React + Vite
+# 🚀CiniKupi
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Authors
 
-Currently, two official plugins are available:
+- [@haniffthn](https://www.instagram.com/haniffthn__/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+
+**Client:** React, TailwindCSS, Zustand
+
+**Server:** Node, Express, MongoDB
+
+## Installation
+
+Clone in my github :
+
+```bash
+  git clone https://github.com/HanifFathan10/CiniKupiReactJs.git
+```
+
+Go to the project directory :
+
+```bash
+  cd CiniKupiReactJs
+```
+
+Run Installation dependencies :
+
+```bash
+  npm install
+```
+
+Start the server :
+
+```bash
+  npm run dev
+```
+
+Add env file :
+
+`VITE_BACKEND_URL` = http://localhost:5000
+
+How to running this project :
+
+```bash
+  npm run dev
+```
+
+## Features
+
+- Login & Register
+- Google authentication
+- List Product
+- Detail Product
+- State Management
+- Payment Gateway

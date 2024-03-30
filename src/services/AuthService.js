@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const Login = async (data, callback) => {
   await axios
-    .post("https://cini-kupi-api.vercel.app/api/v1/login", data, {
+    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/login`, data, {
       withCredentials: true,
     })
     .then((res) => {
@@ -16,7 +16,7 @@ export const Login = async (data, callback) => {
 
 export const Register = (data, callback) => {
   axios
-    .post("https://cini-kupi-api.vercel.app/api/v1/register", data)
+    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/register`, data)
     .then((res) => {
       callback(true, res);
       console.log(true, res);
@@ -29,7 +29,7 @@ export const Register = (data, callback) => {
 
 export const Logout = (callback) => {
   axios
-    .post("https://cini-kupi-api.vercel.app/api/v1/logout", "", {
+    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/logout`, "", {
       withCredentials: true,
     })
     .then((res) => {

@@ -13,14 +13,14 @@ const AuthUsers = ({ children, type }) => {
           viewBox="-3 0 32 32"
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlnsXlink="http://www.w3.org/1999/xlink"
           fill="#ffffff"
         >
-          <g id="SVGRepo_bgCarrier" stroke-width="1"></g>
+          <g id="SVGRepo_bgCarrier" strokeWidth="1"></g>
           <g
             id="SVGRepo_tracerCarrier"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           ></g>
           <g id="SVGRepo_iconCarrier">
             {" "}

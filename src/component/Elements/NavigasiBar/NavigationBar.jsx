@@ -15,11 +15,13 @@ const NavigationBar = ({ classname, color, background }) => {
 
   const handleLogout = () => {
     onClose;
-    Logout(() => {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("PAYMENT_RESULT");
-      localStorage.removeItem("ADD_TO_CART");
-      window.location.href = "/";
+    Logout((data) => {
+      if (data === true) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("PAYMENT_RESULT");
+        localStorage.removeItem("ADD_TO_CART");
+        window.location.href = "/";
+      }
     });
   };
 

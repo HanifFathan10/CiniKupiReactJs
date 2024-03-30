@@ -7,9 +7,8 @@
   "description": "CiniKupi",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode development",
     "build": "vite build",
-    "start": "nodemon index",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "jest"
