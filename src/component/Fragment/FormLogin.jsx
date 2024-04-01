@@ -3,18 +3,18 @@ import Button from "../Elements/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Login } from "../../services/AuthService";
-import { addToCart } from "../../Store/AddToCart";
-import { useShallow } from "zustand/react/shallow";
+import { useToast } from "@chakra-ui/react";
 
 const FormLogin = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const [msg, setMsg] = useState("");
+  const [isLogin, setIsLogin] = useState(false);
   const Navigate = useNavigate();
-  const login = addToCart(useShallow((state) => state.login));
+  const toast = useToast();
 
   const handleLogin = (e) => {
     e.preventDefault();
+    setIsLogin(true);
 
     const data = {
       email,
@@ -23,19 +23,51 @@ const FormLogin = () => {
 
     try {
       Login(data, (status, res) => {
-        if (status) {
-          localStorage.setItem("accessToken", res.data.accessToken);
-          Navigate("/");
-          login(res.data.data.username);
-        } else {
-          setMsg(res.response.data.message);
+        const id = "login";
+        if (status === true) {
+          localStorage.setItem("access_token", res.data.accessToken);
+
+          if (!toast.isActive(id)) {
+            toast({
+              id,
+              title: res.data.message,
+              containerStyle: {
+                marginTop: "80px",
+                fontSize: "12px",
+              },
+              status: "success",
+              position: "top",
+              variant: "top-accent",
+              isClosable: true,
+            });
+          }
+
           setTimeout(() => {
-            setMsg("");
-          }, 3000);
+            Navigate("/");
+          }, 1000);
+
+          setIsLogin(false);
+        } else {
+          if (!toast.isActive(id)) {
+            toast({
+              id,
+              title: res.response.data.message,
+              containerStyle: {
+                marginTop: "80px",
+                fontSize: "12px",
+              },
+              status: "error",
+              position: "top",
+              variant: "left-accent",
+              isClosable: true,
+            });
+          }
+
+          setIsLogin(false);
         }
       });
 
-      if (!localStorage.getItem("accessToken")) {
+      if (!localStorage.getItem("access_token")) {
         Navigate("/login");
       }
     } catch (error) {
@@ -44,18 +76,11 @@ const FormLogin = () => {
   };
 
   const auth = () => {
-    window.location.href = "https://cini-kupi-api.vercel.app/auth/google";
-
-    if (!localStorage.getItem("accessToken")) {
-      Navigate("/login");
-    }
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/google`;
   };
 
   return (
     <form onSubmit={handleLogin} className="flex w-full flex-col">
-      {msg && (
-        <h1 className="mb-2 text-center font-semibold text-red-400">{msg}</h1>
-      )}
       <InputForm
         htmlfor="email"
         onChange={(e) => setEmail(e.target.value)}
@@ -80,8 +105,9 @@ const FormLogin = () => {
 
       <Button
         type="submit"
-        background="bg-slate-700 inline-block rounded px-7 pb-2.5 pt-3 text-sm font-semibold uppercase text-white hover:bg-slate-900 transition duration-300 hover:scale-105"
-        text="Login"
+        background={`bg-slate-700 inline-block rounded px-7 pb-2.5 pt-3 text-sm font-semibold uppercase text-white hover:bg-slate-900 transition duration-300 hover:scale-105 ${isLogin ? "cursor-not-allowed opacity-50 bg-neutral-500" : ""}`}
+        text={isLogin ? "Loading...." : "Login"}
+        disabled={isLogin}
       />
 
       <div className="flex items-center gap-3">

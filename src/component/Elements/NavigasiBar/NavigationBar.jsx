@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Navigasi from "./Navigasi";
 import { Button, useDisclosure } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ const NavigationBar = ({ classname, color, background }) => {
     onClose;
     Logout((data) => {
       if (data === true) {
-        localStorage.removeItem("accessToken");
+        localStorage.removeItem("access_token");
         localStorage.removeItem("PAYMENT_RESULT");
         localStorage.removeItem("ADD_TO_CART");
         window.location.href = "/";
@@ -25,7 +25,8 @@ const NavigationBar = ({ classname, color, background }) => {
     });
   };
 
-  const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem("access_token");
+
   return (
     <>
       <div

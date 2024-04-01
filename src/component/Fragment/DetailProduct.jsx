@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import QuestionMark from "../Elements/Icon/QuestionMark";
 import Plus from "../Elements/Icon/Plus";
 import { rupiah } from "../../Hooks/useRupiah";
@@ -15,8 +15,8 @@ import {
 import { addToCart } from "../../Store/AddToCart";
 import { useShallow } from "zustand/react/shallow";
 import { SingleStar } from "../Elements/Icon/SingleStar";
-import { Link } from "react-router-dom";
 import { getNestedMenuById } from "../../services/Menu.service";
+import { AddToCart } from "../../services/Order.service";
 
 const DetailProduct = ({
   _id,
@@ -28,12 +28,14 @@ const DetailProduct = ({
   calories,
   sugar,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [cart, cartItems] = addToCart(
     useShallow((state) => [state.addToCart, state.cartItems]),
   );
   const toast = useToast();
   const handleAddToCart = (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const maxLength = cartItems.length === 20;
     if (maxLength) {
@@ -61,22 +63,43 @@ const DetailProduct = ({
           quantity: 1,
         };
 
-        cart(dataProduct);
-      });
+        AddToCart(dataProduct, (status, res) => {
+          if (status === true) {
+            setIsLoading(false);
+            console.log(res);
+            cart(dataProduct);
 
-      const id = "success-order";
-      !toast.isActive(id) &&
-        toast({
-          id,
-          title: "Success add to cart",
-          containerStyle: {
-            marginTop: "80px",
-          },
-          status: "success",
-          position: "top",
-          duration: 1500,
-          isClosable: true,
+            const id = "success-order";
+            !toast.isActive(id) &&
+              toast({
+                id,
+                title: res.data.message,
+                containerStyle: {
+                  marginTop: "80px",
+                },
+                status: "success",
+                position: "top",
+                duration: 1500,
+                isClosable: true,
+              });
+          } else {
+            console.log(res);
+            const id = "error-fetching";
+            !toast.isActive(id) &&
+              toast({
+                id,
+                title: res.data.message,
+                containerStyle: {
+                  marginTop: "80px",
+                },
+                status: "error",
+                position: "top",
+                duration: 1500,
+                isClosable: true,
+              });
+          }
         });
+      });
     }
   };
 
@@ -139,14 +162,21 @@ const DetailProduct = ({
               </>
             )}
           </div>
-          <div className="flex w-full justify-end">
-            <Link
+          <div className="flex w-full items-center justify-end">
+            <button
+              disabled={isLoading}
               onClick={handleAddToCart}
-              className="mt-10 flex items-center justify-center rounded-full bg-green px-5 py-3 text-center font-semibold shadow-xl hover:bg-[#4abd93] focus:ring-4 focus:ring-emerald-500 md:px-8 md:py-6"
+              className={`mt-10 flex cursor-pointer items-center justify-center rounded-full bg-green px-5 py-3 text-center font-semibold shadow-xl  md:px-8 md:py-6 ${isLoading && "cursor-not-allowed bg-neutral-600"}`}
             >
-              <Plus />
-              Add To Cart
-            </Link>
+              {isLoading ? (
+                "Loading..."
+              ) : (
+                <>
+                  <Plus />
+                  <h1>Add To Cart</h1>
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>

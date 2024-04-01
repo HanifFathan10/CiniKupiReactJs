@@ -9,8 +9,8 @@ export const Login = async (data, callback) => {
       callback(true, res);
     })
     .catch((error) => {
+      console.log(error);
       callback(false, error);
-      console.log(false, error);
     });
 };
 
@@ -19,11 +19,9 @@ export const Register = (data, callback) => {
     .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/register`, data)
     .then((res) => {
       callback(true, res);
-      console.log(true, res);
     })
     .catch((error) => {
       callback(false, error);
-      console.log(false, error);
     });
 };
 
@@ -34,10 +32,8 @@ export const Logout = (callback) => {
     })
     .then((res) => {
       callback(true, res);
-      console.log(true, res);
     })
     .catch((error) => {
       callback(false, error);
-      console.log(false, error);
     });
 };

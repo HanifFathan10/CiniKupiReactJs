@@ -15,7 +15,7 @@ const FormCheckout = () => {
   const toast = useToast();
   const resultPayment = Payment(useShallow((state) => state.resultPayment));
   const cartItems = addToCart(useShallow((state) => state.cartItems));
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = localStorage.getItem("access_token");
   const Navigate = useNavigate();
 
   const handleCheckout = () => {
@@ -86,7 +86,7 @@ const FormCheckout = () => {
     let scriptTag = document.createElement("script");
     scriptTag.src = midtransUrl;
 
-    let midtransClientKey = "SB-Mid-client-dfxRBlhEgj_5S972";
+    let midtransClientKey = import.meta.env.MIDTRANS_CLIENT_KEY;
     scriptTag.setAttribute("data-client-key", midtransClientKey);
 
     document.body.appendChild(scriptTag);

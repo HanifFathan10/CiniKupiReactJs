@@ -3,18 +3,20 @@ import Button from "../Elements/Button/Button";
 import InputForm from "../Elements/InputForm";
 import { useNavigate } from "react-router-dom";
 import { Register } from "../../services/AuthService";
+import { useToast } from "@chakra-ui/react";
 
 const FormRegister = () => {
-  const [username, setUsername] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isRegister, setIsRegister] = useState(false);
   const Navigate = useNavigate();
-  const [msg, setMsg] = useState("");
-  const [success, setSuccess] = useState("");
+  const toast = useToast();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsRegister(true);
 
     const data = {
       username: e.target.username.value,
@@ -24,30 +26,57 @@ const FormRegister = () => {
     };
 
     Register(data, (status, res) => {
-      if (status) {
-        setSuccess(res.data.message);
-        setTimeout(() => {
-          setSuccess("");
-          Navigate("/login");
-        }, 2000);
-      } else {
-        setMsg(res.response.data.message);
-        setTimeout(() => {
-          setMsg("");
-        }, 2000);
+      try {
+        if (status === true) {
+          const successMsg = res.data.message; // Pesan sukses dari server
+          setIsRegister(false);
+          setTimeout(() => {
+            Navigate("/login");
+          }, 1500);
+
+          if (!toast.isActive("register")) {
+            // Memeriksa apakah toast sudah aktif
+            toast({
+              id: "register",
+              title: successMsg,
+              containerStyle: {
+                marginTop: "80px",
+                fontSize: "12px",
+              },
+              status: "success",
+              position: "top",
+              variant: "top-accent",
+              isClosable: true,
+            });
+          }
+        } else {
+          const errorMsg = res.response.data.message; // Pesan error dari server
+          setIsRegister(false);
+
+          if (!toast.isActive("error_id")) {
+            // Memeriksa apakah toast sudah aktif
+            toast({
+              id: "error_id",
+              title: errorMsg,
+              containerStyle: {
+                marginTop: "80px",
+                fontSize: "12px",
+              },
+              status: "error",
+              position: "top",
+              variant: "left-accent",
+              isClosable: true,
+            });
+          }
+        }
+      } catch (error) {
+        console.log(error);
       }
     });
   };
+
   return (
     <form onSubmit={handleSubmit}>
-      {msg && (
-        <p className="mb-2 text-center font-semibold text-red-400">{msg}</p>
-      )}
-      {success && (
-        <p className="text-green-500 mb-2 text-center font-semibold">
-          {success}
-        </p>
-      )}
       <InputForm
         htmlfor="username"
         value={username}
@@ -99,7 +128,8 @@ const FormRegister = () => {
       <Button
         type="submit"
         background="w-full bg-slate-700 inline-block rounded px-7 pb-2.5 pt-3 text-sm font-semibold uppercase text-white hover:bg-slate-900 transition duration-300 hover:scale-105"
-        text="Register"
+        text={isRegister ? "Loading..." : "Register"}
+        disabled={isRegister}
       />
     </form>
   );
