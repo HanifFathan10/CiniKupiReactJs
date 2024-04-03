@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import QuestionMark from "../Elements/Icon/QuestionMark";
 import Plus from "../Elements/Icon/Plus";
 import { rupiah } from "../../Hooks/useRupiah";
@@ -12,11 +12,11 @@ import {
   PopoverTrigger,
   useToast,
 } from "@chakra-ui/react";
-import { addToCart } from "../../Store/AddToCart";
-import { useShallow } from "zustand/react/shallow";
 import { SingleStar } from "../Elements/Icon/SingleStar";
 import { getNestedMenuById } from "../../services/Menu.service";
 import { AddToCart } from "../../services/Order.service";
+import { totalItems } from "../../Store/TotalItems";
+import { useShallow } from "zustand/react/shallow";
 
 const DetailProduct = ({
   _id,
@@ -29,29 +29,69 @@ const DetailProduct = ({
   sugar,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [cart, cartItems] = addToCart(
-    useShallow((state) => [state.addToCart, state.cartItems]),
+  const [click, setClick] = useState(false);
+  const { count, useCount } = totalItems(
+    useShallow((state) => ({ count: state.count, useCount: state.useCount })),
   );
+
+  useEffect(() => {
+    if (click === true) {
+      useCount();
+    }
+  }, [click]);
+
   const toast = useToast();
+
+  const ErrorToast = ({ id, title }) => {
+    !toast.isActive(id) &&
+      toast({
+        id,
+        title: title,
+        containerStyle: {
+          marginTop: "80px",
+          fontSize: "12px",
+        },
+        status: "error",
+        position: "top",
+        isClosable: true,
+      });
+  };
+
+  const SuccessToast = ({ id, title }) => {
+    !toast.isActive(id) &&
+      toast({
+        id,
+        title: title,
+        containerStyle: {
+          marginTop: "80px",
+        },
+        status: "success",
+        position: "top",
+        duration: 1500,
+        isClosable: true,
+      });
+  };
+
   const handleAddToCart = (e) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    const maxLength = cartItems.length === 20;
+    if (localStorage.getItem("access_token") === null) {
+      const id = "login-required";
+      ErrorToast({
+        id,
+        title: "Please login first!!",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    const maxLength = count === 20;
     if (maxLength) {
       const id = "max-order";
-      !toast.isActive(id) &&
-        toast({
-          id,
-          title: "Maximum order is 20 items. Please adjust your order.",
-          containerStyle: {
-            marginTop: "80px",
-            fontSize: "12px",
-          },
-          status: "error",
-          position: "top",
-          isClosable: true,
-        });
+      ErrorToast({
+        id,
+        title: "Maximum order is 20 items. Please adjust your order.",
+      });
     } else {
       getNestedMenuById(_id, (res) => {
         const data = res.product[0];
@@ -63,40 +103,22 @@ const DetailProduct = ({
           quantity: 1,
         };
 
+        // Hit Endpoint api/v1/order
         AddToCart(dataProduct, (status, res) => {
           if (status === true) {
             setIsLoading(false);
-            console.log(res);
-            cart(dataProduct);
-
+            setClick(true);
             const id = "success-order";
-            !toast.isActive(id) &&
-              toast({
-                id,
-                title: res.data.message,
-                containerStyle: {
-                  marginTop: "80px",
-                },
-                status: "success",
-                position: "top",
-                duration: 1500,
-                isClosable: true,
-              });
+            SuccessToast({
+              id,
+              title: res.data.message,
+            });
           } else {
-            console.log(res);
             const id = "error-fetching";
-            !toast.isActive(id) &&
-              toast({
-                id,
-                title: res.data.message,
-                containerStyle: {
-                  marginTop: "80px",
-                },
-                status: "error",
-                position: "top",
-                duration: 1500,
-                isClosable: true,
-              });
+            ErrorToast({
+              id,
+              title: res.data.message,
+            });
           }
         });
       });

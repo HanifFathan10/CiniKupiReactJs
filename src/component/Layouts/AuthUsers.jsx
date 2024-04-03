@@ -50,7 +50,7 @@ const AuthUsers = ({ children, type }) => {
               height={300}
               className="md:w-96"
               alt="Sample image"
-              fetchpriority="high"
+              fetchPriority="high"
             />
           ) : (
             <img
@@ -59,7 +59,7 @@ const AuthUsers = ({ children, type }) => {
               height={280}
               className="md:w-96"
               alt="Sample image"
-              fetchpriority="high"
+              fetchPriority="high"
             />
           )}
         </div>

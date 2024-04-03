@@ -1,15 +1,14 @@
 import React from "react";
 import Footer from "../../component/Elements/Footer/Footer";
-import { addToCart } from "../../Store/AddToCart";
 import { useShallow } from "zustand/react/shallow";
 import { HeadMetaData } from "../../component/Elements/HeadMetaData";
 import ListOrder from "../../component/Fragment/ListOrder";
 import NavCart from "../../component/Elements/CartOrder/NavCart";
 import FormCheckout from "../../component/Fragment/FormCheckout";
+import { totalItems } from "../../Store/TotalItems";
 
 const CartProduct = () => {
-  const cartItems = addToCart(useShallow((state) => state.cartItems));
-  const count = cartItems.length;
+  const count = totalItems(useShallow((state) => state.count));
 
   return (
     <>
@@ -26,7 +25,7 @@ const CartProduct = () => {
           </div>
         </div>
         <div>
-          <ListOrder count={count} />
+          <ListOrder />
           <FormCheckout />
           <Footer />
         </div>

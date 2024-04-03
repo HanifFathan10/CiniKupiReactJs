@@ -1,37 +1,62 @@
-import React from "react";
-import { addToCart } from "../../../Store/AddToCart";
+import React, { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { AddToCart, RemoveFromCart } from "../../../services/Order.service";
+import { totalItems } from "../../../Store/TotalItems";
 import { useToast } from "@chakra-ui/react";
+import { rupiah } from "../../../Hooks/useRupiah";
 
-const Cart = ({ product, qty, removeById }) => {
-  const [removeFromCart, updateQty, cartItems] = addToCart(
-    useShallow((state) => [
-      state.removeFromCart,
-      state.addToCart,
-      state.cartItems,
-    ]),
+const Cart = ({ product, data, removeById }) => {
+  const [click, setClick] = useState(false);
+  const { useCount } = totalItems(
+    useShallow((state) => ({
+      useCount: state.useCount,
+    })),
   );
+
+  useEffect(() => {
+    if (click === true) {
+      useCount();
+    }
+  }, [click]);
+
   const toast = useToast();
+  const SuccessToast = ({ id, title }) => {
+    !toast.isActive(id) &&
+      toast({
+        id,
+        title: title,
+        containerStyle: {
+          marginTop: "80px",
+        },
+        status: "success",
+        position: "top",
+        duration: 1500,
+        isClosable: true,
+      });
+  };
 
   const handleAddToCart = () => {
-    const isEveryItemQuantityEight = cartItems.every(
-      (item) => item.quantity === 8,
-    );
-    const id = "max-order";
-    isEveryItemQuantityEight
-      ? !toast.isActive(id) &&
-        toast({
+    AddToCart(data, (status, res) => {
+      if (status === true) {
+        setClick(true);
+        const id = "add-to-cart";
+        SuccessToast({
           id,
-          title: "Maximum order is 8 items. Please adjust your order.",
-          containerStyle: {
-            marginTop: "80px",
-            fontSize: "12px",
-          },
-          status: "error",
-          position: "top",
-          isClosable: true,
-        })
-      : updateQty(qty);
+          title: res.data.message,
+        });
+      }
+    });
+  };
+
+  const removeItem = () => {
+    const _id = { _id: removeById };
+    RemoveFromCart(_id, (status, res) => {
+      status === true && useCount();
+    });
+  };
+
+  const totalPrice = () => {
+    return rupiah(product.price * product.quantity);
   };
   return (
     <section className="flex w-full justify-center px-4 py-2">
@@ -43,12 +68,11 @@ const Cart = ({ product, qty, removeById }) => {
           <h1 className="text-base font-bold uppercase leading-normal sm:text-xl lg:text-2xl">
             {product.name}
           </h1>
-          <div className="full mb-1 flex w-fit gap-1 rounded text-sm text-[#cba258] md:text-lg">
-            <h1>200</h1>
-            <h1>Items</h1>
-          </div>
+          <h3 className="full mb-1 flex w-fit gap-1 rounded text-sm text-neutral-700 md:text-lg">
+            {totalPrice()}
+          </h3>
           <div className="item-center flex gap-1 text-[#ffffff]">
-            <button onClick={() => removeFromCart(removeById)}>
+            <button onClick={removeItem}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="#1f3933"
@@ -65,7 +89,7 @@ const Cart = ({ product, qty, removeById }) => {
               </svg>
             </button>
             <h2 className="leading-10 text-dark">{product.quantity}</h2>
-            <button onClick={() => handleAddToCart()}>
+            <button onClick={handleAddToCart}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="#1f3933"

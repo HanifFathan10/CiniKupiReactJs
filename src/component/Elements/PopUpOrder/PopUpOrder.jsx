@@ -1,13 +1,17 @@
-import React from "react";
-import { addToCart } from "../../../Store/AddToCart";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useShallow } from "zustand/react/shallow";
+import { totalItems } from "../../../Store/TotalItems";
 
 const PopUpOrder = () => {
-  const cartItems = addToCart(
-    useShallow((state) => Object.keys(state.cartItems)),
+  let { count, useCount } = totalItems(
+    useShallow((state) => ({ count: state.count, useCount: state.useCount })),
   );
-  const count = cartItems.length;
+  useEffect(() => {
+    useCount();
+    count.length;
+  }, [useCount]);
+
   return (
     <div className="fixed bottom-0 right-0 z-[9999] h-[4.6rem] w-full bg-transparent">
       <div className="container relative right-4 top-4 flex items-center justify-end">

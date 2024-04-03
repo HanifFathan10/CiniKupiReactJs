@@ -1,20 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { getImageMenu } from "../../../../services/Menu.service";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Cart } from "../Cart";
 import CartSkeleton from "../CartSkeleton";
 import { Skeleton } from "@chakra-ui/react";
 
-const MenuProducts = ({ title, id }) => {
-  const [image, setImage] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    getImageMenu((data) => {
-      setImage(data);
-      setIsLoading(false);
-    });
-  }, []);
+const MenuProducts = ({ title, id, image, isLoading }) => {
   return (
     <section id={id} className="mt-6">
       <h2 className="mb-5 text-xl font-semibold">

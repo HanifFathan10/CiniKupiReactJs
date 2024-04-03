@@ -128,7 +128,7 @@ const FormRegister = () => {
       <Button
         type="submit"
         background="w-full bg-slate-700 inline-block rounded px-7 pb-2.5 pt-3 text-sm font-semibold uppercase text-white hover:bg-slate-900 transition duration-300 hover:scale-105"
-        text={isRegister ? "Loading..." : "Register"}
+        text={isRegister ? "Register..." : "Register"}
         disabled={isRegister}
       />
     </form>

@@ -1,18 +1,27 @@
-import React from "react";
-import { addToCart } from "../../Store/AddToCart";
-import { useShallow } from "zustand/react/shallow";
+import React, { useState, useEffect } from "react";
 import Cart from "../Elements/CartOrder/Cart";
 import NoProductUI from "../Elements/CartOrder/NoProductUI";
+import { useShallow } from "zustand/react/shallow";
+import { totalItems } from "../../Store/TotalItems";
 
-const ListOrder = ({ count }) => {
-  const cartItems = addToCart(useShallow((state) => state.cartItems));
+const ListOrder = () => {
+  const [count, items, useCount] = totalItems(
+    useShallow((state) => [state.count, state.items, state.useCount]),
+  );
+
+  useEffect(() => {
+    // Memanggil useCount ketika ada perubahan pada properti items
+    useCount();
+  }, []); // Gunakan items sebagai dependency
+
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-center bg-[#eaeaea]">
-      {count >= 1 ? (
+      {count > 0 ? (
         <>
-          {Array.isArray(cartItems) &&
-            cartItems.map((cart, index) => {
+          {Array.isArray(items) &&
+            items.map((cart, index) => {
               const dataProduct = {
+                _id: cart._id,
                 id: cart.id,
                 name: cart.name,
                 price: cart.price,
@@ -23,8 +32,8 @@ const ListOrder = ({ count }) => {
                 <Cart
                   key={index}
                   product={cart}
-                  removeById={dataProduct}
-                  qty={dataProduct}
+                  removeById={dataProduct._id}
+                  data={dataProduct}
                 />
               );
             })}

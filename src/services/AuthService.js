@@ -21,6 +21,7 @@ export const Register = (data, callback) => {
       callback(true, res);
     })
     .catch((error) => {
+      console.log(error);
       callback(false, error);
     });
 };
