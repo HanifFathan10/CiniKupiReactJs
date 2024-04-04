@@ -1,19 +1,18 @@
+import { useToast } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const HandleAuthSuccess = () => {
   const navigate = useNavigate();
-  const id = "Login";
+  const toast = useToast();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const accessToken = urlParams.get("accessToken");
-    console.log(accessToken);
+    const id = "Login";
 
-    if (accessToken) {
-      localStorage.setItem("access_token", accessToken);
-      console.log("access token in localstorage: ", accessToken);
-    }
+    localStorage.setItem("access_token", accessToken);
+    navigate("/");
 
     if (!toast.isActive(id)) {
       toast({
@@ -29,14 +28,12 @@ const HandleAuthSuccess = () => {
         isClosable: true,
       });
     }
-
-    navigate("/");
   }, [navigate]);
 
   return (
-    <div>
-      <p>Redirecting...</p>
-    </div>
+    <>
+      <p>Redirecting.....</p>
+    </>
   );
 };
 

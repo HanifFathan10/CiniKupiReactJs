@@ -4,17 +4,22 @@ import { Alert, AlertIcon, useToast } from "@chakra-ui/react";
 import { Payment } from "../../Store/Payment";
 import { useShallow } from "zustand/react/shallow";
 import { addToCart } from "../../Store/AddToCart";
-import { PaymentRequest } from "../../services/PaymentService";
+import {
+  HistoryTransaction,
+  PaymentRequest,
+} from "../../services/PaymentService";
 import { useNavigate } from "react-router-dom";
+import { totalItems } from "../../Store/TotalItems";
 
 const FormCheckout = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
   const [pay, setPay] = useState({});
+  const [history, setHistory] = useState({});
   const toast = useToast();
   const resultPayment = Payment(useShallow((state) => state.resultPayment));
-  const cartItems = addToCart(useShallow((state) => state.cartItems));
+  const product = totalItems(useShallow((state) => state.items));
   const accessToken = localStorage.getItem("access_token");
   const Navigate = useNavigate();
 
@@ -22,12 +27,7 @@ const FormCheckout = () => {
     const data = {
       customer_name: name,
       customer_email: email,
-      products: cartItems.map((item) => ({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity,
-      })),
+      products: product,
     };
 
     try {
@@ -35,6 +35,10 @@ const FormCheckout = () => {
         toast({
           title: "Please input your name and email",
           status: "warning",
+          containerStyle: {
+            marginTop: "80px",
+            fontSize: "12px",
+          },
           variant: "top-accent",
           isClosable: true,
           position: "top",
@@ -43,7 +47,15 @@ const FormCheckout = () => {
         PaymentRequest(data, (status, res) => {
           if (status) {
             setToken(res.data.token);
-            setPay(res.data.customer_details);
+            const data = {
+              orders: {
+                name: res.data.data.customer_details.name,
+                email: res.data.data.customer_details.email,
+                order_id: res.data.data.transaction_details.order_id,
+                gross_amount: res.data.data.transaction_details.gross_amount,
+              },
+              item_details: res.data.data.item_details,
+            };
           }
         });
       }
@@ -60,13 +72,13 @@ const FormCheckout = () => {
           setEmail("");
           setName("");
           setToken("");
-          resultPayment(pay);
-          localStorage.removeItem("ADD_TO_CART");
         },
         onPending: (result) => {
+          console.log(result);
           window.location.href = "/menu/cart";
         },
-        onError: (result) => {
+        onError: (error) => {
+          console.log(error);
           window.location.href = "/menu/cart";
         },
         onClose: () => {

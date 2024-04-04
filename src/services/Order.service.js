@@ -47,3 +47,19 @@ export const RemoveFromCart = async (_id, callback) => {
       callback(false, error);
     });
 };
+
+export const ClearCart = async (callback) => {
+  await axios
+    .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/clear-cart`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    })
+    .then((res) => {
+      callback(true, res);
+    })
+    .catch((error) => {
+      callback(false, error);
+    });
+};

@@ -17,9 +17,7 @@ export const CartStatus = () => {
               </div>
               <div>
                 <h1 className="font-bold">Customer Name</h1>
-                <h3 className="font-semibold">
-                  {trx.customer_details.first_name}
-                </h3>
+                <h3 className="font-semibold">{trx.customer_details.name}</h3>
               </div>
               <div>
                 <h1 className="font-bold">Customer Email</h1>
