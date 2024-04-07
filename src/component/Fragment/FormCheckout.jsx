@@ -1,95 +1,151 @@
 import React, { useEffect, useState } from "react";
 import InputForm from "../Elements/InputForm";
-import { Alert, AlertIcon, useToast } from "@chakra-ui/react";
-import { Payment } from "../../Store/Payment";
+import { Spinner, useToast } from "@chakra-ui/react";
 import { useShallow } from "zustand/react/shallow";
-import { addToCart } from "../../Store/AddToCart";
 import {
   HistoryTransaction,
   PaymentRequest,
 } from "../../services/PaymentService";
 import { useNavigate } from "react-router-dom";
 import { totalItems } from "../../Store/TotalItems";
+import { ClearCart } from "../../services/Order.service";
 
 const FormCheckout = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
-  const [pay, setPay] = useState({});
   const [history, setHistory] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
-  const resultPayment = Payment(useShallow((state) => state.resultPayment));
   const product = totalItems(useShallow((state) => state.items));
   const accessToken = localStorage.getItem("access_token");
   const Navigate = useNavigate();
 
   const handleCheckout = () => {
+    setIsLoading(true);
+
+    const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    const matchResult = email.match(gmailPattern);
+    let validEmail = null;
+    if (matchResult) {
+      validEmail = matchResult[0];
+    }
+
     const data = {
       customer_name: name,
-      customer_email: email,
+      customer_email: validEmail,
       products: product,
     };
 
+    const CustomToast = ({ title, status }) => {
+      setIsLoading(false);
+      toast({
+        title: title,
+        containerStyle: {
+          marginTop: "80px",
+          fontSize: "12px",
+        },
+        status: status,
+        variant: "top-accent",
+        position: "top",
+        isClosable: true,
+      });
+    };
+
+    if (data.products.length === 0)
+      return CustomToast({
+        title: "Please order at least 1 item",
+        status: "warning",
+      });
+
+    if (!validEmail)
+      return CustomToast({
+        title: "Please enter a valid email!!",
+        status: "warning",
+      });
+
+    if (!data.customer_email || !data.customer_name)
+      return CustomToast({
+        title: "Please enter your name and email!!",
+        status: "warning",
+      });
+
     try {
-      if (data.customer_name === "" || data.customer_email === "") {
-        toast({
-          title: "Please input your name and email",
-          status: "warning",
-          containerStyle: {
-            marginTop: "80px",
-            fontSize: "12px",
-          },
-          variant: "top-accent",
-          isClosable: true,
-          position: "top",
-        });
-      } else {
-        PaymentRequest(data, (status, res) => {
-          if (status) {
-            setToken(res.data.token);
-            const data = {
-              orders: {
-                name: res.data.data.customer_details.name,
-                email: res.data.data.customer_details.email,
-                order_id: res.data.data.transaction_details.order_id,
-                gross_amount: res.data.data.transaction_details.gross_amount,
-              },
-              item_details: res.data.data.item_details,
-            };
-          }
-        });
-      }
+      PaymentRequest(data, (status, res) => {
+        if (status) {
+          setToken(res.data.token);
+          const data = {
+            orders: {
+              name: res.data.data.customer_details.name,
+              email: res.data.data.customer_details.email,
+              order_id: res.data.data.transaction_details.order_id,
+              gross_amount: res.data.data.transaction_details.gross_amount,
+            },
+            item_details: res.data.data.item_details,
+          };
+
+          setHistory(data);
+        }
+      });
     } catch (error) {
-      console.error("Error during checkout:", error);
+      setIsLoading(false);
+      toast({
+        title: "Error during checkout",
+        status: "error",
+        containerStyle: {
+          marginTop: "80px",
+          fontSize: "12px",
+        },
+        variant: "top-accent",
+        isClosable: true,
+        position: "top",
+      });
     }
   };
 
   useEffect(() => {
-    if (token) {
-      window.snap.pay(token, {
-        onSuccess: (result) => {
-          window.location.href = "/order-status/";
-          setEmail("");
-          setName("");
-          setToken("");
-        },
-        onPending: (result) => {
-          console.log(result);
-          window.location.href = "/menu/cart";
-        },
-        onError: (error) => {
-          console.log(error);
-          window.location.href = "/menu/cart";
-        },
-        onClose: () => {
-          <Alert status="warning" variant="solid">
-            <AlertIcon />
-            Anda belum menyelesaikan pembayaran!!
-          </Alert>;
-        },
-      });
-    }
-  }, [token]);
+    const makePayment = async () => {
+      if (token) {
+        window.snap.pay(token, {
+          onSuccess: async () => {
+            try {
+              setIsLoading(true);
+              await HistoryTransaction(history, async () => {
+                await ClearCart((status) => {
+                  if (status === true) {
+                    setEmail("");
+                    setName("");
+                    setIsLoading(false);
+                    setTimeout(() => {
+                      Navigate("/history-transaction");
+                    }, 1500);
+                  }
+                });
+              });
+            } catch (error) {
+              console.log("🚀 ~ onSuccess: ~ error:", error);
+            }
+          },
+          onPending: () => {
+            setIsLoading(true);
+          },
+          onError: () => {
+            setIsLoading(false);
+          },
+          onClose: () => {
+            setIsLoading(false);
+          },
+        });
+      }
+    };
+
+    makePayment();
+
+    // Bersihkan efek jika diperlukan
+    return () => {
+      // Lakukan pembersihan jika diperlukan
+    };
+  }, [token, HistoryTransaction, ClearCart]);
 
   useEffect(() => {
     if (!accessToken) return Navigate("/login");
@@ -141,10 +197,21 @@ const FormCheckout = () => {
 
       <button
         onClick={handleCheckout}
-        className="rounded-full bg-secondary px-6 py-4 font-semibold text-primary ring-2 ring-primary transition-all duration-300 hover:bg-light"
+        disabled={isLoading}
+        className="flex gap-3 rounded-full bg-secondary px-6 py-4 font-semibold text-primary ring-2 ring-primary transition-all duration-300 hover:bg-light disabled:bg-neutral-500 disabled:text-secondary disabled:ring-0 disabled:hover:bg-neutral-500 disabled:hover:text-white disabled:hover:ring-0"
       >
         Checkout
+        {isLoading && <Spinner color="white" />}
       </button>
+
+      <p className="mt-2 cursor-pointer text-xs text-white hover:text-secondary">
+        <a
+          href="https://simulator.sandbox.midtrans.com/bca/va/index"
+          target="_blank"
+        >
+          *for testing, you can pay via this link
+        </a>
+      </p>
     </div>
   );
 };

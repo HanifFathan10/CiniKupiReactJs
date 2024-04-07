@@ -40,7 +40,7 @@ const LandingFirst = ({ title }) => {
       className="flex min-h-screen items-center justify-center bg-[#212121] shadow-lg"
       id="menu"
     >
-      <div className="mb-24 w-full max-w-sm px-4 pt-16 md:max-w-lg md:pt-20">
+      <div className="mb-24 flex w-full flex-col items-center px-4 pt-16 md:max-w-lg md:pt-20">
         <h1 className="mb-4 text-center text-3xl font-semibold uppercase md:text-4xl">
           {title}
         </h1>
@@ -64,7 +64,7 @@ const LandingFirst = ({ title }) => {
             Dessert
           </TabButton>
         </div>
-        <div className="flex flex-row">
+        <div className="flex flex-row items-center sm:max-w-md md:w-full">
           {TAB_LIST.find((t) => t.id === tab)?.content}
         </div>
       </div>

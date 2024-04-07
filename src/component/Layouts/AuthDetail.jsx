@@ -8,11 +8,7 @@ const AuthDetail = ({ children }) => {
   useScrollTop();
   return (
     <div className="w-full bg-primary">
-      <NavigationBar
-        classname={"text-[#ffffff]"}
-        color={"#ffffff"}
-        background={"bg-light"}
-      />
+      <NavigationBar />
       {children}
       <Footer />
       <PopUpOrder />

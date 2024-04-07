@@ -19,7 +19,12 @@ const ContactForm = () => {
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d247.4974205785314!2d107.6403575630262!3d-7.014136666683499!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sid!2sid!4v1693187020132!5m2!1sid!2sid"
               className="p-1 md:h-full md:w-full"
-            />
+              allowFullScreen
+              loading="lazy"
+              title="CiniKupi"
+              style={{ border: 0 }}
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
           <div className="mt-5 flex flex-col">
             <FooterList title="Information" id="InformationList" />
@@ -31,7 +36,7 @@ const ContactForm = () => {
       <div className="bg-[#212121] p-5 text-center text-[10px] text-[#ffffff] md:text-[12px]">
         © 2024{" "}
         <span className="italic">
-          Cini<span className="text-teal-700">Kupi</span>
+          Cini<span className="text-neutral-400">Kupi</span>
         </span>{" "}
         Coffe Company. All rights reserved
       </div>

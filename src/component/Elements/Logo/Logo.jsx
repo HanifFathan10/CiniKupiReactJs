@@ -1,8 +1,8 @@
-export const Logo = ({ color = "#222222" }) => {
+export const Logo = () => {
   return (
     <a href="/" className="flex items-center gap-2 text-xl font-bold">
       <svg
-        fill={color}
+        fill="#ffffff"
         height="30px"
         width="30px"
         version="1.1"

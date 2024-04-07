@@ -9,11 +9,7 @@ const AuthMenu = ({ children, title }) => {
   useScrollTop();
   return (
     <div className="min-h-screen w-full text-white">
-      <NavigationBar
-        classname={"text-dark"}
-        color={"text-dark"}
-        background={"bg-dark"}
-      />
+      <NavigationBar />
       <div className="item-center flex min-h-screen w-full justify-center border border-x-4 bg-[#ffffff]">
         <div className="container mt-24 flex text-dark">
           <nav className="mx-16 hidden lg:block">

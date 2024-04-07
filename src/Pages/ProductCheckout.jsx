@@ -43,7 +43,7 @@ const ProductCheckout = () => {
                 price={images.price}
                 sugar={images.sugar}
                 key={images.id}
-              ></DetailProduct>
+              />
               <div className="-mb-10 ml-4 mt-20 md:ml-10">
                 <h1 className="w-fit border-b-4 border-green text-lg font-bold text-light">
                   Recommended Product

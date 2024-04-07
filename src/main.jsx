@@ -93,7 +93,7 @@ const router = createBrowserRouter([
     element: <HandleAuthSuccess />,
   },
   {
-    path: "/order-status",
+    path: "/history-transaction",
     element: <OrderStatus />,
   },
 ]);

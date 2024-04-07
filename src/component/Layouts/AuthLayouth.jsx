@@ -7,7 +7,7 @@ const AuthLayouth = ({ children }) => {
   useScrollTop();
   return (
     <div className="min-h-screen w-full text-white">
-      <NavigationBar color={"#ffffff"} background={"bg-light"} />
+      <NavigationBar />
       {children}
       <Footer />
     </div>

@@ -36,6 +36,7 @@ const PromoLeft = ({
             width="100%"
             height="100%"
             className="block"
+            loading="lazy"
           />
         </div>
       </section>

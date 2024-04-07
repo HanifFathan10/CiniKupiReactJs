@@ -18,6 +18,7 @@ const ListImages = ({ type }) => {
               src="images/1.jpg"
               alt="coffe1"
               className="h-full w-full cursor-pointer rounded-lg grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
+              loading="lazy"
             />
           ) : (
             ""
@@ -37,6 +38,7 @@ const ListImages = ({ type }) => {
                   key={image._id}
                   src={image.image}
                   alt={image.name}
+                  loading="lazy"
                   className="h-full w-full cursor-pointer rounded-lg grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
                 />
               );
@@ -46,6 +48,7 @@ const ListImages = ({ type }) => {
                   key={image._id}
                   src={image.image}
                   alt={image.name}
+                  loading="lazy"
                   className="h-full w-full cursor-pointer rounded-lg grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
                 />
               );
@@ -55,6 +58,7 @@ const ListImages = ({ type }) => {
                   key={image._id}
                   src={image.image}
                   alt={image.name}
+                  loading="lazy"
                   className="h-full w-full cursor-pointer rounded-lg grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
                 />
               );
@@ -64,6 +68,7 @@ const ListImages = ({ type }) => {
                   key={image._id}
                   src={image.image}
                   alt={image.name}
+                  loading="lazy"
                   className="h-full w-full cursor-pointer rounded-lg grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
                 />
               );
