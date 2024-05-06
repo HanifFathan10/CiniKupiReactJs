@@ -1,18 +1,19 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { getImageMenu } from "../../../../services/Menu.service";
 import { Link } from "react-router-dom";
 import { Cart } from "../Cart";
 import CartSkeleton from "../CartSkeleton";
+import { getAllMenuProduct } from "../../../../services/product.service";
 
 const ProductItems = ({ productId }) => {
-  const [image, setImage] = useState([]);
+  const [menus, setMenus] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const ProductId = productId;
 
   useEffect(() => {
-    getImageMenu((data) => {
-      setImage(data);
-      setIsLoading(false);
+    getAllMenuProduct((status, data) => {
+      if (status === true) {
+        setMenus(data);
+        setIsLoading(false);
+      }
     });
   }, []);
   return (
@@ -20,19 +21,17 @@ const ProductItems = ({ productId }) => {
       {isLoading ? (
         <CartSkeleton />
       ) : (
-        <>
-          {image
-            .filter((img) => img._id === ProductId)
-            .map((img, index) => (
-              <Fragment key={index}>
-                {img.product.map((result, index) => (
-                  <Link key={index} to={`/product/${result._id}`}>
-                    <Cart image={result.image} title={result.name} />
-                  </Link>
-                ))}
-              </Fragment>
-            ))}
-        </>
+        <React.Fragment>
+          {menus
+            .filter((menu) => menu.id_menu === productId)
+            .map((menu, index) => {
+              return (
+                <Link key={index} to={`/product/${menu._id}`}>
+                  <Cart image={menu.image} title={menu.name} />
+                </Link>
+              );
+            })}
+        </React.Fragment>
       )}
     </div>
   );

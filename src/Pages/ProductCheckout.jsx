@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getNestedMenuById } from "../services/Menu.service";
 import AuthDetail from "../component/Layouts/AuthDetail";
 import ProductCOskeleton from "../component/Elements/CartOrder/ProductCOskeleton";
 import ProdakSlide from "../component/Elements/ProductSlide/ProdakSlide";
 import { HeadMetaData } from "../component/Elements/HeadMetaData";
 import HeaderBack from "../component/Elements/HeaderBack";
 import DetailProduct from "../component/Fragment/DetailProduct";
+import { getMenuProductById } from "../services/product.service";
 
 const ProductCheckout = () => {
   const { _id } = useParams();
@@ -14,9 +14,11 @@ const ProductCheckout = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getNestedMenuById(_id, (data) => {
-      setImages(data.product[0]);
-      setIsLoading(false);
+    getMenuProductById(_id, (status, data) => {
+      if (status === true) {
+        setImages(data.data);
+        setIsLoading(false);
+      }
     });
   }, [_id]);
 

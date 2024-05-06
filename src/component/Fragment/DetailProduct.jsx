@@ -13,10 +13,10 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { SingleStar } from "../Elements/Icon/SingleStar";
-import { getNestedMenuById } from "../../services/Menu.service";
 import { AddToCart } from "../../services/Order.service";
 import { totalItems } from "../../Store/TotalItems";
 import { useShallow } from "zustand/react/shallow";
+import { getMenuProductById } from "../../services/product.service";
 
 const DetailProduct = ({
   _id,
@@ -93,13 +93,12 @@ const DetailProduct = ({
         title: "Maximum order is 20 items. Please adjust your order.",
       });
     } else {
-      getNestedMenuById(_id, (res) => {
-        const data = res.product[0];
+      getMenuProductById(_id, (status, res) => {
         const dataProduct = {
-          id: data._id,
-          name: data.name,
-          price: data.price,
-          image: data.image,
+          id: res.data._id,
+          name: res.data.name,
+          price: res.data.price,
+          image: res.data.image,
           quantity: 1,
         };
 
@@ -158,7 +157,7 @@ const DetailProduct = ({
             {!fat && !calories && !sugar ? (
               ""
             ) : (
-              <>
+              <React.Fragment>
                 <h3 className="text-xs font-semibold">
                   {calories} Calories, {sugar}g sugar, {fat}g fat
                 </h3>
@@ -181,7 +180,7 @@ const DetailProduct = ({
                     <PopoverCloseButton />
                   </PopoverContent>
                 </Popover>
-              </>
+              </React.Fragment>
             )}
           </div>
           <div className="flex w-full items-center justify-end">
@@ -193,10 +192,10 @@ const DetailProduct = ({
               {isLoading ? (
                 "Loading..."
               ) : (
-                <>
+                <React.Fragment>
                   <Plus />
                   <h1>Add To Cart</h1>
-                </>
+                </React.Fragment>
               )}
             </button>
           </div>

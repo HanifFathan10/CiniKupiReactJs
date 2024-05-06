@@ -11,10 +11,7 @@ const Oatmeal = () => {
         metaDescription="Oatmeal & Yoghurt Page by CiniKupi"
       />
       <AuthMenu title="Oatmeal & Yoghurt">
-        <FragmentMenu
-          id="oatmeal-yoghurt"
-          productId="6541fa341400956ab5b78bbe"
-        />
+        <FragmentMenu productId="66365e077c2424bf5153b3b4" />
       </AuthMenu>
     </>
   );

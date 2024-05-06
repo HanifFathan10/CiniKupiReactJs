@@ -8,10 +8,11 @@ const ListImages = ({ type }) => {
     getImage((data) => {
       setGambar(data);
     });
-  }, []);
+  }, [type]);
+
   return (
     <div className="flex justify-center">
-      <div className="flex gap-3">
+      <div className="grid gap-3 sm:flex">
         <div className="grid grid-cols-1">
           {type === "default" ? (
             <img

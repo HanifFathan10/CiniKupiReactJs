@@ -11,7 +11,7 @@ const Snack = () => {
         metaDescription="Snack & Sweet Page by CiniKupi"
       />
       <AuthMenu title="Snack & Sweet">
-        <FragmentMenu id="snack-sweet" productId="6541fa671400956ab5b78bc3" />
+        <FragmentMenu productId="66365e157c2424bf5153b3b6" />
       </AuthMenu>
     </>
   );

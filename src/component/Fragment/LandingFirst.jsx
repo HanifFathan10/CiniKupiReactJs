@@ -1,4 +1,4 @@
-import { useState, useTransition } from "react";
+import React, { useState, useTransition } from "react";
 import ListImages from "../Elements/ProductItems/ListImages/ListImages";
 import TabButton from "../Elements/ProductItems/TabButton/TabButton";
 
@@ -30,6 +30,7 @@ const LandingFirst = ({ title }) => {
   ];
 
   const HandleTabChange = (id) => {
+    if (isPending) return;
     startTransition(() => {
       setTab(id);
     });

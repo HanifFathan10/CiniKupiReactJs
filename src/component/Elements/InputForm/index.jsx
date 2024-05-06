@@ -12,6 +12,8 @@ const InputForm = ({
   onChange,
   value,
   className,
+  defaultValue,
+  disabled,
 }) => {
   return (
     <div className={`mb-4 flex flex-col ${className}`}>
@@ -24,6 +26,8 @@ const InputForm = ({
         ref={ref}
         onChange={onChange}
         value={value}
+        defaultValue={defaultValue}
+        disabled={disabled}
       ></Input>
     </div>
   );

@@ -8,7 +8,7 @@ const LunchPage = () => {
     <>
       <HeadMetaData title="Lunch" metaDescription="Lunch Page by CiniKupi" />
       <AuthMenu title="Lunch">
-        <FragmentMenu id="lunch" productId="6541fa151400956ab5b78bb8" />
+        <FragmentMenu productId="66365df67c2424bf5153b3b2" />
       </AuthMenu>
     </>
   );

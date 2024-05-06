@@ -8,7 +8,7 @@ const BakeryPage = () => {
     <>
       <HeadMetaData title="Bakery" metaDescription="Bakery Menu by CiniKupi" />
       <AuthMenu title="Bakery">
-        <FragmentMenu id="bakery" productId="6541f97d1400956ab5b78b9c" />
+        <FragmentMenu productId="66365de67c2424bf5153b3b0" />
       </AuthMenu>
     </>
   );

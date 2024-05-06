@@ -2,17 +2,19 @@ import React, { useEffect, useState } from "react";
 import Prodak from "./Prodak";
 import "react-multi-carousel/lib/styles.css";
 import Carousel from "react-multi-carousel";
-import { getImageMenu, reproduce } from "../../../services/Menu.service";
+import { reproduce } from "../../../services/Menu.service";
 import "react-multi-carousel/lib/styles.css";
+import { getAllMenuProduct } from "../../../services/product.service";
 
 const ProdakSlide = () => {
-  const [gambar, setGambar] = useState([]);
+  const [menus, setMenus] = useState([]);
 
   useEffect(() => {
-    getImageMenu((data) => {
-      const product = data.flatMap((item) => item.product);
-      const result = reproduce(product, 6);
-      setGambar(result.data);
+    getAllMenuProduct((status, data) => {
+      if (status === true) {
+        const result = reproduce(data, 6);
+        setMenus(result.data);
+      }
     });
   }, []);
 
@@ -36,7 +38,7 @@ const ProdakSlide = () => {
   return (
     <>
       <Carousel responsive={responsive} className="my-6">
-        {gambar.map((image) => (
+        {menus.map((image) => (
           <Prodak
             key={image._id}
             _id={image._id}

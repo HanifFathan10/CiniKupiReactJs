@@ -11,7 +11,7 @@ const HotDrinkPage = () => {
         metaDescription="Hot Drinks Page by CiniKupi"
       />
       <AuthMenu title="Hot Drinks">
-        <FragmentMenu productId="653f480b84d040c44082060b" />
+        <FragmentMenu productId="66365dbf7c2424bf5153b3ac" />
       </AuthMenu>
     </>
   );

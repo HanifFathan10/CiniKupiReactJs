@@ -14,7 +14,7 @@ export const getImageMenu = async (callback) => {
   await axios
     .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu`)
     .then((res) => {
-      callback(res.data);
+      callback(true, res.data);
     })
     .catch((error) => {
       console.log(error);

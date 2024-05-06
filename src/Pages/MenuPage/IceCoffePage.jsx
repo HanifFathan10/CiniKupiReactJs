@@ -8,7 +8,7 @@ const IceCoffePage = () => {
     <>
       <HeadMetaData title="Ice Coffe" metaDescription="Ice Coffe by CiniKupi" />
       <AuthMenu title="Ice Coffe">
-        <FragmentMenu productId="653f472784d040c4408205fc" />
+        <FragmentMenu productId="66365da47c2424bf5153b3a9" />
       </AuthMenu>
     </>
   );

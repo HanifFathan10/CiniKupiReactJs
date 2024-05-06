@@ -1,4 +1,14 @@
-const Input = ({ placeholder, type, name, id, ref, onChange, value }) => {
+const Input = ({
+  placeholder,
+  type,
+  name,
+  id,
+  ref,
+  onChange,
+  value,
+  disabled,
+  defaultValue,
+}) => {
   return (
     <input
       type={type}
@@ -7,9 +17,11 @@ const Input = ({ placeholder, type, name, id, ref, onChange, value }) => {
       id={id}
       name={name}
       onChange={onChange}
-      className="rounded-md border border-slate-300 bg-transparent p-2 placeholder:text-xs xl:w-72"
+      className="rounded-md border border-slate-300 bg-transparent p-2 placeholder:text-xs disabled:bg-[rgba(0,0,0,0.5)] disabled:text-neutral-600 xl:w-72"
       placeholder={placeholder}
       required
+      defaultValue={defaultValue}
+      disabled={disabled}
     />
   );
 };
