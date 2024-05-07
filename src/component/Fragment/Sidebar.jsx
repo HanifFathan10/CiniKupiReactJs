@@ -63,7 +63,7 @@ const Sidebar = () => {
               <AccordionButton className="flex justify-between">
                 <div className="flex gap-2">
                   <BuildingStorefrontIcon className="h-6 w-6 text-gray-500" />
-                  <h2 className="font-semibold text-white">Products</h2>
+                  <h2 className="font-semibold text-white">Menus</h2>
                 </div>
                 <AccordionIcon />
               </AccordionButton>

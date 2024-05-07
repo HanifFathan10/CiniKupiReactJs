@@ -9,10 +9,15 @@ const Menu = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getImageMenu((data) => {
-      setImage(data);
-      setIsLoading(false);
-    });
+    const fetchData = async () => {
+      await getImageMenu((status, data) => {
+        if (status === true) {
+          setImage(data);
+          setIsLoading(false);
+        }
+      });
+    };
+    fetchData();
   }, []);
   return (
     <>

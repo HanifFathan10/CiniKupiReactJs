@@ -107,7 +107,7 @@ const UserDashboardPage = () => {
           </TableContainer>
         </div>
       </AdminLayouts>
-      {Object.keys(updated).length && (
+      {Object.keys(updated).length ? (
         <ModalInput onClose={() => setUpdated({})}>
           <h1 className="mb-6 font-bold">Edit Product</h1>
           <form onSubmit={handleEditUser}>
@@ -150,8 +150,8 @@ const UserDashboardPage = () => {
             </button>
           </form>
         </ModalInput>
-      )}
-      {Object.keys(deleted).length && (
+      ) : null}
+      {Object.keys(deleted).length ? (
         <ModalInput onClose={() => setDeleted({})}>
           <h1 className="mb-6 font-bold">Delete Product</h1>
           <p>Are you sure you want to delete this product?</p>
@@ -163,7 +163,7 @@ const UserDashboardPage = () => {
             Delete
           </button>
         </ModalInput>
-      )}
+      ) : null}
     </React.Fragment>
   );
 };

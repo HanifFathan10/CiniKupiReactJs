@@ -32,22 +32,33 @@ export const getImageMenuById = (_id, callback) => {
     });
 };
 
-export const getNestedMenuById = (_id, callback) => {
-  axios
-    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/nested/${_id}`)
+export const CreateDataMenu = async (data, callback) => {
+  await axios
+    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu`, data)
     .then((res) => {
-      callback(res.data.data);
+      callback(true, res.data);
     })
     .catch((error) => {
       console.log(error);
     });
 };
 
-export const getImageMenuByNameurl = (nameurl, callback) => {
-  axios
-    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product/${nameurl}`)
+export const EditDataMenu = async (data, callback) => {
+  await axios
+    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/edit`, data)
     .then((res) => {
-      callback(res.data);
+      callback(true, res.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const DeleteDataMenu = async (_id, callback) => {
+  await axios
+    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/delete`, _id)
+    .then((res) => {
+      callback(true, res.data);
     })
     .catch((error) => {
       console.log(error);

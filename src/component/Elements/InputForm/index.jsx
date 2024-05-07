@@ -14,6 +14,7 @@ const InputForm = ({
   className,
   defaultValue,
   disabled,
+  accept,
 }) => {
   return (
     <div className={`mb-4 flex flex-col ${className}`}>
@@ -28,6 +29,7 @@ const InputForm = ({
         value={value}
         defaultValue={defaultValue}
         disabled={disabled}
+        accept={accept}
       ></Input>
     </div>
   );

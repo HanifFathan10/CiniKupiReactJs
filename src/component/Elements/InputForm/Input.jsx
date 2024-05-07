@@ -8,6 +8,7 @@ const Input = ({
   value,
   disabled,
   defaultValue,
+  accept,
 }) => {
   return (
     <input
@@ -22,6 +23,7 @@ const Input = ({
       required
       defaultValue={defaultValue}
       disabled={disabled}
+      accept={accept}
     />
   );
 };

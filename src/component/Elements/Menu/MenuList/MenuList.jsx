@@ -8,10 +8,16 @@ const MenuList = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getImageMenu((data) => {
-      setImage(data);
-      setIsLoading(false);
-    });
+    const fetchData = async () => {
+      await getImageMenu((status, data) => {
+        if (status === true) {
+          setImage(data);
+          setIsLoading(false);
+        }
+      });
+    };
+
+    fetchData();
   }, []);
 
   const CartMenu = ({ title, id }) => {
@@ -55,7 +61,7 @@ const MenuList = () => {
               />
             </>
           ) : (
-            <>
+            <React.Fragment>
               {image.map((img, index) => {
                 if (img.category === "drinks" && id === "drinks") {
                   return (
@@ -95,7 +101,7 @@ const MenuList = () => {
                   );
                 }
               })}
-            </>
+            </React.Fragment>
           )}
         </ul>
       </>

@@ -8,8 +8,6 @@ export const filterIdMenu = (id_menu) => {
       return "Hot Drinks";
     case "66365dd67c2424bf5153b3ae":
       return "Ice Drinks";
-    case "66365da47c2424bf5153b3a9":
-      return "Ice Coffe";
     case "66365de67c2424bf5153b3b0":
       return "Bakery";
     case "66365df67c2424bf5153b3b2":
