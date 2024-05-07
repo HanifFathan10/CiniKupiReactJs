@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getALlDataUsers = async (callback) => {
+export const getAllDataUser = async (callback) => {
   await axios
     .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users`)
     .then((res) => {

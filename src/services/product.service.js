@@ -64,7 +64,7 @@ export const createProductMenu = async (data, callback) => {
 
 export const updateProductMenu = async (data, callback) => {
   await axios
-    .patch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product`, data)
+    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product/edit`, data)
     .then((res) => {
       callback(true, res.data);
     })
@@ -74,9 +74,12 @@ export const updateProductMenu = async (data, callback) => {
     });
 };
 
-export const deleteProductMenu = async (_id, callback) => {
+export const deleteProductMenu = async (data_id, callback) => {
   await axios
-    .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product/${_id}`)
+    .post(
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product/delete`,
+      data_id,
+    )
     .then((res) => {
       callback(true, res.data);
     })

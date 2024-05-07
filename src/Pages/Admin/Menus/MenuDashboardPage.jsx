@@ -143,9 +143,8 @@ const MenuDashboardPage = () => {
                         <img
                           src={menu.image}
                           alt={menu.name}
-                          width={20}
-                          height={20}
-                          className="w-24 bg-cover bg-center object-contain"
+                          width={100}
+                          height={100}
                         />
                       </Td>
                       <Td>{menu.category}</Td>
@@ -203,7 +202,7 @@ const MenuDashboardPage = () => {
                   </option>
                   <option value="drinks">Drinks</option>
                   <option value="foods">Foods</option>
-                  <option value="coffe-beans">Coffe Beans</option>
+                  <option value="coffe beans">Coffe Beans</option>
                 </Select>
               </div>
               <div className="">
@@ -264,7 +263,7 @@ const MenuDashboardPage = () => {
                   </option>
                   <option value="drinks">Drinks</option>
                   <option value="foods">Foods</option>
-                  <option value="coffe-beans">Coffe Beans</option>
+                  <option value="coffe beans">Coffe Beans</option>
                 </Select>
               </div>
               <div className="mb-4">

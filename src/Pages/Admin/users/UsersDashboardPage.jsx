@@ -2,10 +2,8 @@ import React, { useEffect } from "react";
 import { HeadMetaData } from "../../../component/Elements/HeadMetaData";
 import AdminLayouts from "../../../component/Layouts/AdminLayouts";
 import {
-  Button,
   Select,
   Table,
-  TableCaption,
   TableContainer,
   Tbody,
   Td,
@@ -16,7 +14,7 @@ import {
 import {
   DeleteDataUser,
   UpdateDataUser,
-  getALlDataUsers,
+  getAllDataUser,
 } from "../../../services/AuthService";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import InputForm from "../../../component/Elements/InputForm";
@@ -28,12 +26,12 @@ const UserDashboardPage = () => {
   const [deleted, setDeleted] = React.useState({});
 
   useEffect(() => {
-    getALlDataUsers((status, res) => {
+    getAllDataUser((status, res) => {
       if (status === true) {
         setUsers(res.data);
       }
     });
-  }, []);
+  }, [updated, deleted]);
 
   const handleEditUser = async (e) => {
     e.preventDefault();
