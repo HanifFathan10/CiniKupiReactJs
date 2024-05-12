@@ -6,23 +6,22 @@ import { Login } from "../../services/AuthService";
 import { useToast } from "@chakra-ui/react";
 
 const FormLogin = () => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
   const [isLogin, setIsLogin] = useState(false);
   const Navigate = useNavigate();
   const toast = useToast();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setIsLogin(true);
-
-    const data = {
-      email,
-      password,
-    };
 
     try {
-      Login(data, (status, res) => {
+      setIsLogin(true);
+
+      const data = {
+        email: e.target.email.value,
+        password: e.target.password.value,
+      };
+
+      await Login(data, (status, res) => {
         const id = "login";
         if (status === true) {
           localStorage.setItem("access_token", res.data.accessToken);
@@ -42,9 +41,11 @@ const FormLogin = () => {
             });
           }
 
-          setTimeout(() => {
+          if (res.data.role === "admin") {
+            Navigate("/admin");
+          } else {
             Navigate("/");
-          }, 1000);
+          }
 
           setIsLogin(false);
         } else {
@@ -83,7 +84,6 @@ const FormLogin = () => {
     <form onSubmit={handleLogin} className="flex w-full flex-col">
       <InputForm
         htmlfor="email"
-        onChange={(e) => setEmail(e.target.value)}
         placehoder="haniffathan@example.com"
         type="email"
         name="email"
@@ -94,7 +94,6 @@ const FormLogin = () => {
 
       <InputForm
         htmlfor="password"
-        onChange={(e) => setPassword(e.target.value)}
         placehoder="********"
         type="password"
         name="password"

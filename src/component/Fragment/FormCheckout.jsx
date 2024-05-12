@@ -16,66 +16,77 @@ const FormCheckout = () => {
   const [token, setToken] = useState("");
   const [history, setHistory] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [clearCart, setClearCart] = useState(false);
   const toast = useToast();
   const product = totalItems(useShallow((state) => state.items));
   const accessToken = localStorage.getItem("access_token");
   const Navigate = useNavigate();
 
-  const handleCheckout = () => {
-    setIsLoading(true);
-
-    const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-    const matchResult = email.match(gmailPattern);
-    let validEmail = null;
-    if (matchResult) {
-      validEmail = matchResult[0];
+  useEffect(() => {
+    if (clearCart) {
+      ClearCart((status, res) => {
+        if (status === true) {
+          setEmail("");
+          setName("");
+          setIsLoading(false);
+          setTimeout(() => {
+            Navigate("/history-transaction");
+          }, 1500);
+        }
+      });
     }
+  }, [clearCart]);
 
-    const data = {
-      customer_name: name,
-      customer_email: validEmail,
-      products: product,
-    };
-
-    const CustomToast = ({ title, status }) => {
-      setIsLoading(false);
-      toast({
-        title: title,
-        containerStyle: {
-          marginTop: "80px",
-          fontSize: "12px",
-        },
-        status: status,
-        variant: "top-accent",
-        position: "top",
-        isClosable: true,
-      });
-    };
-
-    if (data.products.length === 0)
-      return CustomToast({
-        title: "Please order at least 1 item",
-        status: "warning",
-      });
-
-    if (!validEmail)
-      return CustomToast({
-        title: "Please enter a valid email!!",
-        status: "warning",
-      });
-
-    if (!data.customer_email || !data.customer_name)
-      return CustomToast({
-        title: "Please enter your name and email!!",
-        status: "warning",
-      });
-
+  const handleCheckout = async (e) => {
     try {
-      PaymentRequest(data, (status, res) => {
+      e.preventDefault();
+      setIsLoading(true);
+
+      const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+      const matchResult = email.match(gmailPattern);
+      let validEmail = null;
+      if (matchResult) {
+        validEmail = matchResult[0];
+      }
+
+      const data = {
+        customer_name: name,
+        customer_email: validEmail,
+        products: product,
+      };
+
+      const CustomToast = ({ title, status }) => {
+        setIsLoading(false);
+        toast({
+          title: title,
+          containerStyle: {
+            marginTop: "80px",
+            fontSize: "12px",
+          },
+          status: status,
+          variant: "top-accent",
+          position: "top",
+          isClosable: true,
+        });
+      };
+
+      if (data.products.length === 0)
+        return CustomToast({
+          title: "Please order at least 1 item",
+          status: "warning",
+        });
+
+      if (!validEmail)
+        return CustomToast({
+          title: "Please enter a valid email!!",
+          status: "warning",
+        });
+
+      await PaymentRequest(data, (status, res) => {
         if (status) {
           setToken(res.data.token);
           const data = {
-            orders: {
+            order: {
               name: res.data.data.customer_details.name,
               email: res.data.data.customer_details.email,
               order_id: res.data.data.transaction_details.order_id,
@@ -110,17 +121,10 @@ const FormCheckout = () => {
           onSuccess: async () => {
             try {
               setIsLoading(true);
-              await HistoryTransaction(history, async () => {
-                await ClearCart((status) => {
-                  if (status === true) {
-                    setEmail("");
-                    setName("");
-                    setIsLoading(false);
-                    setTimeout(() => {
-                      Navigate("/history-transaction");
-                    }, 1500);
-                  }
-                });
+              await HistoryTransaction(history, async (status, res) => {
+                if (status === true) {
+                  setClearCart(true);
+                }
               });
             } catch (error) {
               console.log("🚀 ~ onSuccess: ~ error:", error);
@@ -165,9 +169,9 @@ const FormCheckout = () => {
   }, []);
 
   return (
-    <div className="bg-primary px-3 py-6 text-light">
+    <div className="bg-primary px-3 py-6 text-white">
       <h1 className="mb-3 font-bold">CUSTOMER DETAILS</h1>
-      <form action="">
+      <form>
         <InputForm
           onChange={(e) => setName(e.target.value)}
           value={name}
@@ -176,7 +180,7 @@ const FormCheckout = () => {
           type="text"
           name="name"
           id="name"
-          className="max-w-xs"
+          className="md:w-1/2"
         >
           Your Name
         </InputForm>
@@ -189,7 +193,7 @@ const FormCheckout = () => {
           type="email"
           name="email"
           id="email"
-          className="max-w-xs"
+          className="md:w-1/2"
         >
           Your Email
         </InputForm>
@@ -198,7 +202,7 @@ const FormCheckout = () => {
       <button
         onClick={handleCheckout}
         disabled={isLoading}
-        className="flex gap-3 rounded-full bg-secondary px-6 py-4 font-semibold text-primary ring-2 ring-primary transition-all duration-300 hover:bg-light disabled:bg-neutral-500 disabled:text-secondary disabled:ring-0 disabled:hover:bg-neutral-500 disabled:hover:text-white disabled:hover:ring-0"
+        className="hover:bg-light flex gap-3 rounded-full bg-secondary px-6 py-4 font-semibold text-primary ring-2 ring-primary transition-all duration-300 disabled:bg-neutral-500 disabled:text-secondary disabled:ring-0 disabled:hover:bg-neutral-500 disabled:hover:text-white disabled:hover:ring-0"
       >
         Checkout
         {isLoading && <Spinner color="white" />}

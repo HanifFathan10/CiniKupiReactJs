@@ -30,7 +30,7 @@ const InputForm = ({
         defaultValue={defaultValue}
         disabled={disabled}
         accept={accept}
-      ></Input>
+      />
     </div>
   );
 };

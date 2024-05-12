@@ -5,7 +5,7 @@ import HeaderBack from "../component/Elements/HeaderBack";
 
 const OrderStatus = () => {
   return (
-    <>
+    <React.Fragment>
       <HeadMetaData
         title="Order Status"
         metaDescription="Order status by CiniKupi"
@@ -19,7 +19,7 @@ const OrderStatus = () => {
           <CartStatus />
         </main>
       </section>
-    </>
+    </React.Fragment>
   );
 };
 

@@ -10,8 +10,13 @@ export default {
         primary: "#1f3933",
         secondary: "#cba258",
         green: "#00754a",
-        dark: "#212121",
-        light: "#ffffff",
+        dark: "#081225",
+        light: {
+          100: "#ffffff",
+          200: "#F0F3F4",
+          300: "#f1f5f9",
+          400: "#B5C2CA",
+        },
       },
       container: {
         center: true,

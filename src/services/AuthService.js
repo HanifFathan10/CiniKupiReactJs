@@ -26,7 +26,7 @@ export const UpdateDataUser = async (data, callback) => {
 
 export const DeleteDataUser = async (_id, callback) => {
   await axios
-    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users`, { _id })
+    .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/${_id}`)
     .then((res) => {
       callback(true, res.data);
     })
@@ -50,8 +50,8 @@ export const Login = async (data, callback) => {
     });
 };
 
-export const Register = (data, callback) => {
-  axios
+export const Register = async (data, callback) => {
+  await axios
     .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/register`, data)
     .then((res) => {
       callback(true, res);
@@ -62,8 +62,8 @@ export const Register = (data, callback) => {
     });
 };
 
-export const Logout = (callback) => {
-  axios
+export const Logout = async (callback) => {
+  await axios
     .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/logout`, "", {
       withCredentials: true,
     })

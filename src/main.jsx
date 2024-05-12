@@ -25,6 +25,7 @@ import AdminPage from "./Pages/Admin/Admin";
 import UserDashboardPage from "./Pages/Admin/users/UsersDashboardPage";
 import ProductDashboardPage from "./Pages/Admin/Menus/ProductDashboardPage";
 import MenuDashboardPage from "./Pages/Admin/Menus/MenuDashboardPage";
+import TransactionDashboardPage from "./Pages/Admin/transactions/TransactionDashboardPage";
 
 const router = createBrowserRouter([
   {
@@ -115,6 +116,10 @@ const router = createBrowserRouter([
   {
     path: "/admin/menus/menu",
     element: <MenuDashboardPage />,
+  },
+  {
+    path: "/admin/transactions",
+    element: <TransactionDashboardPage />,
   },
 ]);
 

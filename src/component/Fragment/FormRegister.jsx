@@ -6,33 +6,45 @@ import { Register } from "../../services/AuthService";
 import { useToast } from "@chakra-ui/react";
 
 const FormRegister = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [isRegister, setIsRegister] = useState(false);
   const Navigate = useNavigate();
   const toast = useToast();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsRegister(true);
 
-    const data = {
-      username: e.target.username.value,
-      email: e.target.email.value,
-      password: e.target.password.value,
-      confirmPassword: e.target.confirmPassword.value,
-    };
+    try {
+      setIsRegister(true);
 
-    Register(data, (status, res) => {
-      try {
+      const data = {
+        username: e.target.username.value,
+        email: e.target.email.value,
+        password: e.target.password.value,
+        confirmPassword: e.target.confirmPassword.value,
+      };
+
+      if (data.password !== data.confirmPassword) {
+        if (!toast.isActive("error_password")) {
+          // Memeriksa apakah toast sudah aktif
+          toast({
+            id: "error_password",
+            title: "Password tidak cocok",
+            containerStyle: {
+              marginTop: "80px",
+              fontSize: "12px",
+            },
+            status: "error",
+            position: "top",
+            variant: "top-accent",
+            isClosable: true,
+          });
+        }
+      }
+
+      await Register(data, (status, res) => {
         if (status === true) {
           const successMsg = res.data.message; // Pesan sukses dari server
           setIsRegister(false);
-          setTimeout(() => {
-            Navigate("/login");
-          }, 1500);
 
           if (!toast.isActive("register")) {
             // Memeriksa apakah toast sudah aktif
@@ -49,6 +61,8 @@ const FormRegister = () => {
               isClosable: true,
             });
           }
+
+          Navigate("/login");
         } else {
           const errorMsg = res.response.data.message; // Pesan error dari server
           setIsRegister(false);
@@ -69,18 +83,19 @@ const FormRegister = () => {
             });
           }
         }
-      } catch (error) {
-        console.log(error);
-      }
-    });
+      });
+    } catch (error) {
+      setIsRegister(false);
+      console.log(error);
+    } finally {
+      setIsRegister(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <InputForm
         htmlfor="username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
         placehoder="haniffathan10"
         type="text"
         name="username"
@@ -91,8 +106,6 @@ const FormRegister = () => {
 
       <InputForm
         htmlfor="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
         placehoder="haniffathan@example.com"
         type="email"
         name="email"
@@ -103,8 +116,6 @@ const FormRegister = () => {
 
       <InputForm
         htmlfor="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
         placehoder="********"
         type="password"
         name="password"
@@ -115,8 +126,6 @@ const FormRegister = () => {
 
       <InputForm
         htmlfor="confirmPassword"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
         placehoder="********"
         type="password"
         name="confirmPassword"

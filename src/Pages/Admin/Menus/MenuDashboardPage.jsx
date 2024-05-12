@@ -1,17 +1,12 @@
 import React from "react";
 import { HeadMetaData } from "../../../component/Elements/HeadMetaData";
 import AdminLayouts from "../../../component/Layouts/AdminLayouts";
+import { Select } from "@chakra-ui/react";
 import {
-  Select,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+  PencilSquareIcon,
+  TrashIcon,
+  PlusCircleIcon,
+} from "@heroicons/react/24/outline";
 import ModalInput from "../../../component/Elements/InputForm/Modal";
 import InputForm from "../../../component/Elements/InputForm";
 import {
@@ -20,6 +15,7 @@ import {
   EditDataMenu,
   getImageMenu,
 } from "../../../services/Menu.service";
+import Label from "../../../component/Elements/InputForm/Label";
 
 const MenuDashboardPage = () => {
   const [menus, setMenus] = React.useState([]);
@@ -114,80 +110,99 @@ const MenuDashboardPage = () => {
     <React.Fragment>
       <HeadMetaData title="Product Dashboard" description="Product dashboard" />
       <AdminLayouts>
-        <div className="w-full bg-[#f1f5f9] p-5 text-black">
+        <div className="flex flex-col gap-4 overflow-auto rounded-s-xl bg-white p-4">
           <button
-            className="mb-4 h-12 w-32 rounded-md bg-black font-bold text-white"
+            className="w-fit rounded-md bg-dark px-6 py-3 font-bold text-white"
             onClick={() => setModal(true)}
           >
-            Add Menu
+            Add New Menu
           </button>
-          <TableContainer className="rounded-xl bg-white drop-shadow-md">
-            <Table variant="striped" colorScheme="teal">
-              <Thead>
-                <Tr>
-                  <Th>#</Th>
-                  <Th>Name</Th>
-                  <Th>Image</Th>
-                  <Th>Category</Th>
-                  <Th>Name Url</Th>
-                  <Th>Action</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {menus.map((menu, index) => {
-                  return (
-                    <Tr key={index}>
-                      <Td>{index + 1}</Td>
-                      <Td>{menu.name}</Td>
-                      <Td>
-                        <img
-                          src={menu.image}
-                          alt={menu.name}
-                          width={100}
-                          height={100}
-                        />
-                      </Td>
-                      <Td>{menu.category}</Td>
-                      <Td>{menu.nameurl}</Td>
-                      <Td className="flex items-center justify-center gap-3">
-                        <button
-                          className="rounded-md bg-[rgba(0,0,0,0.5)] p-2"
-                          onClick={() => setUpdated(menu)}
-                        >
-                          <PencilSquareIcon className="h-6 w-6 text-black" />
-                        </button>
-                        <button
-                          className="rounded-md bg-[rgba(0,0,0,0.5)] p-2"
-                          onClick={() => setDeleted(menu)}
-                        >
-                          <TrashIcon className="h-6 w-6 text-black" />
-                        </button>
-                      </Td>
-                    </Tr>
-                  );
-                })}
-              </Tbody>
-            </Table>
-          </TableContainer>
+          <table className="min-w-full table-auto rounded-md text-center text-sm font-light">
+            <thead className="border-b border-solid border-dark font-medium">
+              <tr>
+                <th scope="col" className="px-6 py-4">
+                  No
+                </th>
+                <th scope="col" className="px-6 py-4">
+                  Name
+                </th>
+                <th scope="col" className="px-6 py-4">
+                  Image
+                </th>
+                <th scope="col" className="px-6 py-4">
+                  Category
+                </th>
+                <th scope="col" className="px-6 py-4">
+                  Name Url
+                </th>
+                <th scope="col" className="px-6 py-4">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {menus.map((menu, index) => {
+                return (
+                  <tr className="border-b border-neutral-200" key={index}>
+                    <td className="whitespace-nowrap  px-6 py-4 font-medium">
+                      {index + 1}
+                    </td>
+                    <td className="whitespace-nowrap  px-6 py-4">
+                      {menu.name}
+                    </td>
+                    <td className="whitespace-nowrap  px-6 py-4">
+                      <img
+                        src={menu.image}
+                        alt={menu.name}
+                        width={100}
+                        height={100}
+                        className="bg-cover bg-center object-contain"
+                      />
+                    </td>
+                    <td className="whitespace-nowrap  px-6 py-4">
+                      {menu.category}
+                    </td>
+                    <td className="whitespace-nowrap  px-6 py-4">
+                      {menu.nameurl}
+                    </td>
+                    <td className="whitespace-nowrap  px-6 py-4">
+                      <button
+                        className="mx-1 rounded-md bg-[rgba(0,0,0,0.5)] p-2"
+                        onClick={() => setUpdated(menu)}
+                      >
+                        <PencilSquareIcon className="h-6 w-6 text-black" />
+                      </button>
+                      <button
+                        className="mx-1 rounded-md bg-[rgba(0,0,0,0.5)] p-2"
+                        onClick={() => setDeleted(menu)}
+                      >
+                        <TrashIcon className="h-6 w-6 text-black" />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </AdminLayouts>
       {modal === true && (
         <ModalInput onClose={() => setModal(false)}>
-          <h1 className="mb-6 text-2xl font-bold">Create Menu</h1>
+          <h1 className="mb-6 text-xl font-semibold">Create Menu</h1>
           <form onSubmit={handleCreateMenu}>
-            <div className="grid grid-cols-3">
+            <div className="grid gap-x-3 md:grid-cols-2">
               <InputForm
-                htmlfor={"ame"}
-                placehoder={"name"}
-                type={"text"}
-                name={"name"}
-                id={"name"}
+                htmlfor="name"
+                placehoder="Name"
+                type="text"
+                name="name"
+                id="name"
               >
                 Name
               </InputForm>
               <InputForm
                 htmlfor="nameurl"
-                placehoder="nameurl"
+                placehoder="name-url"
                 type="text"
                 name="nameurl"
                 id="nameurl"
@@ -197,15 +212,15 @@ const MenuDashboardPage = () => {
               <div className="mb-4 flex flex-col gap-3">
                 <label htmlFor="category">Category</label>
                 <Select name="category" id="category" required>
-                  <option value="" disabled>
-                    Category
+                  <option disabled selected>
+                    Select Category
                   </option>
                   <option value="drinks">Drinks</option>
                   <option value="foods">Foods</option>
                   <option value="coffe beans">Coffe Beans</option>
                 </Select>
               </div>
-              <div className="">
+              <div>
                 <InputForm
                   htmlfor="image"
                   placehoder="image"
@@ -222,9 +237,10 @@ const MenuDashboardPage = () => {
               </div>
             </div>
             <button
-              className="rounded-md bg-[rgba(0,0,0,0.5)] px-5 py-3 font-bold"
+              className="flex w-fit gap-1 rounded-md bg-green px-6 py-3 font-semibold text-white"
               type="submit"
             >
+              <PlusCircleIcon className="h-6 w-6" />
               Create
             </button>
           </form>
@@ -234,13 +250,13 @@ const MenuDashboardPage = () => {
         <ModalInput onClose={() => setUpdated({})}>
           <h1 className="mb-6 font-bold">Edit Product</h1>
           <form onSubmit={handleEditMenu} encType="multipart/form-data">
-            <div className="grid grid-cols-3">
+            <div className="grid gap-x-3 md:grid-cols-2">
               <InputForm
-                htmlfor={"name"}
-                placehoder={"name"}
-                type={"text"}
-                name={"name"}
-                id={"name"}
+                htmlfor="name"
+                placehoder="Name"
+                type="text"
+                name="name"
+                id="name"
                 defaultValue={updated.name}
               >
                 Name
@@ -255,8 +271,8 @@ const MenuDashboardPage = () => {
               >
                 Name Url
               </InputForm>
-              <div className="mb-4 flex flex-col gap-3">
-                <label htmlFor="category">Category</label>
+              <div className="mb-4 flex flex-col">
+                <Label htmlFor="category">Category</Label>
                 <Select name="category" id="category" required>
                   <option value="" disabled>
                     Category
@@ -266,7 +282,7 @@ const MenuDashboardPage = () => {
                   <option value="coffe beans">Coffe Beans</option>
                 </Select>
               </div>
-              <div className="mb-4">
+              <div>
                 <InputForm
                   htmlfor="image"
                   placehoder="image"
@@ -287,9 +303,10 @@ const MenuDashboardPage = () => {
               </div>
             </div>
             <button
-              className="rounded-md bg-[rgba(0,0,0,0.5)] px-5 py-3 font-bold"
+              className="flex gap-1 rounded-md bg-yellow-400 px-5 py-3 font-bold text-black"
               type="submit"
             >
+              <PencilSquareIcon className="h-6 w-6" />
               Edit
             </button>
           </form>
@@ -297,13 +314,16 @@ const MenuDashboardPage = () => {
       ) : null}
       {Object.keys(deleted).length ? (
         <ModalInput onClose={() => setDeleted({})}>
-          <h1 className="mb-6 font-bold">Delete Product</h1>
-          <p>Are you sure you want to delete this product?</p>
+          <h1 className="mb-6 text-xl font-bold">Delete Product</h1>
+          <p className="mb-6 font-semibold">
+            Are you sure you want to delete this product?
+          </p>
           <button
-            className="rounded-md bg-[rgba(0,0,0,0.5)] px-5 py-3 font-bold"
+            className="flex gap-1 rounded-md bg-red-600 px-5 py-3 font-bold text-white"
             type="submit"
             onClick={() => handleDeleteMenu(deleted._id)}
           >
+            <TrashIcon className="h-6 w-6" />
             Delete
           </button>
         </ModalInput>

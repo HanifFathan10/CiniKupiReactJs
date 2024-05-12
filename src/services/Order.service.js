@@ -48,8 +48,8 @@ export const RemoveFromCart = async (_id, callback) => {
     });
 };
 
-export const ClearCart = async (callback) => {
-  await axios
+export const ClearCart = (callback) => {
+  axios
     .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/clear-cart`, {
       headers: {
         "Content-Type": "application/json",

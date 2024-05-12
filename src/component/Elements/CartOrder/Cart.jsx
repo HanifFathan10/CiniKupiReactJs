@@ -35,8 +35,8 @@ const Cart = ({ product, data, removeById }) => {
       });
   };
 
-  const handleAddToCart = () => {
-    AddToCart(data, (status, res) => {
+  const handleAddToCart = async () => {
+    await AddToCart(data, (status, res) => {
       if (status === true) {
         setClick(true);
         const id = "add-to-cart";
@@ -48,9 +48,9 @@ const Cart = ({ product, data, removeById }) => {
     });
   };
 
-  const removeItem = () => {
+  const removeItem = async () => {
     const _id = { _id: removeById };
-    RemoveFromCart(_id, (status, res) => {
+    await RemoveFromCart(_id, (status, res) => {
       status === true && useCount();
     });
   };
@@ -88,7 +88,7 @@ const Cart = ({ product, data, removeById }) => {
                 />
               </svg>
             </button>
-            <h2 className="leading-10 text-dark">{product.quantity}</h2>
+            <h2 className="leading-10 text-black">{product.quantity}</h2>
             <button onClick={handleAddToCart}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

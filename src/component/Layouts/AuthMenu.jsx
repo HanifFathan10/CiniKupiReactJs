@@ -11,7 +11,7 @@ const AuthMenu = ({ children, title }) => {
     <div className="min-h-screen w-full text-white">
       <NavigationBar />
       <div className="item-center flex min-h-screen w-full justify-center border border-x-4 bg-[#ffffff]">
-        <div className="container mt-24 flex text-dark">
+        <div className="container mt-24 flex text-black">
           <nav className="mx-16 hidden lg:block">
             <ul>
               <li className="mt-6">

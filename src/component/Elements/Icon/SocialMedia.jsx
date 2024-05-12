@@ -5,7 +5,7 @@ const Icon = () => {
     <div className="flex justify-center">
       <a
         href="https://www.instagram.com/haniffthn__"
-        className="mr-6 text-neutral-600 transition duration-500 hover:text-slate-600 dark:text-neutral-200"
+        className="mr-6 text-neutral-600 transition duration-500 hover:text-slate-600"
       >
         <svg
           width="20px"
@@ -57,7 +57,7 @@ const Icon = () => {
       </a>
       <a
         href="https://github.com/HanifFathan10"
-        className="mr-6 text-neutral-600 transition duration-500 hover:text-slate-600 dark:text-neutral-200"
+        className="mr-6 text-neutral-600 transition duration-500 hover:text-slate-600"
       >
         <svg
           width="20px"
@@ -109,7 +109,7 @@ const Icon = () => {
       </a>
       <a
         href=""
-        className="mr-6 text-neutral-600 transition duration-500 hover:text-slate-600 dark:text-neutral-200"
+        className="mr-6 text-neutral-600 transition duration-500 hover:text-slate-600"
       >
         <svg
           width="20px"
@@ -141,7 +141,7 @@ const Icon = () => {
       </a>
       <a
         href="https://www.linkedin.com/in/haniep-fathan/"
-        className="mr-6 text-neutral-600 transition duration-500 hover:text-slate-600 dark:text-neutral-200"
+        className="mr-6 text-neutral-600 transition duration-500 hover:text-slate-600"
       >
         <svg
           width="20px"

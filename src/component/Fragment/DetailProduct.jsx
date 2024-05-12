@@ -72,28 +72,38 @@ const DetailProduct = ({
       });
   };
 
-  const handleAddToCart = (e) => {
-    e.preventDefault();
+  const handleAddToCart = async (e) => {
+    try {
+      e.preventDefault();
 
-    if (localStorage.getItem("access_token") === null) {
-      const id = "login-required";
-      ErrorToast({
-        id,
-        title: "Please login first!!",
-      });
-      return;
-    }
+      if (localStorage.getItem("access_token") === null) {
+        const id = "login-required";
+        ErrorToast({
+          id,
+          title: "Please login first!!",
+        });
+        return;
+      }
 
-    setIsLoading(true);
-    const maxLength = count === 20;
-    if (maxLength) {
-      const id = "max-order";
-      ErrorToast({
-        id,
-        title: "Maximum order is 20 items. Please adjust your order.",
-      });
-    } else {
-      getMenuProductById(_id, (status, res) => {
+      setIsLoading(true);
+      const maxLength = count === 20;
+      if (maxLength) {
+        const id = "max-order";
+        ErrorToast({
+          id,
+          title: "Maximum order is 20 items. Please adjust your order.",
+        });
+      } else {
+        const { status, res } = await new Promise((resolve, reject) => {
+          getMenuProductById(_id, (status, res) => {
+            if (status) {
+              resolve({ status, res });
+            } else {
+              reject({ status, res });
+            }
+          });
+        });
+
         const dataProduct = {
           id: res.data._id,
           name: res.data.name,
@@ -102,25 +112,39 @@ const DetailProduct = ({
           quantity: 1,
         };
 
-        // Hit Endpoint api/v1/order
-        AddToCart(dataProduct, (status, res) => {
-          if (status === true) {
-            setIsLoading(false);
-            setClick(true);
-            const id = "success-order";
-            SuccessToast({
-              id,
-              title: res.data.message,
+        const { status: addToCartStatus, res: addToCartRes } =
+          await new Promise((resolve, reject) => {
+            AddToCart(dataProduct, (status, res) => {
+              if (status) {
+                resolve({ status, res });
+              } else {
+                reject({ status, res });
+              }
             });
-          } else {
-            const id = "error-fetching";
-            ErrorToast({
-              id,
-              title: res.data.message,
-            });
-          }
-        });
-      });
+          });
+
+        if (addToCartStatus) {
+          setIsLoading(false);
+          setClick(true);
+          useCount();
+          const id = "success-order";
+          SuccessToast({
+            id,
+            title: addToCartRes.data.message,
+          });
+        } else {
+          const id = "error-fetching";
+          ErrorToast({
+            id,
+            title: addToCartRes.data.message,
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error occurred:", error);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -128,11 +152,11 @@ const DetailProduct = ({
     <React.Fragment>
       <div className="grid-cols-1 items-center justify-center gap-3 md:flex md:grid-cols-2">
         <div className="mt-4 flex h-full w-full items-center justify-center p-2">
-          <div className="flex h-44 w-44 items-center justify-center overflow-hidden rounded-full border border-secondary bg-dark md:h-52 md:w-52">
+          <div className="flex h-44 w-44 items-center justify-center overflow-hidden rounded-full border border-secondary bg-[rgba(0,0,0,0.5)] md:h-52 md:w-52">
             <img src={image} className="w-[132px] bg-cover bg-center p-2" />
           </div>
         </div>
-        <div className="mt-10 flex h-full w-full flex-col justify-center text-light max-md:items-center md:mt-0">
+        <div className="mt-10 flex h-full w-full flex-col justify-center text-white max-md:items-center md:mt-0">
           <h1 className="w-fit border-b-2 border-secondary text-lg font-bold uppercase md:text-xl lg:text-3xl">
             {name}
           </h1>
@@ -141,7 +165,7 @@ const DetailProduct = ({
           </h2>
         </div>
       </div>
-      <div className="flex w-full flex-col items-center justify-center px-2 py-6 text-light md:mt-10">
+      <div className="flex w-full flex-col items-center justify-center px-2 py-6 text-white md:mt-10">
         <div className="md:w-4/5">
           <div className="full mb-4 flex w-fit items-center justify-center rounded border border-secondary px-2 text-secondary md:text-lg">
             <h1>200</h1>

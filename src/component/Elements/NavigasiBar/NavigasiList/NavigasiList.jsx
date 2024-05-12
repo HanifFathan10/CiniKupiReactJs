@@ -9,10 +9,12 @@ const NavigasiList = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
 
-  const handleLogout = () => {
-    onClose;
-    Logout((data) => {
-      if (data === true) {
+  const handleLogout = async (e) => {
+    e.preventDefault();
+
+    await Logout((status, res) => {
+      if (status === true) {
+        onClose;
         localStorage.removeItem("access_token");
         localStorage.removeItem("PAYMENT_RESULT");
         localStorage.removeItem("ADD_TO_CART");

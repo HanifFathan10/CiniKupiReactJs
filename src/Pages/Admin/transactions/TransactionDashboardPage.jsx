@@ -1,49 +1,28 @@
 import React, { useEffect } from "react";
 import { HeadMetaData } from "../../../component/Elements/HeadMetaData";
 import AdminLayouts from "../../../component/Layouts/AdminLayouts";
-import { Select } from "@chakra-ui/react";
-import {
-  DeleteDataUser,
-  UpdateDataUser,
-  getAllDataUser,
-} from "../../../services/AuthService";
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
-import InputForm from "../../../component/Elements/InputForm";
 import ModalInput from "../../../component/Elements/InputForm/Modal";
+import {
+  DeleteHistoryTransaction,
+  getAllHistoryTransaction,
+} from "../../../services/PaymentService";
+import { rupiah } from "../../../Hooks/useRupiah";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
-const UserDashboardPage = () => {
+const TransactionDashboardPage = () => {
   const [users, setUsers] = React.useState([]);
-  const [updated, setUpdated] = React.useState({});
   const [deleted, setDeleted] = React.useState({});
 
   useEffect(() => {
-    getAllDataUser((status, res) => {
+    getAllHistoryTransaction((status, res) => {
       if (status === true) {
         setUsers(res.data);
       }
     });
-  }, [updated, deleted]);
-
-  const handleEditUser = async (e) => {
-    e.preventDefault();
-
-    const data = {
-      username: e.target.username.value,
-      email: e.target.email.value,
-      role: e.target.role.value,
-    };
-
-    await UpdateDataUser(data, (status, res) => {
-      if (status === true) {
-        setUpdated({});
-      } else {
-        console.log(res);
-      }
-    });
-  };
+  }, [deleted]);
 
   const handleDeleteUser = async (_id) => {
-    await DeleteDataUser(_id, (status, res) => {
+    await DeleteHistoryTransaction(_id, (status, res) => {
       if (status === true) {
         setDeleted({});
       } else {
@@ -56,7 +35,7 @@ const UserDashboardPage = () => {
     <React.Fragment>
       <HeadMetaData title="Users Dashboard" description="users dashboard" />
       <AdminLayouts>
-        <div className="h-full w-full rounded-s-xl bg-white p-5 text-black">
+        <div className="h-full w-full overflow-auto rounded-s-xl bg-white p-5 text-black">
           <table className="min-w-full table-auto rounded-md text-center text-sm font-light">
             <thead className="border-b border-dark font-medium">
               <tr>
@@ -64,14 +43,23 @@ const UserDashboardPage = () => {
                   No
                 </th>
                 <th scope="col" className="px-6 py-4">
-                  Username
+                  Customer Name
                 </th>
 
                 <th scope="col" className="px-6 py-4">
-                  Email
+                  Customer Email
                 </th>
                 <th scope="col" className="px-6 py-4">
-                  Role
+                  Total Price
+                </th>
+                <th scope="col" className="px-6 py-4">
+                  Total Items
+                </th>
+                <th scope="col" className="px-6 py-4">
+                  Order ID
+                </th>
+                <th scope="col" className="px-6 py-4">
+                  Created Order
                 </th>
                 <th scope="col" className="px-6 py-4">
                   Action
@@ -80,27 +68,39 @@ const UserDashboardPage = () => {
             </thead>
             <tbody>
               {users.map((user, index) => {
+                const date = new Date(user.createdAt);
+                const formatDate = date.toLocaleString("id-ID", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                  hour: "numeric",
+                  minute: "numeric",
+                  second: "numeric",
+                });
                 return (
                   <tr className="border-b border-neutral-200" key={index}>
                     <td className="whitespace-nowrap  px-6 py-4 font-medium">
                       {index + 1}
                     </td>
                     <td className="whitespace-nowrap  px-6 py-4">
-                      {user.username}
+                      {user.order.name}
                     </td>
                     <td className="whitespace-nowrap  px-6 py-4">
-                      {user.email}
+                      {user.order.email}
                     </td>
                     <td className="whitespace-nowrap  px-6 py-4">
-                      {user.role}
+                      {rupiah(user.order.gross_amount)}
+                    </td>
+                    <td className="whitespace-nowrap  px-6 py-4">
+                      {user.item_details.length}
+                    </td>
+                    <td className="whitespace-nowrap  px-6 py-4">
+                      {user.order.order_id}
+                    </td>
+                    <td className="whitespace-nowrap  px-6 py-4">
+                      {formatDate}
                     </td>
                     <td className="flex justify-center gap-3 whitespace-nowrap  px-6 py-4">
-                      <button
-                        className="rounded-md bg-[rgba(0,0,0,0.5)] p-2"
-                        onClick={() => setUpdated(user)}
-                      >
-                        <PencilSquareIcon className="h-6 w-6 text-black" />
-                      </button>
                       <button
                         className="rounded-md bg-[rgba(0,0,0,0.5)] p-2"
                         onClick={() => setDeleted(user)}
@@ -115,51 +115,6 @@ const UserDashboardPage = () => {
           </table>
         </div>
       </AdminLayouts>
-      {Object.keys(updated).length ? (
-        <ModalInput onClose={() => setUpdated({})}>
-          <h1 className="mb-6 text-xl font-bold">Edit Product</h1>
-          <form onSubmit={handleEditUser}>
-            <div className="grid gap-x-4 md:grid-cols-2">
-              <InputForm
-                htmlfor="username"
-                placehoder="username"
-                type="text"
-                name="username"
-                id="username"
-                defaultValue={updated.username}
-                disabled={true}
-              >
-                Username
-              </InputForm>
-              <InputForm
-                htmlfor="email"
-                placehoder="email"
-                type="text"
-                name="email"
-                id="email"
-                defaultValue={updated.email}
-                disabled={true}
-              >
-                Email
-              </InputForm>
-              <div className="mb-4">
-                <label htmlFor="role">Role</label>
-                <Select defaultValue={updated.role} id="role" name="role">
-                  <option value="admin">admin</option>
-                  <option value="user">user</option>
-                </Select>
-              </div>
-            </div>
-            <button
-              className=" flex gap-1 rounded-md bg-yellow-400 px-5 py-3 font-bold"
-              type="submit"
-            >
-              <PencilSquareIcon className="h-6 w-6" />
-              Update
-            </button>
-          </form>
-        </ModalInput>
-      ) : null}
       {Object.keys(deleted).length ? (
         <ModalInput onClose={() => setDeleted({})}>
           <h1 className="mb-6 text-xl font-bold">Delete Product</h1>
@@ -180,4 +135,4 @@ const UserDashboardPage = () => {
   );
 };
 
-export default UserDashboardPage;
+export default TransactionDashboardPage;

@@ -23,7 +23,7 @@ const ProductCheckout = () => {
   }, [_id]);
 
   return (
-    <>
+    <React.Fragment>
       <HeadMetaData
         title={images.name}
         metaDescription="Checkout page by CiniKupi"
@@ -47,7 +47,7 @@ const ProductCheckout = () => {
                 key={images.id}
               />
               <div className="-mb-10 ml-4 mt-20 md:ml-10">
-                <h1 className="w-fit border-b-4 border-green text-lg font-bold text-light">
+                <h1 className="w-fit border-b-4 border-green text-lg font-bold text-white">
                   Recommended Product
                 </h1>
               </div>
@@ -56,7 +56,7 @@ const ProductCheckout = () => {
           )}
         </div>
       </AuthDetail>
-    </>
+    </React.Fragment>
   );
 };
 

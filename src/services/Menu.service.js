@@ -45,7 +45,7 @@ export const CreateDataMenu = async (data, callback) => {
 
 export const EditDataMenu = async (data, callback) => {
   await axios
-    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/edit`, data)
+    .patch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu`, data)
     .then((res) => {
       callback(true, res.data);
     })
@@ -56,7 +56,7 @@ export const EditDataMenu = async (data, callback) => {
 
 export const DeleteDataMenu = async (_id, callback) => {
   await axios
-    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/delete`, _id)
+    .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/${_id}`)
     .then((res) => {
       callback(true, res.data);
     })

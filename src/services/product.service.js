@@ -74,11 +74,11 @@ export const updateProductMenu = async (data, callback) => {
     });
 };
 
-export const deleteProductMenu = async (data_id, callback) => {
+export const deleteProductMenu = async ({ _id, id_menu }, callback) => {
   await axios
-    .post(
-      `${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product/delete`,
-      data_id,
+    .delete(
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product/delete/${_id}`,
+      id_menu,
     )
     .then((res) => {
       callback(true, res.data);
