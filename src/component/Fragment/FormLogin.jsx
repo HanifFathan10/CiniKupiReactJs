@@ -40,12 +40,7 @@ const FormLogin = () => {
               isClosable: true,
             });
           }
-
-          if (res.data.role === "admin") {
-            Navigate("/admin");
-          } else {
-            Navigate("/");
-          }
+          res.data.data.role === "admin" ? Navigate("/admin") : Navigate("/");
 
           setIsLogin(false);
         } else {
@@ -81,7 +76,7 @@ const FormLogin = () => {
   };
 
   return (
-    <form onSubmit={handleLogin} className="flex w-full flex-col">
+    <form onSubmit={handleLogin} className="flex w-full flex-col md:w-72">
       <InputForm
         htmlfor="email"
         placehoder="haniffathan@example.com"

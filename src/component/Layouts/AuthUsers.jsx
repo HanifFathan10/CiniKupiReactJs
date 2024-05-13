@@ -38,6 +38,7 @@ const AuthUsers = ({ children, type }) => {
               {" "}
             </path>{" "}
           </g>
+          npm
         </svg>
         Back To Home
       </Link>
@@ -63,7 +64,7 @@ const AuthUsers = ({ children, type }) => {
             />
           )}
         </div>
-        <div className="mb-12 w-full  sm:mb-0 md:justify-center">
+        <div className="mb-12 w-full sm:mb-0 md:justify-center">
           {children}
           {type == "login" ? (
             <div className="text-center md:text-left">

@@ -93,7 +93,7 @@ const FormRegister = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="md:w-72">
       <InputForm
         htmlfor="username"
         placehoder="haniffathan10"

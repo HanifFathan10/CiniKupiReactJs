@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { BuildingStorefrontIcon } from "@heroicons/react/24/outline";
@@ -10,10 +10,29 @@ import {
   AccordionPanel,
   Box,
   Button,
+  useDisclosure,
 } from "@chakra-ui/react";
+import ConfirmLogout from "../Elements/NavigasiBar/ConfirmLogout";
+import { Logout } from "../../services/AuthService";
 
 const Sidebar = () => {
   const { pathname } = useLocation();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+
+    await Logout((status, res) => {
+      if (status === true) {
+        onClose;
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("PAYMENT_RESULT");
+        localStorage.removeItem("ADD_TO_CART");
+        window.location.href = "/";
+      }
+    });
+  };
 
   return (
     <div className="back absolute left-0 top-0 z-[9999] flex h-screen w-72 -translate-x-full flex-col justify-between overflow-y-hidden rounded-e-xl border-4 border-solid bg-light-200 px-5 py-3 text-black duration-300 ease-linear lg:static lg:translate-x-0">
@@ -143,9 +162,18 @@ const Sidebar = () => {
         </li>
       </ul>
 
-      <button className="rounded-md bg-dark px-6 py-3 font-bold text-white shadow-md shadow-dark/50">
+      <button
+        className="rounded-md bg-dark px-6 py-3 font-bold text-white shadow-md shadow-dark/50"
+        onClick={onOpen}
+      >
         Logout
       </button>
+      <ConfirmLogout
+        cancelRef={cancelRef}
+        handleLogout={handleLogout}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
     </div>
   );
 };
