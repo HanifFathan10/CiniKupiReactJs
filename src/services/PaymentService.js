@@ -12,7 +12,6 @@ export const PaymentRequest = async (data, callback) => {
     })
     .catch((error) => {
       callback(false, error);
-      console.log(false, error);
     });
 };
 
@@ -21,7 +20,7 @@ export const GetHistoryTransaction = async (callback) => {
     .get(`${import.meta.env.VITE_BACKEND_URL}/api/history`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
       },
     })
     .then((res) => {
@@ -48,7 +47,7 @@ export const HistoryTransaction = async (data, callback) => {
     .post(`${import.meta.env.VITE_BACKEND_URL}/api/history`, data, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
       },
     })
     .then((res) => {
@@ -64,7 +63,7 @@ export const DeleteHistoryTransaction = async (_id, callback) => {
     .delete(`${import.meta.env.VITE_BACKEND_URL}/api/history/${_id}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
       },
     })
     .then((res) => {

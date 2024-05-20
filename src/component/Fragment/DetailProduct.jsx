@@ -76,7 +76,7 @@ const DetailProduct = ({
     try {
       e.preventDefault();
 
-      if (localStorage.getItem("access_token") === null) {
+      if (sessionStorage.getItem("access_token") === null) {
         const id = "login-required";
         ErrorToast({
           id,

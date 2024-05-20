@@ -8,7 +8,7 @@ export const getImage = (callback) => {
       callback(res.data);
     })
     .catch((error) => {
-      console.log(error);
+      callback(error);
     });
 };
 
@@ -19,7 +19,7 @@ export const getImageById = (_id, callback) => {
       callback(res.data);
     })
     .catch((error) => {
-      console.log(error);
+      callback(error);
     });
 };
 
@@ -31,7 +31,6 @@ export const getAllMenuProduct = async (callback) => {
       callback(true, res.data);
     })
     .catch((error) => {
-      console.log(error);
       callback(false, error);
     });
 };
@@ -43,7 +42,6 @@ export const getMenuProductById = async (id, callback) => {
       callback(true, res.data);
     })
     .catch((error) => {
-      console.log(error);
       callback(false, error);
     });
 };
@@ -57,7 +55,6 @@ export const createProductMenu = async (data, callback) => {
       callback(true, res.data);
     })
     .catch((error) => {
-      console.log(error);
       callback(false, error);
     });
 };
@@ -69,7 +66,6 @@ export const updateProductMenu = async (data, callback) => {
       callback(true, res.data);
     })
     .catch((error) => {
-      console.log(error);
       callback(false, error);
     });
 };
@@ -84,7 +80,6 @@ export const deleteProductMenu = async ({ _id, id_menu }, callback) => {
       callback(true, res.data);
     })
     .catch((error) => {
-      console.log(error);
       callback(false, error);
     });
 };

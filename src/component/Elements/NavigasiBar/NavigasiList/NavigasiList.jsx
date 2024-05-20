@@ -12,10 +12,12 @@ const NavigasiList = () => {
   const handleLogout = async (e) => {
     e.preventDefault();
 
-    await Logout((status, res) => {
+    const token = sessionStorage.getItem("access_token");
+
+    await Logout(token, (status, res) => {
       if (status === true) {
         onClose;
-        localStorage.removeItem("access_token");
+        sessionStorage.removeItem("access_token");
         localStorage.removeItem("PAYMENT_RESULT");
         localStorage.removeItem("ADD_TO_CART");
         window.location.href = "/";
@@ -23,7 +25,7 @@ const NavigasiList = () => {
     });
   };
 
-  const token = localStorage.getItem("access_token");
+  const token = sessionStorage.getItem("access_token");
 
   const Links = [
     { name: "HOME", link: "/" },

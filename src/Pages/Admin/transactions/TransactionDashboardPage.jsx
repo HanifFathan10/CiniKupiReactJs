@@ -25,8 +25,6 @@ const TransactionDashboardPage = () => {
     await DeleteHistoryTransaction(_id, (status, res) => {
       if (status === true) {
         setDeleted({});
-      } else {
-        console.log(res);
       }
     });
   };

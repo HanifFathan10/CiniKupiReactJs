@@ -17,7 +17,7 @@ export const getImageMenu = async (callback) => {
       callback(true, res.data);
     })
     .catch((error) => {
-      console.log(error);
+      callback(false, error);
     });
 };
 
@@ -25,10 +25,10 @@ export const getImageMenuById = (_id, callback) => {
   axios
     .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/${_id}`)
     .then((res) => {
-      callback(res.data);
+      callback(true, res.data);
     })
     .catch((error) => {
-      console.log(error);
+      callback(false, error);
     });
 };
 
@@ -39,7 +39,7 @@ export const CreateDataMenu = async (data, callback) => {
       callback(true, res.data);
     })
     .catch((error) => {
-      console.log(error);
+      callback(false, error);
     });
 };
 
@@ -50,7 +50,7 @@ export const EditDataMenu = async (data, callback) => {
       callback(true, res.data);
     })
     .catch((error) => {
-      console.log(error);
+      callback(false, error);
     });
 };
 
@@ -61,6 +61,6 @@ export const DeleteDataMenu = async (_id, callback) => {
       callback(true, res.data);
     })
     .catch((error) => {
-      console.log(error);
+      callback(false, error);
     });
 };

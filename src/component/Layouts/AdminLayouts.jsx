@@ -6,8 +6,8 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 const AdminLayouts = ({ children }) => {
   const navigate = useNavigate();
-  const decode = localStorage.getItem("access_token")
-    ? jwtDecode(localStorage.getItem("access_token"))
+  const decode = sessionStorage.getItem("access_token")
+    ? jwtDecode(sessionStorage.getItem("access_token"))
     : null;
 
   useEffect(() => {

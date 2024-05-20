@@ -7,7 +7,6 @@ export const getAllDataUser = async (callback) => {
       callback(true, res.data);
     })
     .catch((error) => {
-      console.log(error);
       callback(false, error);
     });
 };
@@ -19,7 +18,6 @@ export const UpdateDataUser = async (data, callback) => {
       callback(true, res.data);
     })
     .catch((error) => {
-      console.log(error);
       callback(false, error);
     });
 };
@@ -31,7 +29,6 @@ export const DeleteDataUser = async (_id, callback) => {
       callback(true, res.data);
     })
     .catch((error) => {
-      console.log(error);
       callback(false, error);
     });
 };
@@ -45,7 +42,6 @@ export const Login = async (data, callback) => {
       callback(true, res);
     })
     .catch((error) => {
-      console.log(error);
       callback(false, error);
     });
 };
@@ -57,15 +53,36 @@ export const Register = async (data, callback) => {
       callback(true, res);
     })
     .catch((error) => {
-      console.log(error);
       callback(false, error);
     });
 };
 
-export const Logout = async (callback) => {
+export const Logout = async (token, callback) => {
   await axios
-    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/logout`, "", {
+    .post(
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/logout`,
+      { token },
+      {
+        withCredentials: true,
+      },
+    )
+    .then((res) => {
+      callback(true, res);
+    })
+    .catch((error) => {
+      callback(false, error);
+    });
+};
+
+export const RefreshToken = async (callback) => {
+  await axios
+    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/token`, {
       withCredentials: true,
+      withXSRFToken: true,
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
     .then((res) => {
       callback(true, res);

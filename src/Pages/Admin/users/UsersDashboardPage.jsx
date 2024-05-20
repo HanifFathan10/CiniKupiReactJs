@@ -36,8 +36,6 @@ const UserDashboardPage = () => {
     await UpdateDataUser(data, (status, res) => {
       if (status === true) {
         setUpdated({});
-      } else {
-        console.log(res);
       }
     });
   };
@@ -46,8 +44,6 @@ const UserDashboardPage = () => {
     await DeleteDataUser(_id, (status, res) => {
       if (status === true) {
         setDeleted({});
-      } else {
-        console.log(res);
       }
     });
   };

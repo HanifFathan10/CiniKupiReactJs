@@ -21,7 +21,7 @@ export const AddToCart = async (data, callback) => {
     .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/order`, data, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
       },
     })
     .then((res) => {
@@ -37,7 +37,7 @@ export const RemoveFromCart = async (_id, callback) => {
     .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/order/remove`, _id, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
       },
     })
     .then((res) => {
@@ -53,7 +53,7 @@ export const ClearCart = (callback) => {
     .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/clear-cart`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
       },
     })
     .then((res) => {

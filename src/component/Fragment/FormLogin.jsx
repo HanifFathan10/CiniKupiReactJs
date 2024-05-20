@@ -24,7 +24,7 @@ const FormLogin = () => {
       await Login(data, (status, res) => {
         const id = "login";
         if (status === true) {
-          localStorage.setItem("access_token", res.data.accessToken);
+          sessionStorage.setItem("access_token", res.data.accessToken);
 
           if (!toast.isActive(id)) {
             toast({
@@ -63,11 +63,13 @@ const FormLogin = () => {
         }
       });
 
-      if (!localStorage.getItem("access_token")) {
+      if (!sessionStorage.getItem("access_token")) {
         Navigate("/login");
       }
     } catch (error) {
-      console.log(error);
+      setIsLogin(false);
+    } finally {
+      setIsLogin(false);
     }
   };
 

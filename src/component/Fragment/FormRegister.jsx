@@ -86,7 +86,6 @@ const FormRegister = () => {
       });
     } catch (error) {
       setIsRegister(false);
-      console.log(error);
     } finally {
       setIsRegister(false);
     }

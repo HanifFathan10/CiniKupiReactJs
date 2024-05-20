@@ -11,7 +11,7 @@ const HandleAuthSuccess = () => {
     const accessToken = urlParams.get("accessToken");
     const id = "Login";
 
-    localStorage.setItem("access_token", accessToken);
+    sessionStorage.setItem("access_token", accessToken);
     navigate("/");
 
     if (!toast.isActive(id)) {

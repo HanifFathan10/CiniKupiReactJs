@@ -19,7 +19,7 @@ const FormCheckout = () => {
   const [clearCart, setClearCart] = useState(false);
   const toast = useToast();
   const product = totalItems(useShallow((state) => state.items));
-  const accessToken = localStorage.getItem("access_token");
+  const accessToken = sessionStorage.getItem("access_token");
   const Navigate = useNavigate();
 
   useEffect(() => {
@@ -127,7 +127,18 @@ const FormCheckout = () => {
                 }
               });
             } catch (error) {
-              console.log("🚀 ~ onSuccess: ~ error:", error);
+              setIsLoading(false);
+              toast({
+                title: "Error during checkout",
+                status: "error",
+                containerStyle: {
+                  marginTop: "80px",
+                  fontSize: "12px",
+                },
+                variant: "top-accent",
+                isClosable: true,
+                position: "top",
+              });
             }
           },
           onPending: () => {

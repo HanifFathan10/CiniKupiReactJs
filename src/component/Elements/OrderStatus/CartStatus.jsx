@@ -10,7 +10,6 @@ export const CartStatus = () => {
 
   useEffect(() => {
     GetHistoryTransaction((status, res) => {
-      console.log("🚀 ~ GetHistoryTransaction ~ res:", res);
       if (status) {
         setTransaction(res.data);
       }

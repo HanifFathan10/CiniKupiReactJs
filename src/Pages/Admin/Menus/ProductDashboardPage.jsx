@@ -66,10 +66,7 @@ const ProductDashboardPage = () => {
 
     await createProductMenu(data, (status, res) => {
       if (status === true) {
-        console.log(res);
         setModal(false);
-      } else {
-        console.log(res);
       }
     });
   };
@@ -92,8 +89,6 @@ const ProductDashboardPage = () => {
     await updateProductMenu(data, (status, res) => {
       if (status === true) {
         setUpdated({});
-      } else {
-        console.log(res);
       }
     });
   };
@@ -106,8 +101,6 @@ const ProductDashboardPage = () => {
       (status, res) => {
         if (status === true) {
           setDeleted({});
-        } else {
-          console.log(res);
         }
       },
     );
@@ -115,7 +108,6 @@ const ProductDashboardPage = () => {
 
   const convertToBase64 = (e) => {
     const file = e.target.files[0];
-    const maxSize = 3 * 1024 * 1024; // 3MB
 
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -124,7 +116,7 @@ const ProductDashboardPage = () => {
     };
 
     reader.onerror = (error) => {
-      console.log("Error: ", error);
+      return;
     };
   };
 

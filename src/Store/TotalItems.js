@@ -6,7 +6,7 @@ export const totalItems = create((set) => ({
   isLoading: false,
   useCount: async () => {
     // Memeriksa apakah access_token tersedia
-    const access_token = localStorage.getItem("access_token");
+    const access_token = sessionStorage.getItem("access_token");
     if (!access_token) {
       // Jika tidak ada access_token, langsung kembalikan null
       return null;

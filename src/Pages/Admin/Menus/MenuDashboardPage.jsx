@@ -49,8 +49,6 @@ const MenuDashboardPage = () => {
     await CreateDataMenu(data, (status, res) => {
       if (status === true) {
         setModal(false);
-      } else {
-        console.log(res);
       }
     });
   };
@@ -64,13 +62,10 @@ const MenuDashboardPage = () => {
       category: e.target.category.value,
       nameurl: e.target.nameurl.value,
     };
-    console.log("🚀 ~ handleEditMenu ~ data:", data);
 
     await EditDataMenu(data, (status, res) => {
       if (status === true) {
         setUpdated({});
-      } else {
-        console.log(res);
       }
     });
   };
@@ -79,8 +74,6 @@ const MenuDashboardPage = () => {
     await DeleteDataMenu({ _id }, (status, res) => {
       if (status === true) {
         setDeleted({});
-      } else {
-        console.log(res);
       }
     });
   };
@@ -90,19 +83,17 @@ const MenuDashboardPage = () => {
     const maxSize = 3 * 1024 * 1024; // 3MB
 
     if (file.size > maxSize) {
-      console.log("File terlalu besar. Harap pilih file yang lebih kecil.");
       return;
     }
 
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      console.log(reader.result);
       setImages(reader.result);
     };
 
     reader.onerror = (error) => {
-      console.log("Error: ", error);
+      return;
     };
   };
 
