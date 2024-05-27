@@ -40,7 +40,6 @@ export const totalItems = create((set) => ({
       return data;
     } catch (error) {
       // Menghentikan loading dan menampilkan pesan error
-      console.error("Error fetching data:", error);
       set({ isLoading: false });
       throw error;
     }

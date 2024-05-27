@@ -7,13 +7,17 @@ import { RefreshToken } from "../../services/AuthService";
 const AuthLayouth = ({ children }) => {
   const token = sessionStorage.getItem("access_token");
 
-  if (!token) {
-    RefreshToken((status, res) => {
-      if (status === true) {
-        sessionStorage.setItem("access_token", res.data.access_token);
-        window.location.reload();
+  if (token) {
+    useEffect(() => {
+      if (!token) {
+        RefreshToken((status, res) => {
+          if (status === true) {
+            sessionStorage.setItem("access_token", res.data.access_token);
+            window.location.reload();
+          }
+        });
       }
-    });
+    }, [token]);
   }
 
   useScrollTop();

@@ -2,16 +2,23 @@ import React, { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { AddToCart, RemoveFromCart } from "../../../services/Order.service";
 import { totalItems } from "../../../Store/TotalItems";
-import { useToast } from "@chakra-ui/react";
 import { rupiah } from "../../../Hooks/useRupiah";
+import { useOptimistic } from "../../../Hooks/useOptimistic";
+import { useCustomToast } from "../../../Hooks/useToast";
 
 const Cart = ({ product, data, removeById }) => {
   const [click, setClick] = useState(false);
+  const { SuccessToast, ErrorToast } = useCustomToast();
   const { useCount } = totalItems(
     useShallow((state) => ({
       useCount: state.useCount,
     })),
   );
+
+  const [quantity, addOptimisticQuantity, revertOptimisticQuantity] =
+    useOptimistic(product.quantity, (currentQuantity, newQuantity) => {
+      return Math.max(0, currentQuantity + newQuantity); // Ensure quantity stays positive
+    });
 
   useEffect(() => {
     if (click === true) {
@@ -19,23 +26,9 @@ const Cart = ({ product, data, removeById }) => {
     }
   }, [click]);
 
-  const toast = useToast();
-  const SuccessToast = ({ id, title }) => {
-    !toast.isActive(id) &&
-      toast({
-        id,
-        title: title,
-        containerStyle: {
-          marginTop: "80px",
-        },
-        status: "success",
-        position: "top",
-        duration: 1500,
-        isClosable: true,
-      });
-  };
-
   const handleAddToCart = async () => {
+    addOptimisticQuantity(data.quantity);
+
     await AddToCart(data, (status, res) => {
       if (status === true) {
         setClick(true);
@@ -44,20 +37,33 @@ const Cart = ({ product, data, removeById }) => {
           id,
           title: res.data.message,
         });
+      } else {
+        revertOptimisticQuantity();
+        ErrorToast({
+          id: "remove-from-cart",
+          title: res.response.data.message,
+        });
       }
     });
   };
 
   const removeItem = async () => {
+    addOptimisticQuantity(-1);
+
     const _id = { _id: removeById };
     await RemoveFromCart(_id, (status, res) => {
-      status === true && useCount();
+      if (status === true) {
+        setClick(true);
+      } else {
+        revertOptimisticQuantity();
+      }
     });
   };
 
   const totalPrice = () => {
     return rupiah(product.price * product.quantity);
   };
+
   return (
     <section className="flex w-full justify-center px-4 py-2">
       <div className="grid w-full max-w-lg grid-flow-col items-center justify-start gap-3 rounded-lg bg-[#ffffff] px-5 py-3 shadow-md">
@@ -65,10 +71,10 @@ const Cart = ({ product, data, removeById }) => {
           <img src={product.image} className="w-16 md:w-24 lg:w-28" />
         </div>
         <div className="flex flex-col">
-          <h1 className="text-base font-bold uppercase leading-normal sm:text-xl lg:text-2xl">
+          <h1 className="text-base font-bold uppercase leading-normal sm:text-lg lg:text-xl">
             {product.name}
           </h1>
-          <h3 className="full mb-1 flex w-fit gap-1 rounded text-sm text-neutral-700 md:text-lg">
+          <h3 className="full sm:text-md mb-1 flex w-fit gap-1 rounded text-sm text-neutral-700 lg:text-lg">
             {totalPrice()}
           </h3>
           <div className="item-center flex gap-1 text-[#ffffff]">
@@ -88,7 +94,7 @@ const Cart = ({ product, data, removeById }) => {
                 />
               </svg>
             </button>
-            <h2 className="leading-10 text-black">{product.quantity}</h2>
+            <h2 className="leading-10 text-black">{quantity}</h2>
             <button onClick={handleAddToCart}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

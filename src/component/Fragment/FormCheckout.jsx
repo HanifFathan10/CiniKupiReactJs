@@ -11,8 +11,6 @@ import { totalItems } from "../../Store/TotalItems";
 import { ClearCart } from "../../services/Order.service";
 
 const FormCheckout = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
   const [history, setHistory] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -43,14 +41,14 @@ const FormCheckout = () => {
       setIsLoading(true);
 
       const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-      const matchResult = email.match(gmailPattern);
+      const matchResult = e.target.email.value.match(gmailPattern);
       let validEmail = null;
       if (matchResult) {
         validEmail = matchResult[0];
       }
 
       const data = {
-        customer_name: name,
+        customer_name: e.target.name.value,
         customer_email: validEmail,
         products: product,
       };
@@ -111,6 +109,8 @@ const FormCheckout = () => {
         isClosable: true,
         position: "top",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -182,10 +182,8 @@ const FormCheckout = () => {
   return (
     <div className="bg-primary px-3 py-6 text-white">
       <h1 className="mb-3 font-bold">CUSTOMER DETAILS</h1>
-      <form>
+      <form onSubmit={handleCheckout}>
         <InputForm
-          onChange={(e) => setName(e.target.value)}
-          value={name}
           htmlfor="name"
           placehoder="Your Name"
           type="text"
@@ -197,8 +195,6 @@ const FormCheckout = () => {
         </InputForm>
 
         <InputForm
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
           htmlfor="email"
           placehoder="haniffathan@example.com"
           type="email"
@@ -208,16 +204,16 @@ const FormCheckout = () => {
         >
           Your Email
         </InputForm>
-      </form>
 
-      <button
-        onClick={handleCheckout}
-        disabled={isLoading}
-        className="hover:bg-light flex gap-3 rounded-full bg-secondary px-6 py-4 font-semibold text-primary ring-2 ring-primary transition-all duration-300 disabled:bg-neutral-500 disabled:text-secondary disabled:ring-0 disabled:hover:bg-neutral-500 disabled:hover:text-white disabled:hover:ring-0"
-      >
-        Checkout
-        {isLoading && <Spinner color="white" />}
-      </button>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="hover:bg-light flex gap-3 rounded-full bg-secondary px-6 py-4 font-semibold text-primary ring-2 ring-primary transition-all duration-300 disabled:bg-neutral-500 disabled:text-secondary disabled:ring-0 disabled:hover:bg-neutral-500 disabled:hover:text-white disabled:hover:ring-0"
+        >
+          Checkout
+          {isLoading && <Spinner color="white" />}
+        </button>
+      </form>
 
       <p className="mt-2 cursor-pointer text-xs text-white hover:text-secondary">
         <a

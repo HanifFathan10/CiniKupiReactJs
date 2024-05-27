@@ -10,13 +10,13 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
-  useToast,
 } from "@chakra-ui/react";
 import { SingleStar } from "../Elements/Icon/SingleStar";
 import { AddToCart } from "../../services/Order.service";
 import { totalItems } from "../../Store/TotalItems";
 import { useShallow } from "zustand/react/shallow";
 import { getMenuProductById } from "../../services/product.service";
+import { useCustomToast } from "../../Hooks/useToast";
 
 const DetailProduct = ({
   _id,
@@ -30,6 +30,7 @@ const DetailProduct = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [click, setClick] = useState(false);
+  const { SuccessToast, ErrorToast } = useCustomToast();
   const { count, useCount } = totalItems(
     useShallow((state) => ({ count: state.count, useCount: state.useCount })),
   );
@@ -40,109 +41,60 @@ const DetailProduct = ({
     }
   }, [click]);
 
-  const toast = useToast();
-
-  const ErrorToast = ({ id, title }) => {
-    !toast.isActive(id) &&
-      toast({
-        id,
-        title: title,
-        containerStyle: {
-          marginTop: "80px",
-          fontSize: "12px",
-        },
-        status: "error",
-        position: "top",
-        isClosable: true,
-      });
-  };
-
-  const SuccessToast = ({ id, title }) => {
-    !toast.isActive(id) &&
-      toast({
-        id,
-        title: title,
-        containerStyle: {
-          marginTop: "80px",
-        },
-        status: "success",
-        position: "top",
-        duration: 1500,
-        isClosable: true,
-      });
-  };
-
   const handleAddToCart = async (e) => {
     try {
       e.preventDefault();
 
-      if (sessionStorage.getItem("access_token") === null) {
-        const id = "login-required";
+      if (!sessionStorage.getItem("access_token")) {
         ErrorToast({
-          id,
+          id: "login-required",
           title: "Please login first!!",
         });
         return;
       }
 
-      setIsLoading(true);
       const maxLength = count === 20;
       if (maxLength) {
-        const id = "max-order";
         ErrorToast({
-          id,
+          id: "max-order",
           title: "Maximum order is 20 items. Please adjust your order.",
         });
-      } else {
-        const { status, res } = await new Promise((resolve, reject) => {
-          getMenuProductById(_id, (status, res) => {
-            if (status) {
-              resolve({ status, res });
+        return;
+      }
+
+      setIsLoading(true);
+      await getMenuProductById(_id, async (status, res) => {
+        if (status === true) {
+          const dataProduct = {
+            id: res.data._id,
+            name: res.data.name,
+            price: res.data.price,
+            image: res.data.image,
+            quantity: 1,
+          };
+
+          await AddToCart(dataProduct, (status, res) => {
+            if (status === true) {
+              SuccessToast({
+                id: "success-order",
+                title: res.data.message,
+              });
+              setClick(true);
+              useCount();
             } else {
-              reject({ status, res });
+              ErrorToast({
+                id: "error-fetching",
+                title: res.data.message,
+              });
             }
           });
-        });
-
-        const dataProduct = {
-          id: res.data._id,
-          name: res.data.name,
-          price: res.data.price,
-          image: res.data.image,
-          quantity: 1,
-        };
-
-        const { status: addToCartStatus, res: addToCartRes } =
-          await new Promise((resolve, reject) => {
-            AddToCart(dataProduct, (status, res) => {
-              if (status) {
-                resolve({ status, res });
-              } else {
-                reject({ status, res });
-              }
-            });
-          });
-
-        if (addToCartStatus) {
-          setIsLoading(false);
-          setClick(true);
-          useCount();
-          const id = "success-order";
-          SuccessToast({
-            id,
-            title: addToCartRes.data.message,
-          });
-        } else {
-          const id = "error-fetching";
-          ErrorToast({
-            id,
-            title: addToCartRes.data.message,
-          });
         }
-      }
+      });
     } catch (error) {
-      console.error("Error occurred:", error);
-      setIsLoading(false);
+      ErrorToast({
+        id: "error-fetching",
+        title: error.message,
+      });
     } finally {
       setIsLoading(false);
     }

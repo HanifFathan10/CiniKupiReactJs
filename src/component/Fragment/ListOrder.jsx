@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Cart from "../Elements/CartOrder/Cart";
 import NoProductUI from "../Elements/CartOrder/NoProductUI";
 import { useShallow } from "zustand/react/shallow";
@@ -12,12 +12,12 @@ const ListOrder = () => {
   useEffect(() => {
     // Memanggil useCount ketika ada perubahan pada properti items
     useCount();
-  }, []); // Gunakan items sebagai dependency
+  }, [items]); // Gunakan items sebagai dependency
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-center bg-[#eaeaea]">
       {count > 0 ? (
-        <>
+        <React.Fragment>
           {Array.isArray(items) &&
             items.map((cart, index) => {
               const dataProduct = {
@@ -28,6 +28,7 @@ const ListOrder = () => {
                 image: cart.image,
                 quantity: 1,
               };
+
               return (
                 <Cart
                   key={index}
@@ -37,7 +38,7 @@ const ListOrder = () => {
                 />
               );
             })}
-        </>
+        </React.Fragment>
       ) : (
         <NoProductUI />
       )}

@@ -78,7 +78,7 @@ export const RefreshToken = async (callback) => {
   await axios
     .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/token`, {
       withCredentials: true,
-      withXSRFToken: true,
+      // withXSRFToken: true,
       credentials: "include",
       headers: {
         "Content-Type": "application/json",

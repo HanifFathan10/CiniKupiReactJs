@@ -8,8 +8,6 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Box,
-  Button,
   useDisclosure,
 } from "@chakra-ui/react";
 import ConfirmLogout from "../Elements/NavigasiBar/ConfirmLogout";
@@ -23,7 +21,9 @@ const Sidebar = () => {
   const handleLogout = async (e) => {
     e.preventDefault();
 
-    await Logout((status, res) => {
+    const token = sessionStorage.getItem("access_token");
+
+    await Logout(token, (status, res) => {
       if (status === true) {
         onClose;
         sessionStorage.removeItem("access_token");

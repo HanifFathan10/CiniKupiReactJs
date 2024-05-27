@@ -11,7 +11,7 @@ const CartProduct = () => {
   const count = totalItems(useShallow((state) => state.count));
 
   return (
-    <>
+    <React.Fragment>
       <HeadMetaData title="Order" metaDescription="Order page by CiniKupi" />
       <section className="grid grid-cols-1 md:grid-cols-2">
         <div className="w-full bg-[#1f3933] text-[#ffffff]">
@@ -30,7 +30,7 @@ const CartProduct = () => {
           <Footer />
         </div>
       </section>
-    </>
+    </React.Fragment>
   );
 };
 

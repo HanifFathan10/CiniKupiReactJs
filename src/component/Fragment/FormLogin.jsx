@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Login } from "../../services/AuthService";
 import { useToast } from "@chakra-ui/react";
+import { useCustomToast } from "../../Hooks/useToast";
 
 const FormLogin = () => {
   const [isLogin, setIsLogin] = useState(false);
+  const { SuccessToast, ErrorToast } = useCustomToast();
   const Navigate = useNavigate();
   const toast = useToast();
 
@@ -22,42 +24,21 @@ const FormLogin = () => {
       };
 
       await Login(data, (status, res) => {
-        const id = "login";
         if (status === true) {
           sessionStorage.setItem("access_token", res.data.accessToken);
 
-          if (!toast.isActive(id)) {
-            toast({
-              id,
-              title: res.data.message,
-              containerStyle: {
-                marginTop: "80px",
-                fontSize: "12px",
-              },
-              status: "success",
-              position: "top",
-              variant: "top-accent",
-              isClosable: true,
-            });
-          }
+          SuccessToast({
+            id: "login",
+            title: res.data.message,
+          });
           res.data.data.role === "admin" ? Navigate("/admin") : Navigate("/");
 
           setIsLogin(false);
         } else {
-          if (!toast.isActive(id)) {
-            toast({
-              id,
-              title: res.response.data.message,
-              containerStyle: {
-                marginTop: "80px",
-                fontSize: "12px",
-              },
-              status: "error",
-              position: "top",
-              variant: "left-accent",
-              isClosable: true,
-            });
-          }
+          ErrorToast({
+            id: "login",
+            title: res.response.data.message,
+          });
 
           setIsLogin(false);
         }
