@@ -11,7 +11,7 @@ const ErrorPage = () => {
         title="Error 404"
         metaDescription="Error Page by CiniKupi"
       />
-      <main className="h-full w-full bg-light">
+      <main className="bg-light h-full w-full">
         <div className="flex min-h-screen flex-col items-center justify-center">
           <img
             src="/images/error.webp"
@@ -29,7 +29,7 @@ const ErrorPage = () => {
             </h1>
             <button
               onClick={() => handlingToHome("/")}
-              className="mt-4 rounded-full border-2 border-dark px-6 py-2 font-semibold hover:bg-primary hover:text-light"
+              className="hover:bg-chocolate hover:text-light mt-4 rounded-full border-2 border-dark px-6 py-2 font-semibold"
             >
               Back To Home
             </button>

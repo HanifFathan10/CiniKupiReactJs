@@ -33,7 +33,7 @@ const ProductCheckout = () => {
           {isLoading ? (
             <ProductCOskeleton />
           ) : (
-            <section className="grid min-h-screen w-full grid-cols-1 items-center bg-primary md:justify-center">
+            <section className="bg-chocolate grid min-h-screen w-full grid-cols-1 items-center md:justify-center">
               <HeaderBack className="mt-[75px]" title="Detail Product" />
               <DetailProduct
                 _id={_id}

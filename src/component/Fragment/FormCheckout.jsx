@@ -180,7 +180,7 @@ const FormCheckout = () => {
   }, []);
 
   return (
-    <div className="bg-primary px-3 py-6 text-white">
+    <div className="bg-chocolate px-3 py-6 text-white">
       <h1 className="mb-3 font-bold">CUSTOMER DETAILS</h1>
       <form onSubmit={handleCheckout}>
         <InputForm
@@ -208,7 +208,7 @@ const FormCheckout = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="hover:bg-light flex gap-3 rounded-full bg-secondary px-6 py-4 font-semibold text-primary ring-2 ring-primary transition-all duration-300 disabled:bg-neutral-500 disabled:text-secondary disabled:ring-0 disabled:hover:bg-neutral-500 disabled:hover:text-white disabled:hover:ring-0"
+          className="hover:bg-light text-chocolate ring-chtext-chocolate flex gap-3 rounded-full bg-secondary px-6 py-4 font-semibold ring-2 transition-all duration-300 disabled:bg-neutral-500 disabled:text-secondary disabled:ring-0 disabled:hover:bg-neutral-500 disabled:hover:text-white disabled:hover:ring-0"
         >
           Checkout
           {isLoading && <Spinner color="white" />}

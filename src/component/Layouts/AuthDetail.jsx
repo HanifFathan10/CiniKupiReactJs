@@ -7,7 +7,7 @@ import { useScrollTop } from "../../Hooks/useScrollTop";
 const AuthDetail = ({ children }) => {
   useScrollTop();
   return (
-    <div className="w-full bg-primary">
+    <div className="bg-chocolate w-full">
       <NavigationBar />
       {children}
       <Footer />

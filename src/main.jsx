@@ -26,6 +26,7 @@ import UserDashboardPage from "./Pages/Admin/users/UsersDashboardPage";
 import ProductDashboardPage from "./Pages/Admin/Menus/ProductDashboardPage";
 import MenuDashboardPage from "./Pages/Admin/Menus/MenuDashboardPage";
 import TransactionDashboardPage from "./Pages/Admin/transactions/TransactionDashboardPage";
+import "flowbite";
 
 const router = createBrowserRouter([
   {

@@ -24,11 +24,20 @@ export const getImageById = (_id, callback) => {
 };
 
 // Product Menu
-export const getAllMenuProduct = async (callback) => {
+export const getAllMenuProduct = async (data, callback) => {
+  console.log("🚀 ~ getAllMenuProduct ~ data:", data);
   await axios
-    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product`)
+    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product`, {
+      params: {
+        page: data.currentPage,
+        limit: 10,
+        search: data.search,
+        sort: data.sortField,
+        sortOrder: data.sortOrder,
+      },
+    })
     .then((res) => {
-      callback(true, res.data);
+      callback(true, res);
     })
     .catch((error) => {
       callback(false, error);
@@ -61,7 +70,10 @@ export const createProductMenu = async (data, callback) => {
 
 export const updateProductMenu = async (data, callback) => {
   await axios
-    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product/edit`, data)
+    .patch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product/${data._id}/edit`,
+      data,
+    )
     .then((res) => {
       callback(true, res.data);
     })
@@ -70,11 +82,11 @@ export const updateProductMenu = async (data, callback) => {
     });
 };
 
-export const deleteProductMenu = async ({ _id, id_menu }, callback) => {
+export const deleteProductMenu = async (data, callback) => {
   await axios
     .delete(
-      `${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product/delete/${_id}`,
-      id_menu,
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product/${data._id}`,
+      { data: { id_menu: data.id_menu } },
     )
     .then((res) => {
       callback(true, res.data);

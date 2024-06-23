@@ -18,7 +18,7 @@ const ModalInput = ({ onClose, children }) => {
   return (
     <div className="fixed top-0 z-[9999] flex h-screen min-h-screen w-[100vw] items-center justify-center overflow-hidden bg-[rgba(0,0,0,0.5)]">
       <div
-        className="h-fit max-h-[80%] w-full max-w-4xl overflow-y-auto overflow-x-hidden rounded-md bg-white p-4 shadow-md drop-shadow-md md:px-8 md:py-6"
+        className="h-fit max-h-[80%] w-full max-w-4xl overflow-auto rounded-md "
         ref={ref}
       >
         {children}
