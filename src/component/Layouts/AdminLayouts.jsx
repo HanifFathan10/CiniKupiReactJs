@@ -21,15 +21,9 @@ const AdminLayouts = ({ children }) => {
       <div className="flex h-screen w-full max-w-[1440px] gap-4 overflow-hidden">
         <Sidebar />
         <div className="flex flex-1 flex-col gap-4 overflow-hidden">
-          <div className="flex h-20 w-full items-center rounded-s-xl bg-white px-5 py-10 drop-shadow-md">
+          <div className="flex h-20 w-full items-center rounded-es-xl bg-white px-5 py-10 drop-shadow-md">
             <div className="flex w-full justify-between">
               <h1 className="font-semibold text-black">Ini Dashboard Admin</h1>
-              <input
-                type="text"
-                placeholder="Search"
-                className="outline-none"
-              />
-              <MagnifyingGlassIcon className="h-6 w-6" />
             </div>
           </div>
           {children}

@@ -18,7 +18,7 @@ import { rupiah } from "../../../Hooks/useRupiah";
 import { truncateText } from "../../../Hooks/useTruncateText";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import ModalInput from "../../../component/Elements/InputForm/Modal";
-import { getImageMenu } from "../../../services/Menu.service";
+import { GetAllMenu } from "../../../services/Menu.service";
 import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
@@ -27,6 +27,7 @@ import {
 } from "@heroicons/react/24/solid";
 import "flowbite";
 import Plus from "../../../component/Elements/Icon/Plus";
+import { useDebounce } from "use-debounce";
 
 const ProductDashboardPage = () => {
   const [products, setProducts] = useState([]);
@@ -40,35 +41,15 @@ const ProductDashboardPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
+  const [debouncedSearch] = useDebounce(search, 800);
+
+  useEffect(() => {
+    fetchDataProduct();
+  }, [currentPage, debouncedSearch]);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-
-      try {
-        const data = {
-          currentPage,
-          limit: 10,
-          search: search,
-        };
-        await getAllMenuProduct(data, (status, res) => {
-          if (status === true) {
-            setProducts(res.data.products);
-            setTotalPages(res.data.totalPages);
-            setLoading(false);
-          }
-        });
-      } catch (error) {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [currentPage, search]);
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      await getImageMenu((status, res) => {
+      await GetAllMenu((status, res) => {
         if (status === true) {
           setMenus(res);
         }
@@ -76,7 +57,28 @@ const ProductDashboardPage = () => {
     };
 
     fetchData();
-  }, [modal, products]);
+  }, [modal, updated]);
+
+  const fetchDataProduct = async () => {
+    setLoading(true);
+
+    try {
+      const data = {
+        currentPage,
+        limit: 10,
+        search: debouncedSearch,
+      };
+      await getAllMenuProduct((status, res) => {
+        if (status === true) {
+          setProducts(res.data.products);
+          setTotalPages(res.data.totalPages);
+          setLoading(false);
+        }
+      }, data);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
@@ -128,6 +130,7 @@ const ProductDashboardPage = () => {
     await updateProductMenu(data, (status, res) => {
       if (status === true) {
         setUpdated({});
+        fetchDataProduct();
       }
     });
   };
@@ -244,71 +247,68 @@ const ProductDashboardPage = () => {
                 </div>
               ) : (
                 <>
-                  {products.map((product, index) => (
-                    <tr
-                      class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
-                      key={index}
-                    >
-                      <td class="px-6 py-4">{index + 1}</td>
-                      <th
-                        scope="row"
-                        class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+                  {products.map((product, index) => {
+                    const itemNumber = (currentPage - 1) * 10 + index + 1;
+                    return (
+                      <tr
+                        class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
+                        key={index}
                       >
-                        {product.name}
-                      </th>
-                      <td class="px-6 py-4">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          width={100}
-                          height={100}
-                          className="h-12 w-12 rounded bg-cover bg-center object-contain"
-                        />
-                      </td>
-                      <td class="px-6 py-4">
-                        {
-                          menus.filter(
-                            (menu) => menu._id === product.id_menu,
-                          )[0].name
-                        }
-                      </td>
-                      <td class="px-6 py-4">{rupiah(product.price)}</td>
-                      <td class="px-6 py-4">
-                        {truncateText(product.descriptions, 10)}
-                      </td>
-                      <td class="flex items-center justify-center px-4 py-3">
-                        <Menu>
-                          <MenuButton
-                            as="button"
-                            rightIcon={<ChevronDownIcon />}
-                          >
-                            <svg
-                              class="h-5 w-5"
-                              aria-hidden="true"
-                              fill="currentColor"
-                              viewbox="0 0 20 20"
-                              xmlns="http://www.w3.org/2000/svg"
+                        <td class="px-6 py-4">{itemNumber}</td>
+                        <th
+                          scope="row"
+                          class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+                        >
+                          {product.name}
+                        </th>
+                        <td class="px-6 py-4">
+                          <img
+                            src={product.image}
+                            alt={product.image}
+                            width={100}
+                            height={100}
+                            className="h-12 w-12 rounded bg-cover bg-center object-contain"
+                          />
+                        </td>
+                        <td class="px-6 py-4">{product.id_menu.name}</td>
+                        <td class="px-6 py-4">{rupiah(product.price)}</td>
+                        <td class="px-6 py-4">
+                          {truncateText(product.descriptions, 10)}
+                        </td>
+                        <td class="flex items-center justify-center px-4 py-3">
+                          <Menu>
+                            <MenuButton
+                              as="button"
+                              rightIcon={<ChevronDownIcon />}
                             >
-                              <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                            </svg>
-                          </MenuButton>
-                          <MenuList>
-                            <MenuItem onClick={() => setShow(product)}>
-                              Detail
-                            </MenuItem>
+                              <svg
+                                class="h-5 w-5"
+                                aria-hidden="true"
+                                fill="currentColor"
+                                viewbox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                              </svg>
+                            </MenuButton>
+                            <MenuList>
+                              <MenuItem onClick={() => setShow(product)}>
+                                Detail
+                              </MenuItem>
 
-                            <MenuItem onClick={() => setUpdated(product)}>
-                              Edit
-                            </MenuItem>
-                            <MenuDivider />
-                            <MenuItem onClick={() => setDeleted(product)}>
-                              Delete
-                            </MenuItem>
-                          </MenuList>
-                        </Menu>
-                      </td>
-                    </tr>
-                  ))}
+                              <MenuItem onClick={() => setUpdated(product)}>
+                                Edit
+                              </MenuItem>
+                              <MenuDivider />
+                              <MenuItem onClick={() => setDeleted(product)}>
+                                Delete
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </>
               )}
             </tbody>
@@ -415,9 +415,13 @@ const ProductDashboardPage = () => {
                     id="menu"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   >
-                    <option selected>Choose a menu</option>
-                    {menus.map((menu) => (
-                      <option value={menu._id}>{menu.name}</option>
+                    <option selected disabled>
+                      Choose a menu
+                    </option>
+                    {menus.map((menu, i) => (
+                      <option value={menu._id} key={i}>
+                        {menu.name}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -747,14 +751,11 @@ const ProductDashboardPage = () => {
                     id="menu"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   >
-                    <option selected disabled value={updated.id_menu}>
-                      {
-                        menus.filter((menu) => menu._id === updated.id_menu)[0]
-                          .name
-                      }
+                    <option selected disabled value={updated.id_menu.name}>
+                      {updated.id_menu.name}
                     </option>
-                    {menus.map((menu) => (
-                      <option value={menu._id} name="menu">
+                    {menus.map((menu, i) => (
+                      <option value={menu._id} name="menu" key={i}>
                         {menu.name}
                       </option>
                     ))}

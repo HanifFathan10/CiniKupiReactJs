@@ -8,15 +8,6 @@ import RegisterPage from "./Pages/RegisterPage";
 import CoomingSoon from "./Pages/CoomingSoon";
 import Menu from "./Pages/Menu";
 import ProductCheckout from "./Pages/ProductCheckout";
-import HotCoffePage from "./Pages/MenuPage/HotCoffePage";
-import IceCoffePage from "./Pages/MenuPage/IceCoffePage";
-import HotDrinkPage from "./Pages/MenuPage/HotDrinkPage";
-import IceDrinkPage from "./Pages/MenuPage/IceDrinkPage";
-import LunchPage from "./Pages/MenuPage/LunchPage";
-import BakeryPage from "./Pages/MenuPage/BakeryPage";
-import Oatmeal from "./Pages/MenuPage/Oatmeal";
-import Snack from "./Pages/MenuPage/Snack";
-import MenuCoffeBeans from "./Pages/MenuPage/MenuCoffeBeans";
 import HandleAuthSuccess from "./Pages/AuthLogin";
 import CartPage from "./Pages/MenuPage/CartPage";
 import { ChakraProvider } from "@chakra-ui/react";
@@ -27,6 +18,7 @@ import ProductDashboardPage from "./Pages/Admin/Menus/ProductDashboardPage";
 import MenuDashboardPage from "./Pages/Admin/Menus/MenuDashboardPage";
 import TransactionDashboardPage from "./Pages/Admin/transactions/TransactionDashboardPage";
 import "flowbite";
+import ProductMenuPage from "./Pages/ProductMenuPage";
 
 const router = createBrowserRouter([
   {
@@ -47,48 +39,16 @@ const router = createBrowserRouter([
     element: <Menu />,
   },
   {
+    path: "/menu/:name",
+    element: <ProductMenuPage />,
+  },
+  {
     path: "/product/:_id",
     element: <ProductCheckout />,
   },
   {
     path: "/coomingsoon",
     element: <CoomingSoon />,
-  },
-  {
-    path: "/menu/drink/hot-coffe",
-    element: <HotCoffePage />,
-  },
-  {
-    path: "/menu/drink/ice-coffe",
-    element: <IceCoffePage />,
-  },
-  {
-    path: "/menu/drink/hot-drinks",
-    element: <HotDrinkPage />,
-  },
-  {
-    path: "/menu/drink/ice-drinks",
-    element: <IceDrinkPage />,
-  },
-  {
-    path: "/menu/food/lunch",
-    element: <LunchPage />,
-  },
-  {
-    path: "/menu/food/bakery",
-    element: <BakeryPage />,
-  },
-  {
-    path: "/menu/food/oatmeal-yoghurt",
-    element: <Oatmeal />,
-  },
-  {
-    path: "/menu/food/snack-sweet",
-    element: <Snack />,
-  },
-  {
-    path: "/menu/coffe-beans",
-    element: <MenuCoffeBeans />,
   },
   {
     path: "/menu/cart",

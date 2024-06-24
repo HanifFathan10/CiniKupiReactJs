@@ -24,16 +24,13 @@ export const getImageById = (_id, callback) => {
 };
 
 // Product Menu
-export const getAllMenuProduct = async (data, callback) => {
-  console.log("🚀 ~ getAllMenuProduct ~ data:", data);
+export const getAllMenuProduct = async (callback, data = {}) => {
   await axios
     .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product`, {
       params: {
         page: data.currentPage,
-        limit: 10,
+        limit: data.limit,
         search: data.search,
-        sort: data.sortField,
-        sortOrder: data.sortOrder,
       },
     })
     .then((res) => {

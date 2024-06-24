@@ -14,12 +14,16 @@ const ProductCheckout = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getMenuProductById(_id, (status, data) => {
-      if (status === true) {
-        setImages(data.data);
-        setIsLoading(false);
-      }
-    });
+    const fetchData = async () => {
+      await getMenuProductById(_id, (status, data) => {
+        if (status === true) {
+          setImages(data.data);
+          setIsLoading(false);
+        }
+      });
+    };
+
+    fetchData();
   }, [_id]);
 
   return (
@@ -33,7 +37,7 @@ const ProductCheckout = () => {
           {isLoading ? (
             <ProductCOskeleton />
           ) : (
-            <section className="bg-chocolate grid min-h-screen w-full grid-cols-1 items-center md:justify-center">
+            <section className="grid min-h-screen w-full grid-cols-1 items-center bg-chocolate md:justify-center">
               <HeaderBack className="mt-[75px]" title="Detail Product" />
               <DetailProduct
                 _id={_id}

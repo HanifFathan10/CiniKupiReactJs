@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getImageMenu } from "../../../../services/Menu.service";
+import { GetAllMenu } from "../../../../services/Menu.service";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@chakra-ui/react";
 
@@ -9,7 +9,7 @@ const MenuList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getImageMenu((status, data) => {
+      await GetAllMenu((status, data) => {
         if (status === true) {
           setImage(data);
           setIsLoading(false);
@@ -67,7 +67,7 @@ const MenuList = () => {
                   return (
                     <li key={index} className="my-3">
                       <Link
-                        to={`/menu/drink/${img.nameurl}`}
+                        to={`/menu/${img.nameurl}`}
                         className="font-extralight"
                       >
                         {img.name}
@@ -78,7 +78,7 @@ const MenuList = () => {
                   return (
                     <li key={index} className="my-3">
                       <Link
-                        to={`/menu/food/${img.nameurl}`}
+                        to={`/menu/${img.nameurl}`}
                         className="font-extralight"
                       >
                         {img.name}

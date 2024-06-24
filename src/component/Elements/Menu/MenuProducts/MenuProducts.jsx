@@ -29,13 +29,13 @@ const MenuProducts = ({ title, id, image, isLoading }) => {
             {image.map((img, index) => {
               if (img.category === "drinks" && id === "drink") {
                 return (
-                  <Link key={index} to={`/menu/drink/${img.nameurl}`}>
+                  <Link key={index} to={`/menu/${img.nameurl}`}>
                     <Cart image={img.image} title={img.name} key={index} />
                   </Link>
                 );
               } else if (img.category === "food" && id === "food") {
                 return (
-                  <Link key={index} to={`/menu/food/${img.nameurl}`}>
+                  <Link key={index} to={`/menu/${img.nameurl}`}>
                     <Cart image={img.image} title={img.name} key={index} />
                   </Link>
                 );

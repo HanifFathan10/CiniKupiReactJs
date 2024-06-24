@@ -10,12 +10,16 @@ const ProdakSlide = () => {
   const [menus, setMenus] = useState([]);
 
   useEffect(() => {
-    getAllMenuProduct((status, data) => {
-      if (status === true) {
-        const result = reproduce(data, 6);
-        setMenus(result.data);
-      }
-    });
+    const fetchData = async () => {
+      await getAllMenuProduct((status, res) => {
+        if (status === true) {
+          const result = reproduce(res.data.products, 6);
+          setMenus(result.data);
+        }
+      });
+    };
+
+    fetchData();
   }, []);
 
   const responsive = {
@@ -36,20 +40,18 @@ const ProdakSlide = () => {
   };
 
   return (
-    <>
-      <Carousel responsive={responsive} className="my-6">
-        {menus.map((image) => (
-          <Prodak
-            key={image._id}
-            _id={image._id}
-            name={image.name}
-            image={image.image}
-            price={image.price}
-            alt={image.name}
-          />
-        ))}
-      </Carousel>
-    </>
+    <Carousel responsive={responsive} className="my-6">
+      {menus.map((image) => (
+        <Prodak
+          key={image._id}
+          _id={image._id}
+          name={image.name}
+          image={image.image}
+          price={image.price}
+          alt={image.name}
+        />
+      ))}
+    </Carousel>
   );
 };
 

@@ -208,7 +208,7 @@ const FormCheckout = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="hover:bg-light text-chocolate ring-chtext-chocolate flex gap-3 rounded-full bg-secondary px-6 py-4 font-semibold ring-2 transition-all duration-300 disabled:bg-neutral-500 disabled:text-secondary disabled:ring-0 disabled:hover:bg-neutral-500 disabled:hover:text-white disabled:hover:ring-0"
+          className=" flex gap-3 rounded-full bg-secondary px-6 py-4 font-semibold text-chocolate ring-2 transition-all duration-300 disabled:bg-neutral-500 disabled:text-secondary disabled:ring-0 disabled:hover:bg-neutral-500 disabled:hover:text-white disabled:hover:ring-0"
         >
           Checkout
           {isLoading && <Spinner color="white" />}

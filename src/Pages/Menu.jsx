@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { HeadMetaData } from "../component/Elements/HeadMetaData";
 import AuthMenu from "../component/Layouts/AuthMenu";
 import MenuProducts from "../component/Elements/Menu/MenuProducts/MenuProducts";
-import { getImageMenu } from "../services/Menu.service";
+import { GetAllMenu } from "../services/Menu.service";
 
 const Menu = () => {
   const [image, setImage] = useState([]);
@@ -10,7 +10,7 @@ const Menu = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getImageMenu((status, data) => {
+      await GetAllMenu((status, data) => {
         if (status === true) {
           setImage(data);
           setIsLoading(false);

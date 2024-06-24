@@ -4,17 +4,21 @@ import { Cart } from "../Cart";
 import CartSkeleton from "../CartSkeleton";
 import { getAllMenuProduct } from "../../../../services/product.service";
 
-const ProductItems = ({ productId }) => {
-  const [menus, setMenus] = useState([]);
+const ProductItems = ({ nameUrl }) => {
+  const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getAllMenuProduct((status, data) => {
-      if (status === true) {
-        setMenus(data);
-        setIsLoading(false);
-      }
-    });
+    const fetchData = async () => {
+      await getAllMenuProduct((status, res) => {
+        if (status === true) {
+          setProducts(res.data.products);
+          setIsLoading(false);
+        }
+      });
+    };
+
+    fetchData();
   }, []);
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -22,8 +26,8 @@ const ProductItems = ({ productId }) => {
         <CartSkeleton />
       ) : (
         <React.Fragment>
-          {menus
-            .filter((menu) => menu.id_menu === productId)
+          {products
+            .filter((menu) => menu.id_menu.nameurl === nameUrl)
             .map((menu, index) => {
               return (
                 <Link key={index} to={`/product/${menu._id}`}>

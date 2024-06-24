@@ -7,6 +7,14 @@ import { useScrollTop } from "../../Hooks/useScrollTop";
 
 const AuthMenu = ({ children, title }) => {
   useScrollTop();
+
+  function kebabToTitleCase(str) {
+    return str
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  }
+
   return (
     <div className="min-h-screen w-full text-white">
       <NavigationBar />
@@ -20,7 +28,7 @@ const AuthMenu = ({ children, title }) => {
             </ul>
           </nav>
           <div className="w-full px-3 py-1 md:px-16 lg:w-4/6 lg:py-6">
-            <h1 className="text-2xl font-bold">{title}</h1>
+            <h1 className="text-2xl font-bold">{kebabToTitleCase(title)}</h1>
             {children}
           </div>
         </div>

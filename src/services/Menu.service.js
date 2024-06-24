@@ -10,15 +10,22 @@ export const reproduce = (data, gap) => {
   return response;
 };
 
-export const getImageMenu = async (callback) => {
-  await axios
-    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu`)
-    .then((res) => {
-      callback(true, res.data);
-    })
-    .catch((error) => {
-      callback(false, error);
-    });
+export const GetAllMenu = async (callback, data = {}) => {
+  const params = {
+    category: data.category,
+  };
+
+  try {
+    const res = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/menu`,
+      {
+        params: Object.keys(params).length ? params : undefined,
+      },
+    );
+    callback(true, res.data);
+  } catch (error) {
+    callback(false, error);
+  }
 };
 
 export const getImageMenuById = (_id, callback) => {
