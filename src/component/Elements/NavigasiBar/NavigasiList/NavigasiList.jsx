@@ -53,7 +53,7 @@ const NavigasiList = () => {
           </button>
         </div>
       ) : (
-        <div className="my-2 flex items-center justify-center rounded-full bg-green px-4 py-1 md:mx-4">
+        <div className="my-2 flex items-center justify-center rounded-full bg-green-700 px-4 py-1 md:mx-4">
           <button
             onClick={() => Navigate("/login")}
             className="p-0 text-sm font-semibold"

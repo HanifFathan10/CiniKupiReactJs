@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Footer from "../../component/Elements/Footer/Footer";
 import { useShallow } from "zustand/react/shallow";
 import { HeadMetaData } from "../../component/Elements/HeadMetaData";
@@ -8,7 +8,7 @@ import FormCheckout from "../../component/Fragment/FormCheckout";
 import { totalItems } from "../../Store/TotalItems";
 
 const CartProduct = () => {
-  const count = totalItems(useShallow((state) => state.count));
+  let count = totalItems(useShallow((state) => state.count));
 
   return (
     <React.Fragment>

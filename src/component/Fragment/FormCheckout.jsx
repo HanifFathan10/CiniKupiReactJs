@@ -1,39 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import InputForm from "../Elements/InputForm";
-import { Spinner, useToast } from "@chakra-ui/react";
+import { Spinner } from "@chakra-ui/react";
 import { useShallow } from "zustand/react/shallow";
-import {
-  HistoryTransaction,
-  PaymentRequest,
-} from "../../services/PaymentService";
-import { useNavigate } from "react-router-dom";
+import { PaymentRequest, PaymentService } from "../../services/PaymentService";
 import { totalItems } from "../../Store/TotalItems";
-import { ClearCart } from "../../services/Order.service";
+import { useCustomToast } from "../../Hooks/useToast";
 
 const FormCheckout = () => {
   const [token, setToken] = useState("");
   const [history, setHistory] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [clearCart, setClearCart] = useState(false);
-  const toast = useToast();
+  const { WarningToast, ErrorToast } = useCustomToast();
   const product = totalItems(useShallow((state) => state.items));
   const accessToken = sessionStorage.getItem("access_token");
-  const Navigate = useNavigate();
-
-  useEffect(() => {
-    if (clearCart) {
-      ClearCart((status, res) => {
-        if (status === true) {
-          setEmail("");
-          setName("");
-          setIsLoading(false);
-          setTimeout(() => {
-            Navigate("/history-transaction");
-          }, 1500);
-        }
-      });
-    }
-  }, [clearCart]);
 
   const handleCheckout = async (e) => {
     try {
@@ -53,29 +32,14 @@ const FormCheckout = () => {
         products: product,
       };
 
-      const CustomToast = ({ title, status }) => {
-        setIsLoading(false);
-        toast({
-          title: title,
-          containerStyle: {
-            marginTop: "80px",
-            fontSize: "12px",
-          },
-          status: status,
-          variant: "top-accent",
-          position: "top",
-          isClosable: true,
-        });
-      };
-
       if (data.products.length === 0)
-        return CustomToast({
+        return WarningToast({
           title: "Please order at least 1 item",
           status: "warning",
         });
 
       if (!validEmail)
-        return CustomToast({
+        return WarningToast({
           title: "Please enter a valid email!!",
           status: "warning",
         });
@@ -83,14 +47,17 @@ const FormCheckout = () => {
       await PaymentRequest(data, (status, res) => {
         if (status) {
           setToken(res.data.token);
-          const data = {
+          let data = {
             order: {
               name: res.data.data.customer_details.name,
               email: res.data.data.customer_details.email,
+              phone: res.data.data.customer_details.phone,
               order_id: res.data.data.transaction_details.order_id,
+              address: res.data.data.customer_details.shipping_address.address,
               gross_amount: res.data.data.transaction_details.gross_amount,
             },
             item_details: res.data.data.item_details,
+            status: "",
           };
 
           setHistory(data);
@@ -98,86 +65,16 @@ const FormCheckout = () => {
       });
     } catch (error) {
       setIsLoading(false);
-      toast({
+      ErrorToast({
         title: "Error during checkout",
         status: "error",
-        containerStyle: {
-          marginTop: "80px",
-          fontSize: "12px",
-        },
-        variant: "top-accent",
-        isClosable: true,
-        position: "top",
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    const makePayment = async () => {
-      if (token) {
-        window.snap.pay(token, {
-          onSuccess: async () => {
-            try {
-              setIsLoading(true);
-              await HistoryTransaction(history, async (status, res) => {
-                if (status === true) {
-                  setClearCart(true);
-                }
-              });
-            } catch (error) {
-              setIsLoading(false);
-              toast({
-                title: "Error during checkout",
-                status: "error",
-                containerStyle: {
-                  marginTop: "80px",
-                  fontSize: "12px",
-                },
-                variant: "top-accent",
-                isClosable: true,
-                position: "top",
-              });
-            }
-          },
-          onPending: () => {
-            setIsLoading(true);
-          },
-          onError: () => {
-            setIsLoading(false);
-          },
-          onClose: () => {
-            setIsLoading(false);
-          },
-        });
-      }
-    };
-
-    makePayment();
-
-    // Bersihkan efek jika diperlukan
-    return () => {
-      // Lakukan pembersihan jika diperlukan
-    };
-  }, [token, HistoryTransaction, ClearCart]);
-
-  useEffect(() => {
-    if (!accessToken) return Navigate("/login");
-    const midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
-
-    let scriptTag = document.createElement("script");
-    scriptTag.src = midtransUrl;
-
-    let midtransClientKey = import.meta.env.MIDTRANS_CLIENT_KEY;
-    scriptTag.setAttribute("data-client-key", midtransClientKey);
-
-    document.body.appendChild(scriptTag);
-
-    return () => {
-      document.body.removeChild(scriptTag);
-    };
-  }, []);
+  PaymentService({ token, history, accessToken, setIsLoading });
 
   return (
     <div className="bg-chocolate px-3 py-6 text-white">
@@ -208,7 +105,7 @@ const FormCheckout = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className=" flex gap-3 rounded-full bg-secondary px-6 py-4 font-semibold text-chocolate ring-2 transition-all duration-300 disabled:bg-neutral-500 disabled:text-secondary disabled:ring-0 disabled:hover:bg-neutral-500 disabled:hover:text-white disabled:hover:ring-0"
+          className=" flex gap-3 rounded-full bg-secondary px-6 py-4 font-semibold text-chocolate transition-all duration-300 disabled:bg-neutral-500 disabled:text-secondary disabled:hover:bg-neutral-500 disabled:hover:text-white disabled:hover:ring-0"
         >
           Checkout
           {isLoading && <Spinner color="white" />}
@@ -228,3 +125,21 @@ const FormCheckout = () => {
 };
 
 export default FormCheckout;
+
+// {
+//     payment_type: 'bank_transfer',
+//     transaction_status: 'settlement',
+//     pdf_url:
+//       'https://app.sandbox.midtrans.com/snap/v1/transactions/a578ff45-4c18-4f28-be64-6e8336b828f0/pdf',
+//     finish_redirect_url:
+//       '?order_id=ca7638fe-e6ef-41d3-be20-7a22dec08ac4&status_code=200&transaction_status=settlement',
+//     status_code: '200',
+//     gross_amount: '21900.00',
+//     bca_va_number: '10172053793',
+//     transaction_time: '2024-06-27 14:53:25',
+//     order_id: 'ca7638fe-e6ef-41d3-be20-7a22dec08ac4',
+//     transaction_id: '5e752343-3e8f-4bca-961f-67176a5cead5',
+//     fraud_status: 'accept',
+//     status_message: 'Success, transaction is found',
+//     va_numbers: [ { bank: 'bca', va_number: '10172053793' } ]
+//   }

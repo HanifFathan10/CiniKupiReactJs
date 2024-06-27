@@ -27,6 +27,7 @@ const DetailProduct = ({
   fat,
   calories,
   sugar,
+  oz,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [click, setClick] = useState(false);
@@ -130,12 +131,12 @@ const DetailProduct = ({
             </p>
           </div>
           <div className="flex items-center gap-x-2 md:gap-x-4">
-            {!fat && !calories && !sugar ? (
+            {!fat && !calories && !sugar && !oz ? (
               ""
             ) : (
               <React.Fragment>
                 <h3 className="text-xs font-semibold">
-                  {calories} Calories, {sugar}g sugar, {fat}g fat
+                  {calories} Calories, {sugar}g sugar, {fat}g fat {oz} oz
                 </h3>
                 <Popover placement="top-start">
                   <PopoverTrigger>

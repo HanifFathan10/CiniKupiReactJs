@@ -121,7 +121,7 @@ const MenuDashboardPage = () => {
             <div class="w-full max-w-xs">
               <form>
                 <label for="underline_select" class="sr-only">
-                  Underline select
+                  Filter Menu
                 </label>
                 <select
                   id="underline_select"

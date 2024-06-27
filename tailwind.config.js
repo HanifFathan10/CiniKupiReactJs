@@ -28,7 +28,11 @@ export default {
         },
         chocolate: "#1f3933",
         secondary: "#cba258",
-        green: "#00754a",
+        green: {
+          100: "#00754a",
+          300: "#5ee0a8",
+          900: "#14532d",
+        },
         dark: "#081225",
         light: {
           100: "#ffffff",

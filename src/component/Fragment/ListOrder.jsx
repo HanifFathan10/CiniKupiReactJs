@@ -10,9 +10,8 @@ const ListOrder = () => {
   );
 
   useEffect(() => {
-    // Memanggil useCount ketika ada perubahan pada properti items
     useCount();
-  }, [items]); // Gunakan items sebagai dependency
+  }, []);
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-center bg-[#eaeaea]">

@@ -48,10 +48,11 @@ const ProductCheckout = () => {
                 descriptions={images.descriptions}
                 price={images.price}
                 sugar={images.sugar}
+                oz={images.oz}
                 key={images.id}
               />
               <div className="-mb-10 ml-4 mt-20 md:ml-10">
-                <h1 className="w-fit border-b-4 border-green text-lg font-bold text-white">
+                <h1 className="border-green-300 w-fit border-b-4 text-lg font-bold text-white">
                   Recommended Product
                 </h1>
               </div>
