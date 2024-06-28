@@ -18,7 +18,7 @@ const Input = ({
       id={id}
       name={name}
       onChange={onChange}
-      className="rounded-md border border-slate-300 bg-transparent p-2 placeholder:text-xs disabled:bg-[rgba(0,0,0,0.5)] disabled:text-neutral-800"
+      className="rounded-md border  border-slate-300 bg-transparent p-2 placeholder:text-sm placeholder:text-neutral-400 disabled:bg-[rgba(0,0,0,0.5)] disabled:text-neutral-800"
       placeholder={placeholder}
       required
       defaultValue={defaultValue}

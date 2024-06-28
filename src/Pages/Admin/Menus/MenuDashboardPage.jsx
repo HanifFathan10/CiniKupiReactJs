@@ -193,12 +193,13 @@ const MenuDashboardPage = () => {
                   </div>
                 </div>
               ) : (
-                <>
+                <React.Fragment>
                   {menus.map((menu, i) => {
                     const lastUpdate = formatDistanceToNow(menu.updatedAt, {
                       addSuffix: true,
                       locale: id,
                     });
+
                     return (
                       <tr class="border-b dark:border-gray-700" key={i}>
                         <th
@@ -236,7 +237,7 @@ const MenuDashboardPage = () => {
                       </tr>
                     );
                   })}
-                </>
+                </React.Fragment>
               )}
             </tbody>
           </table>

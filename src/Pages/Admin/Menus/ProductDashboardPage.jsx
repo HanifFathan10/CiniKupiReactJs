@@ -21,6 +21,7 @@ import ModalInput from "../../../component/Elements/InputForm/Modal";
 import { GetAllMenu } from "../../../services/Menu.service";
 import {
   ChevronDownIcon,
+  EllipsisHorizontalIcon,
   MagnifyingGlassIcon,
   PlusIcon,
   XMarkIcon,
@@ -28,6 +29,7 @@ import {
 import "flowbite";
 import Plus from "../../../component/Elements/Icon/Plus";
 import { useDebounce } from "use-debounce";
+import Pagination from "../../../component/Elements/Pagination/Pagination";
 
 const ProductDashboardPage = () => {
   const [products, setProducts] = useState([]);
@@ -37,15 +39,15 @@ const ProductDashboardPage = () => {
   const [show, setShow] = useState({});
   const [deleted, setDeleted] = useState({});
   const [updated, setUpdated] = useState({});
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState({});
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [debouncedSearch] = useDebounce(search, 800);
 
   useEffect(() => {
     fetchDataProduct();
-  }, [currentPage, debouncedSearch]);
+  }, [page, debouncedSearch]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,14 +66,14 @@ const ProductDashboardPage = () => {
 
     try {
       const data = {
-        currentPage,
+        page,
         limit: 10,
         search: debouncedSearch,
       };
       await getAllMenuProduct((status, res) => {
         if (status === true) {
           setProducts(res.data.products);
-          setTotalPages(res.data.totalPages);
+          setTotalPages(res.data);
           setLoading(false);
         }
       }, data);
@@ -82,11 +84,10 @@ const ProductDashboardPage = () => {
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
-    setCurrentPage(1);
   };
 
   const handlePageChange = (page) => {
-    setCurrentPage(page);
+    setPage(page);
   };
 
   const handleAddProduct = async (e) => {
@@ -143,6 +144,7 @@ const ProductDashboardPage = () => {
     await deleteProductMenu(data, (status, res) => {
       if (status === true) {
         setDeleted({});
+        window.location.reload();
       }
     });
   };
@@ -165,7 +167,7 @@ const ProductDashboardPage = () => {
     <React.Fragment>
       <HeadMetaData title="Product Dashboard" description="Product dashboard" />
       <AdminLayouts>
-        <div class="relative overflow-x-auto bg-white shadow-md sm:rounded-lg">
+        <div class="relative overflow-x-auto bg-white p-3 shadow-md sm:rounded-lg">
           <header className="flex justify-between p-4">
             <div className="flex gap-4">
               <label for="table-search" class="sr-only">
@@ -246,9 +248,10 @@ const ProductDashboardPage = () => {
                   </div>
                 </div>
               ) : (
-                <>
+                <React.Fragment>
                   {products.map((product, index) => {
-                    const itemNumber = (currentPage - 1) * 10 + index + 1;
+                    const itemNumber =
+                      (totalPages.currentPage - 1) * 10 + index + 1;
                     return (
                       <tr
                         class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
@@ -281,15 +284,7 @@ const ProductDashboardPage = () => {
                               as="button"
                               rightIcon={<ChevronDownIcon />}
                             >
-                              <svg
-                                class="h-5 w-5"
-                                aria-hidden="true"
-                                fill="currentColor"
-                                viewbox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                              </svg>
+                              <EllipsisHorizontalIcon className="h-6 w-6" />
                             </MenuButton>
                             <MenuList>
                               <MenuItem onClick={() => setShow(product)}>
@@ -309,65 +304,15 @@ const ProductDashboardPage = () => {
                       </tr>
                     );
                   })}
-                </>
+                </React.Fragment>
               )}
             </tbody>
           </table>
-          <nav
-            class="flex-column flex flex-wrap items-center justify-between px-3 py-4 md:flex-row"
-            aria-label="Table navigation"
-          >
-            <span class="mb-4 block w-full text-sm font-normal text-gray-500 dark:text-gray-400 md:mb-0 md:inline md:w-auto">
-              Showing{" "}
-              <span class="font-semibold text-gray-900 dark:text-white">
-                1-10 product
-              </span>{" "}
-              of{" "}
-              <span class="font-semibold text-gray-900 dark:text-white">
-                {totalPages} page
-              </span>
-            </span>
-            <ul class="inline-flex h-8 -space-x-px text-sm rtl:space-x-reverse">
-              {currentPage > 1 && (
-                <li>
-                  <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    type="button"
-                    class="ms-0 flex h-8 items-center justify-center rounded-s-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                  >
-                    Previous
-                  </button>
-                </li>
-              )}
-              {Array.from({ length: totalPages }, (_, index) => (
-                <li key={index}>
-                  <button
-                    onClick={() => handlePageChange(index + 1)}
-                    disabled={currentPage == index + 1}
-                    type="button"
-                    className={`ms-0 flex h-8 cursor-pointer items-center justify-center border border-gray-300 ${
-                      currentPage == index + 1
-                        ? "bg-gray-300 text-gray-700"
-                        : "bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                    } px-3 leading-tight`}
-                  >
-                    {index + 1}
-                  </button>
-                </li>
-              ))}
-              {currentPage < totalPages && (
-                <li>
-                  <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    type="button"
-                    class="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                  >
-                    Next
-                  </button>
-                </li>
-              )}
-            </ul>
-          </nav>
+          <Pagination
+            totalPages={totalPages}
+            page={page}
+            handlePageChange={handlePageChange}
+          />
         </div>
       </AdminLayouts>
 

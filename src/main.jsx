@@ -11,7 +11,6 @@ import ProductCheckout from "./Pages/ProductCheckout";
 import HandleAuthSuccess from "./Pages/AuthLogin";
 import CartPage from "./Pages/MenuPage/CartPage";
 import { ChakraProvider } from "@chakra-ui/react";
-import OrderStatus from "./Pages/OrderStatus";
 import AdminPage from "./Pages/Admin/Admin";
 import UserDashboardPage from "./Pages/Admin/users/UsersDashboardPage";
 import ProductDashboardPage from "./Pages/Admin/Menus/ProductDashboardPage";
@@ -19,6 +18,7 @@ import MenuDashboardPage from "./Pages/Admin/Menus/MenuDashboardPage";
 import TransactionDashboardPage from "./Pages/Admin/transactions/TransactionDashboardPage";
 import "flowbite";
 import ProductMenuPage from "./Pages/ProductMenuPage";
+import HistoryTransactionPage from "./Pages/HistoryTransactionPage";
 
 const router = createBrowserRouter([
   {
@@ -60,7 +60,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/history-transaction",
-    element: <OrderStatus />,
+    element: <HistoryTransactionPage />,
   },
   {
     path: "/admin",

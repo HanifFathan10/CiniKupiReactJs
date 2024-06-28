@@ -1,7 +1,6 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import { ClearCart } from "./Order.service";
 
 export const PaymentRequest = async (data, callback) => {
   await axios
@@ -28,6 +27,8 @@ export const GetHistoryTransaction = async (callback, data) => {
       params: {
         page: data.page,
         limit: data.limit,
+        status: data.status,
+        time: data.time,
       },
     })
     .then((res) => {
@@ -43,7 +44,6 @@ export const getAllHistoryTransaction = async (callback, data = {}) => {
     .get(`${import.meta.env.VITE_BACKEND_URL}/api/histories`, {
       params: {
         page: data.page,
-        limit: data.limit,
         search: data.search,
       },
     })
@@ -94,7 +94,7 @@ export const PaymentService = ({
   setIsLoading,
 }) => {
   useEffect(() => {
-    const handleTransaction = async (res, clearCart = false) => {
+    const handleTransaction = async (res) => {
       try {
         setIsLoading(true);
         history.status = res.transaction_status;
@@ -102,11 +102,6 @@ export const PaymentService = ({
         await HistoryTransaction(history, (status) => {
           if (status === true) {
             setIsLoading(false);
-            if (clearCart === true) {
-              ClearCart();
-              Navigate("/history-transaction");
-              localStorage.removeItem("pendingTransaction");
-            }
           }
         });
       } catch (error) {
@@ -117,18 +112,27 @@ export const PaymentService = ({
     const makePayment = async () => {
       if (token && window.snap) {
         window.snap.pay(token, {
-          onSuccess: (res) => handleTransaction(res, true),
+          onSuccess: (res) => handleTransaction(res),
           onPending: (res) => {
-            localStorage.setItem(
-              "pendingTransaction",
-              JSON.stringify({ res, token }),
+            const pendingTransaction = JSON.parse(
+              localStorage.getItem("pendingTransaction"),
             );
-            handleTransaction(res);
+
+            if (!pendingTransaction) {
+              localStorage.setItem(
+                "pendingTransaction",
+                JSON.stringify({ history, token }),
+              );
+              handleTransaction(res);
+              setIsLoading(false);
+            }
+
+            return;
           },
-          onError: () => {
+          onError: (res) => {
             setIsLoading(false);
           },
-          onClose: () => {
+          onClose: (res) => {
             setIsLoading(false);
           },
         });

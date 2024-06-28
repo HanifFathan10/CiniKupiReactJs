@@ -1,18 +1,39 @@
-import React, { useState } from "react";
-import InputForm from "../Elements/InputForm";
+import React, { useEffect, useState } from "react";
 import { Spinner } from "@chakra-ui/react";
 import { useShallow } from "zustand/react/shallow";
 import { PaymentRequest, PaymentService } from "../../services/PaymentService";
 import { totalItems } from "../../Store/TotalItems";
 import { useCustomToast } from "../../Hooks/useToast";
+import {
+  HomeModernIcon,
+  InboxIcon,
+  PhoneIcon,
+  UserIcon,
+} from "@heroicons/react/24/solid";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ClearCart } from "../../services/Order.service";
 
 const FormCheckout = () => {
   const [token, setToken] = useState("");
   const [history, setHistory] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const Navigate = useNavigate();
+  const location = useLocation();
+
   const { WarningToast, ErrorToast } = useCustomToast();
   const product = totalItems(useShallow((state) => state.items));
   const accessToken = sessionStorage.getItem("access_token");
+  const dataPending = localStorage.getItem("pendingTransaction");
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+
+    if (searchParams.get("status_code")) {
+      ClearCart((status, res) => {
+        if (status) return Navigate("/history-transaction");
+      });
+    }
+  }, [location]);
 
   const handleCheckout = async (e) => {
     try {
@@ -29,6 +50,8 @@ const FormCheckout = () => {
       const data = {
         customer_name: e.target.name.value,
         customer_email: validEmail,
+        customer_phone: e.target.phone.value,
+        customer_address: e.target.address.value,
         products: product,
       };
 
@@ -43,6 +66,14 @@ const FormCheckout = () => {
           title: "Please enter a valid email!!",
           status: "warning",
         });
+
+      if (dataPending) {
+        return ErrorToast({
+          title:
+            "You have a pending transaction, please check in history transaction",
+          status: "error",
+        });
+      }
 
       await PaymentRequest(data, (status, res) => {
         if (status) {
@@ -80,27 +111,77 @@ const FormCheckout = () => {
     <div className="bg-chocolate px-3 py-6 text-white">
       <h1 className="mb-3 font-bold">CUSTOMER DETAILS</h1>
       <form onSubmit={handleCheckout}>
-        <InputForm
-          htmlfor="name"
-          placehoder="Your Name"
-          type="text"
-          name="name"
-          id="name"
-          className="md:w-1/2"
-        >
+        <label for="name" class="mb-2 block text-sm font-medium text-white">
           Your Name
-        </InputForm>
+        </label>
+        <div class="relative mb-6 md:w-1/2">
+          <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5">
+            <UserIcon class="h-4 w-4 text-gray-500" />
+          </div>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="block w-full rounded-lg border border-gray-300 border-gray-300 bg-transparent p-2.5 ps-10 text-sm text-gray-900  text-white placeholder-gray-400 focus:border-blue-500 focus:border-blue-500 focus:ring-blue-500 focus:ring-blue-500"
+            placeholder="your name"
+            required
+          />
+        </div>
 
-        <InputForm
-          htmlfor="email"
-          placehoder="haniffathan@example.com"
-          type="email"
-          name="email"
-          id="email"
-          className="md:w-1/2"
-        >
+        <label for="email" class="mb-2 block text-sm font-medium text-white">
           Your Email
-        </InputForm>
+        </label>
+        <div class="relative mb-6 md:w-1/2">
+          <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5">
+            <InboxIcon class="h-4 w-4 text-gray-500" />
+          </div>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="block w-full rounded-lg border border-gray-300 border-gray-300 bg-transparent p-2.5 ps-10 text-sm text-gray-900  text-white placeholder-gray-400 focus:border-blue-500 focus:border-blue-500 focus:ring-blue-500 focus:ring-blue-500"
+            placeholder="youremail@gmail.com"
+            required
+          />
+        </div>
+
+        <label for="phone" class="mb-2 block text-sm font-medium text-white">
+          Phone number or Whatsapp:
+        </label>
+        <div class="relative mb-4 md:w-1/2">
+          <div class="pointer-events-none absolute inset-y-0 start-0 top-0 flex items-center ps-3.5">
+            <PhoneIcon class="h-4 w-4 text-gray-500" />
+          </div>
+          <input
+            type="number"
+            id="phone"
+            name="phone"
+            aria-describedby="helper-text-explanation"
+            class="block w-full rounded-lg border border-gray-300 bg-transparent p-2.5 ps-10 text-sm text-white focus:border-blue-500 focus:ring-blue-500"
+            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+            placeholder="+62 812 3456 7890"
+            required
+          />
+        </div>
+
+        <label for="address" class="mb-2 block text-sm font-medium text-white">
+          Shipping address
+        </label>
+        <div class="relative mb-6 md:w-1/2">
+          <div class="pointer-events-none absolute inset-y-0 start-0 flex items-start py-3 ps-3.5">
+            <HomeModernIcon class="h-4 w-4 text-gray-500" />
+          </div>
+          <textarea
+            rows="4"
+            cols="50"
+            type="text"
+            id="address"
+            name="address"
+            class="block w-full rounded-lg border border-gray-300 border-gray-300 bg-transparent p-2.5 ps-10 text-sm text-gray-900  text-white placeholder-gray-400 focus:border-blue-500 focus:border-blue-500 focus:ring-blue-500 focus:ring-blue-500"
+            placeholder="jl. jalan jalan no. 1 rt. 00 rw. 00 kota wakanda"
+            required
+          />
+        </div>
 
         <button
           type="submit"
@@ -125,21 +206,3 @@ const FormCheckout = () => {
 };
 
 export default FormCheckout;
-
-// {
-//     payment_type: 'bank_transfer',
-//     transaction_status: 'settlement',
-//     pdf_url:
-//       'https://app.sandbox.midtrans.com/snap/v1/transactions/a578ff45-4c18-4f28-be64-6e8336b828f0/pdf',
-//     finish_redirect_url:
-//       '?order_id=ca7638fe-e6ef-41d3-be20-7a22dec08ac4&status_code=200&transaction_status=settlement',
-//     status_code: '200',
-//     gross_amount: '21900.00',
-//     bca_va_number: '10172053793',
-//     transaction_time: '2024-06-27 14:53:25',
-//     order_id: 'ca7638fe-e6ef-41d3-be20-7a22dec08ac4',
-//     transaction_id: '5e752343-3e8f-4bca-961f-67176a5cead5',
-//     fraud_status: 'accept',
-//     status_message: 'Success, transaction is found',
-//     va_numbers: [ { bank: 'bca', va_number: '10172053793' } ]
-//   }
