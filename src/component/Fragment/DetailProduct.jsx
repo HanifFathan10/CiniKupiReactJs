@@ -164,7 +164,7 @@ const DetailProduct = ({
             <button
               disabled={isLoading}
               onClick={handleAddToCart}
-              className={`mt-10 flex cursor-pointer items-center justify-center rounded-full bg-green px-5 py-3 text-center font-semibold shadow-xl  md:px-8 md:py-6 ${isLoading && "cursor-not-allowed bg-neutral-600"}`}
+              className={`mt-10 flex cursor-pointer items-center justify-center rounded-full bg-green-700 px-5 py-3 text-center font-semibold shadow-xl  md:px-8 md:py-6 ${isLoading && "cursor-not-allowed bg-neutral-600"}`}
             >
               {isLoading ? (
                 "Loading..."

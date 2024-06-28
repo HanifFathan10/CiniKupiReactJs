@@ -28,7 +28,7 @@ export const getAllMenuProduct = async (callback, data = {}) => {
   await axios
     .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product`, {
       params: {
-        page: data.currentPage,
+        page: data.page,
         limit: data.limit,
         search: data.search,
       },

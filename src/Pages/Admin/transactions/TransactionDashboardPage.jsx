@@ -10,13 +10,14 @@ import { rupiah } from "../../../Hooks/useRupiah";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import {
   ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
   ChevronUpDownIcon,
+  EllipsisHorizontalIcon,
   MagnifyingGlassIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/solid";
-import Plus from "../../../component/Elements/Icon/Plus";
 import { useDebounce } from "use-debounce";
+import Pagination from "../../../component/Elements/Pagination/pagination";
+import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
 const TransactionDashboardPage = () => {
   const [users, setUsers] = useState([]);
@@ -24,8 +25,7 @@ const TransactionDashboardPage = () => {
   const [search, setSearch] = useState("");
   const [debounceSearch] = useDebounce(search, 500);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState({});
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -35,7 +35,6 @@ const TransactionDashboardPage = () => {
       try {
         const data = {
           page,
-          limit,
           search: debounceSearch,
         };
 
@@ -52,7 +51,7 @@ const TransactionDashboardPage = () => {
     };
 
     fetchDataTransaction();
-  }, [debounceSearch, page, limit]);
+  }, [debounceSearch, page]);
 
   const handleSearchTransaction = (e) => {
     setSearch(e.target.value);
@@ -75,8 +74,8 @@ const TransactionDashboardPage = () => {
     <React.Fragment>
       <HeadMetaData title="Users Dashboard" description="users dashboard" />
       <AdminLayouts>
-        <div class="relative overflow-auto bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
-          <div class="flex flex-col items-center justify-between space-y-3 p-4 md:flex-row md:space-x-4 md:space-y-0">
+        <div class="relative overflow-auto bg-white px-3 py-3 shadow-md dark:bg-gray-800 sm:rounded-lg">
+          <div class="flex flex-col items-center justify-between space-y-3 px-1 py-3 md:flex-row md:space-x-4 md:space-y-0">
             <div class="w-full md:w-1/2">
               <form class="flex items-center">
                 <label for="simple-search" class="sr-only">
@@ -331,7 +330,7 @@ const TransactionDashboardPage = () => {
                   </div>
                 ) : (
                   <React.Fragment>
-                    {users.map((user, i) => {
+                    {users.map((user, index) => {
                       const date = new Date(user.createdAt);
                       const formatDate = date.toLocaleString("id-ID", {
                         day: "numeric",
@@ -340,13 +339,16 @@ const TransactionDashboardPage = () => {
                         hour: "numeric",
                         minute: "numeric",
                       });
+                      const itemNumber =
+                        (totalPages.currentPage - 1) * 10 + index + 1;
+
                       return (
-                        <tr class="border-b dark:border-gray-700" key={i}>
+                        <tr class="border-b dark:border-gray-700" key={index}>
                           <th
                             scope="row"
                             class="whitespace-nowrap px-4 py-3 font-medium text-gray-900 dark:text-white"
                           >
-                            {i + 1}
+                            {itemNumber}
                           </th>
                           <td class="px-4 py-3">{user.order.name}</td>
                           <td class="px-4 py-3">{user.order.email}</td>
@@ -355,57 +357,17 @@ const TransactionDashboardPage = () => {
                           </td>
                           <td class="px-4 py-3">{user.item_details.length}</td>
                           <td class="px-4 py-3">{formatDate}</td>
-                          <td class="flex items-center justify-end px-4 py-3">
-                            <button
-                              id="apple-imac-27-dropdown-button"
-                              data-dropdown-toggle="apple-imac-27-dropdown"
-                              class="inline-flex items-center rounded-lg p-0.5 text-center text-sm font-medium text-gray-500 hover:text-gray-800 focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
-                              type="button"
-                            >
-                              <svg
-                                class="h-5 w-5"
-                                aria-hidden="true"
-                                fill="currentColor"
-                                viewbox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                              </svg>
-                            </button>
-                            <div
-                              id="apple-imac-27-dropdown"
-                              class="z-10 hidden w-44 divide-y divide-gray-100 rounded bg-white shadow dark:divide-gray-600 dark:bg-gray-700"
-                            >
-                              <ul
-                                class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                aria-labelledby="apple-imac-27-dropdown-button"
-                              >
-                                <li>
-                                  <a
-                                    href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  >
-                                    Show
-                                  </a>
-                                </li>
-                                <li>
-                                  <a
-                                    href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                  >
-                                    Edit
-                                  </a>
-                                </li>
-                              </ul>
-                              <div class="py-1">
-                                <a
-                                  href="#"
-                                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                                >
+                          <td class="flex items-center justify-center px-4 py-3">
+                            <Menu>
+                              <MenuButton as="button">
+                                <EllipsisHorizontalIcon className="h-6 w-6" />
+                              </MenuButton>
+                              <MenuList>
+                                <MenuItem onClick={() => setDeleted(user)}>
                                   Delete
-                                </a>
-                              </div>
-                            </div>
+                                </MenuItem>
+                              </MenuList>
+                            </Menu>
                           </td>
                         </tr>
                       );
@@ -415,74 +377,49 @@ const TransactionDashboardPage = () => {
               </tbody>
             </table>
           </div>
-          <nav
-            class="flex flex-col items-start justify-between space-y-3 p-4 md:flex-row md:items-center md:space-y-0"
-            aria-label="Table navigation"
-          >
-            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-              Showing
-              <span class="px-1 font-semibold text-gray-900">
-                {totalPages.page}
-              </span>
-              of
-              <span class="px-1 font-semibold text-gray-900">
-                {totalPages.totalPages}
-              </span>
-            </span>
-            <ul class="inline-flex items-stretch -space-x-px">
-              <li>
-                <button
-                  onClick={() => handlePageChange(page - 1)}
-                  class="ml-0 flex h-full items-center justify-center rounded-l-lg border border-gray-300 bg-white px-3 py-1.5 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  <span class="sr-only">Previous</span>
-                  <ChevronLeftIcon class="h-5 w-5" />
-                </button>
-              </li>
-              {Array.from({ length: totalPages.totalPages }, (_, index) => (
-                <li key={index}>
-                  <button
-                    onClick={() => handlePageChange(index + 1)}
-                    disabled={page === index + 1}
-                    class={`flex items-center justify-center border border-gray-300 ${
-                      page === index + 1
-                        ? "bg-gray-100 text-gray-400"
-                        : "bg-white text-gray-500"
-                    }
-                    px-3 py-2 text-sm leading-tight hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
-                  >
-                    {index + 1}
-                  </button>
-                </li>
-              ))}
-
-              <li>
-                <button
-                  onClick={() => handlePageChange(page + 1)}
-                  class="flex h-full items-center justify-center rounded-r-lg border border-gray-300 bg-white px-3 py-1.5 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  <span class="sr-only">Next</span>
-                  <ChevronRightIcon class="h-5 w-5" />
-                </button>
-              </li>
-            </ul>
-          </nav>
+          <Pagination
+            handlePageChange={handlePageChange}
+            page={page}
+            totalPages={totalPages}
+          />
         </div>
       </AdminLayouts>
+
       {Object.keys(deleted).length ? (
         <ModalInput onClose={() => setDeleted({})}>
-          <h1 className="mb-6 text-xl font-bold">Delete Product</h1>
-          <p className="mb-6 font-semibold">
-            Are you sure you want to delete this product?
-          </p>
-          <button
-            className="flex gap-1 rounded-md bg-red-600 px-5 py-3 font-bold text-white"
-            type="submit"
-            onClick={() => handleDeleteUser(deleted._id)}
-          >
-            <TrashIcon className="h-6 w-6" />
-            Delete
-          </button>
+          <div class="relative mx-auto w-fit rounded-lg bg-white p-4 text-center shadow dark:bg-gray-800 sm:p-5">
+            <button
+              type="button"
+              onClick={() => setDeleted({})}
+              class="absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+            >
+              <XMarkIcon className="h-5 w-5" />
+              <span class="sr-only">Close modal</span>
+            </button>
+            <TrashIcon className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+            <p class="mb-4 text-gray-500 dark:text-gray-300">
+              Are you sure you want to delete{" "}
+              <span className="font-bold text-neutral-600">
+                {deleted.order.name}
+              </span>
+            </p>
+            <div class="flex items-center justify-center space-x-4">
+              <button
+                onClick={() => setDeleted({})}
+                type="button"
+                class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
+              >
+                No, cancel
+              </button>
+              <button
+                type="button"
+                class="rounded-lg bg-red-600 px-3 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+                onClick={() => handleDeleteUser(deleted._id)}
+              >
+                Yes, I'm sure
+              </button>
+            </div>
+          </div>
         </ModalInput>
       ) : null}
     </React.Fragment>

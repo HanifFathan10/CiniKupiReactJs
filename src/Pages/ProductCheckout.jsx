@@ -52,7 +52,7 @@ const ProductCheckout = () => {
                 key={images.id}
               />
               <div className="-mb-10 ml-4 mt-20 md:ml-10">
-                <h1 className="border-green-300 w-fit border-b-4 text-lg font-bold text-white">
+                <h1 className="w-fit border-b-4 border-green-700 text-lg font-bold text-white">
                   Recommended Product
                 </h1>
               </div>

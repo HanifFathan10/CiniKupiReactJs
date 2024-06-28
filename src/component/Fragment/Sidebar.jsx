@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { UserIcon } from "@heroicons/react/24/outline";
+import { BanknotesIcon, UserIcon } from "@heroicons/react/24/outline";
 import { BuildingStorefrontIcon } from "@heroicons/react/24/outline";
 import {
   Accordion,
@@ -35,7 +35,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="back absolute left-0 top-0 z-[9999] flex h-screen w-72 -translate-x-full flex-col justify-between overflow-y-hidden rounded-e-xl border-4 border-solid bg-light-200 px-5 py-3 text-black duration-300 ease-linear lg:static lg:translate-x-0">
+    <div className="absolute left-0 top-0 z-[9999] flex h-screen w-72 -translate-x-full flex-col justify-between overflow-y-hidden rounded-e-xl border-4 border-solid bg-light-200 px-5 py-3 text-black duration-300 ease-linear lg:static lg:translate-x-0">
       <div>
         <Link to={"/admin"} className="flex w-full items-end gap-2 p-3">
           <svg
@@ -73,7 +73,7 @@ const Sidebar = () => {
       </div>
       <ul className="flex flex-col gap-3">
         <li
-          className={`rounded-md ${pathname === "/admin/users" ? "bg-dark text-white" : "text-dark"} p-3`}
+          className={`rounded-md ${pathname === "/admin/users" ? "bg-dark text-white" : "text-dark hover:bg-gray-200"} p-3 `}
         >
           <Link to="/admin/users" className="flex items-center gap-2">
             <UserIcon className="h-6 w-6" />
@@ -123,40 +123,10 @@ const Sidebar = () => {
           </AccordionItem>
         </Accordion>
         <li
-          className={`rounded-md ${pathname === "/admin/transactions" ? "bg-dark stroke-white text-white" : "stroke-dark text-dark"} p-3`}
+          className={`rounded-md ${pathname === "/admin/transactions" ? "bg-dark text-white" : "text-dark hover:bg-gray-200"} p-3 `}
         >
           <Link to="/admin/transactions" className="flex items-center gap-2">
-            <svg
-              width="24px"
-              height="24px"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-              <g
-                id="SVGRepo_tracerCarrier"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                {" "}
-                <path
-                  d="M6.72827 19.7C7.54827 18.82 8.79828 18.89 9.51828 19.85L10.5283 21.2C11.3383 22.27 12.6483 22.27 13.4583 21.2L14.4683 19.85C15.1883 18.89 16.4383 18.82 17.2583 19.7C19.0383 21.6 20.4883 20.97 20.4883 18.31V7.04C20.4883 3.01 19.5483 2 15.7683 2H8.20828C4.42828 2 3.48828 3.01 3.48828 7.04V18.3C3.49828 20.97 4.95827 21.59 6.72827 19.7Z"
-                  // stroke="#081225"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></path>{" "}
-                <path
-                  d="M9.25 10H14.75"
-                  // stroke="#081225"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></path>{" "}
-              </g>
-            </svg>
+            <BanknotesIcon className="h-6 w-6" />
             <h2 className="font-semibold">Transactions</h2>
           </Link>
         </li>

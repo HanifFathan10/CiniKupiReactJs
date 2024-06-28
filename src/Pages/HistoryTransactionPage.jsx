@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { HeadMetaData } from "../component/Elements/HeadMetaData";
-import { CartStatus } from "../component/Elements/OrderStatus/CartStatus";
+import HistoryOrder from "../component/Fragment/HistoryOrder";
 import AuthLayouth from "../component/Layouts/AuthLayouth";
-import { GetHistoryTransaction } from "../services/PaymentService";
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/solid";
+  DeleteHistoryTransaction,
+  GetHistoryTransaction,
+} from "../services/PaymentService";
+import { TrashIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import ModalInput from "../component/Elements/InputForm/Modal";
 import { rupiah } from "../Hooks/useRupiah";
 import useFormatDate from "../Hooks/useFormatDate";
+import Pagination from "../component/Elements/Pagination/pagination";
 
-const OrderStatus = () => {
+const HistoryTransactionPage = () => {
   const [transaction, setTransaction] = useState([]);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [cancel, setCancel] = useState({});
   const [details, setDetails] = useState({});
-  const formatDateDetails = useFormatDate(details.createdAt, {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  });
+  const [status, setStatus] = useState("");
+  const [time, setTime] = useState("");
 
   useEffect(() => {
     setIsLoading(true);
@@ -32,6 +28,8 @@ const OrderStatus = () => {
       const data = {
         page,
         limit: 5,
+        status,
+        time,
       };
       await GetHistoryTransaction((status, res) => {
         if (status) {
@@ -43,11 +41,40 @@ const OrderStatus = () => {
     };
 
     fetchDataTransaction();
-  }, [page]);
+  }, [page, status, time]);
+
+  const formatDateDetails = useFormatDate(details.createdAt, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  });
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
   };
+
+  const handleStatusChange = (e) => {
+    setStatus(e.target.value);
+    setPage(1);
+  };
+
+  const handleTimeChange = (e) => {
+    setTime(e.target.value);
+    setPage(1);
+  };
+
+  const handleCancelTransaction = async (_id) => {
+    await DeleteHistoryTransaction(_id, (status, res) => {
+      if (status) {
+        localStorage.removeItem("pendingTransaction");
+        setCancel({});
+        window.location.reload();
+      }
+    });
+  };
+
   return (
     <React.Fragment>
       <HeadMetaData
@@ -73,13 +100,15 @@ const OrderStatus = () => {
                     </label>
                     <select
                       id="order-type"
+                      onChange={handleStatusChange}
+                      value={status}
                       class="block w-full min-w-[8rem] rounded-lg border border-gray-600  bg-gray-700 p-2.5 text-sm text-white placeholder:text-gray-400 focus:border-primary-500 focus:ring-primary-500"
                     >
-                      <option selected>All orders</option>
-                      <option value="pre-order">Pre-order</option>
-                      <option value="transit">In transit</option>
-                      <option value="confirmed">Confirmed</option>
-                      <option value="cancelled">Cancelled</option>
+                      <option selected value="">
+                        All orders
+                      </option>
+                      <option value="settlement">Success</option>
+                      <option value="pending">Pending</option>
                     </select>
                   </div>
 
@@ -97,13 +126,17 @@ const OrderStatus = () => {
                     </label>
                     <select
                       id="duration"
+                      onChange={handleTimeChange}
+                      value={time}
                       class="block w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-sm  text-white placeholder:text-gray-400  focus:border-primary-500  focus:ring-primary-500"
                     >
-                      <option selected>this week</option>
-                      <option value="this month">this month</option>
-                      <option value="last 3 months">the last 3 months</option>
-                      <option value="lats 6 months">the last 6 months</option>
-                      <option value="this year">this year</option>
+                      <option selected value="">
+                        All time
+                      </option>
+                      <option value="3days">the last 3 days</option>
+                      <option value="1week">the last 1 Weeks</option>
+                      <option value="1months">the last 1 months</option>
+                      <option value="3months">the last 3 months</option>
                     </select>
                   </div>
                 </div>
@@ -133,7 +166,7 @@ const OrderStatus = () => {
                   <span class="sr-only">Loading...</span>
                 </div>
               ) : (
-                <>
+                <React.Fragment>
                   {transaction.map((trx, i) => {
                     const date = new Date(trx.createdAt);
                     const formatDate = date.toLocaleString("id-ID", {
@@ -145,72 +178,24 @@ const OrderStatus = () => {
                     });
 
                     return (
-                      <CartStatus
+                      <HistoryOrder
                         trx={trx}
                         formatDate={formatDate}
                         i={i}
                         setDetails={setDetails}
+                        setCancel={setCancel}
+                        key={i}
                       />
                     );
                   })}
-                </>
+                </React.Fragment>
               )}
 
-              <nav
-                class="mt-6 flex items-center justify-between sm:mt-8"
-                aria-label="Page navigation example"
-              >
-                <span class="text-sm font-normal  text-gray-400">
-                  Showing
-                  <span class="white px-1 font-semibold text-white">
-                    {totalPages.currentPage}
-                  </span>
-                  of
-                  <span class="white px-1 font-semibold text-white">
-                    {totalPages.totalPages}
-                  </span>
-                </span>
-                <ul class="flex h-8 items-center -space-x-px text-sm">
-                  {page > 1 && (
-                    <li>
-                      <button
-                        onClick={() => handlePageChange(page - 1)}
-                        class="flex h-8 items-center justify-center rounded-s-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                      >
-                        <span class="sr-only">Next</span>
-                        <ChevronLeftIcon className="h-4 w-4" />
-                      </button>
-                    </li>
-                  )}
-                  {Array.from({ length: totalPages.totalPages }).map((_, i) => (
-                    <li key={i}>
-                      <button
-                        onClick={() => handlePageChange(i + 1)}
-                        disabled={page === i + 1}
-                        class={`flex items-center justify-center border border-gray-300 ${
-                          page === i + 1
-                            ? "bg-gray-100 text-gray-400"
-                            : "bg-white text-gray-500"
-                        }
-                      h-8 px-3 text-sm leading-tight hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
-                      >
-                        {i + 1}
-                      </button>
-                    </li>
-                  ))}
-                  {page < totalPages.totalPages && (
-                    <li>
-                      <button
-                        onClick={() => handlePageChange(page + 1)}
-                        class="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 "
-                      >
-                        <span class="sr-only">Next</span>
-                        <ChevronRightIcon class="h-4 w-4 rtl:rotate-180" />
-                      </button>
-                    </li>
-                  )}
-                </ul>
-              </nav>
+              <Pagination
+                page={page}
+                totalPages={totalPages}
+                handlePageChange={handlePageChange}
+              />
             </div>
           </div>
         </section>
@@ -232,7 +217,7 @@ const OrderStatus = () => {
                 </button>
               </div>
             </div>
-            <hr class="mx-auto my-4 h-1 w-48 rounded border-0 bg-gray-100 dark:bg-gray-700 md:my-10" />
+            <hr class="my-4 h-px rounded-md border-0 bg-gray-400" />
             <dl>
               <div className="grid grid-cols-1 gap-y-2 sm:grid-cols-2">
                 <div>
@@ -249,6 +234,22 @@ const OrderStatus = () => {
                   </dt>
                   <dd class="mb-4 font-light text-gray-500 dark:text-gray-400 sm:mb-5">
                     {details.order.email}
+                  </dd>
+                </div>
+                <div>
+                  <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+                    Phone
+                  </dt>
+                  <dd class="mb-4 font-light text-gray-500 dark:text-gray-400 sm:mb-5">
+                    {details.order.phone}
+                  </dd>
+                </div>
+                <div>
+                  <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+                    Adress
+                  </dt>
+                  <dd class="mb-4 font-light text-gray-500 dark:text-gray-400 sm:mb-5">
+                    {details.order.address}
                   </dd>
                 </div>
                 <div>
@@ -308,8 +309,43 @@ const OrderStatus = () => {
           </div>
         </ModalInput>
       ) : null}
+      {Object.keys(cancel).length ? (
+        <ModalInput onClose={() => setCancel({})}>
+          <div class="relative mx-auto w-fit rounded-lg bg-white p-4 text-center shadow dark:bg-gray-800 sm:p-5">
+            <button
+              type="button"
+              onClick={() => setCancel({})}
+              class="absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+            >
+              <XMarkIcon className="h-5 w-5" />
+              <span class="sr-only">Close modal</span>
+            </button>
+            <TrashIcon className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+            <p class="mb-4 text-gray-500 dark:text-gray-300">
+              Are you sure you want to delete{" "}
+              <span className="font-bold text-neutral-600"></span>
+            </p>
+            <div class="flex items-center justify-center space-x-4">
+              <button
+                onClick={() => setCancel({})}
+                type="button"
+                class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
+              >
+                No, cancel
+              </button>
+              <button
+                type="submit"
+                class="rounded-lg bg-red-600 px-3 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+                onClick={() => handleCancelTransaction(cancel._id)}
+              >
+                Yes, I'm sure
+              </button>
+            </div>
+          </div>
+        </ModalInput>
+      ) : null}
     </React.Fragment>
   );
 };
 
-export default OrderStatus;
+export default HistoryTransactionPage;
