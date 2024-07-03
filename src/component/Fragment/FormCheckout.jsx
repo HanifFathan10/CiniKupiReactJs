@@ -122,7 +122,7 @@ const FormCheckout = () => {
             type="text"
             id="name"
             name="name"
-            class="block w-full rounded-lg border border-gray-300 border-gray-300 bg-transparent p-2.5 ps-10 text-sm text-gray-900  text-white placeholder-gray-400 focus:border-blue-500 focus:border-blue-500 focus:ring-blue-500 focus:ring-blue-500"
+            class="block w-full rounded-lg border border-gray-300  bg-transparent p-2.5 ps-10 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
             placeholder="your name"
             required
           />
@@ -139,7 +139,7 @@ const FormCheckout = () => {
             type="email"
             id="email"
             name="email"
-            class="block w-full rounded-lg border border-gray-300 border-gray-300 bg-transparent p-2.5 ps-10 text-sm text-gray-900  text-white placeholder-gray-400 focus:border-blue-500 focus:border-blue-500 focus:ring-blue-500 focus:ring-blue-500"
+            class="block w-full rounded-lg border border-gray-300 bg-transparent p-2.5 ps-10 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
             placeholder="youremail@gmail.com"
             required
           />
@@ -177,7 +177,7 @@ const FormCheckout = () => {
             type="text"
             id="address"
             name="address"
-            class="block w-full rounded-lg border border-gray-300 border-gray-300 bg-transparent p-2.5 ps-10 text-sm text-gray-900  text-white placeholder-gray-400 focus:border-blue-500 focus:border-blue-500 focus:ring-blue-500 focus:ring-blue-500"
+            class="block w-full rounded-lg border border-gray-300 bg-transparent p-2.5 ps-10 text-sm text-gray-900  placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 "
             placeholder="jl. jalan jalan no. 1 rt. 00 rw. 00 kota wakanda"
             required
           />

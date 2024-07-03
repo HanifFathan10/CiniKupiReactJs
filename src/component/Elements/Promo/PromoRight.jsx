@@ -13,13 +13,13 @@ const PromoRight = ({
   return (
     <>
       <section>
-        <div className="grid grid-cols-1 place-content-center place-items-center bg-light pt-4 md:grid-cols-2 md:pt-8">
+        <div className="bg-light grid grid-cols-1 place-content-center place-items-center pt-4 md:grid-cols-2 md:pt-6">
           <img
             src={image}
             alt={alt}
-            width="100%"
-            height="100%"
-            className="block"
+            width="20"
+            height="20"
+            className="block h-full w-full"
             loading="lazy"
           />
           <div

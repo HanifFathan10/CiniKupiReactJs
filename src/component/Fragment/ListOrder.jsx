@@ -19,23 +19,7 @@ const ListOrder = () => {
         <React.Fragment>
           {Array.isArray(items) &&
             items.map((cart, index) => {
-              const dataProduct = {
-                _id: cart._id,
-                id: cart.id,
-                name: cart.name,
-                price: cart.price,
-                image: cart.image,
-                quantity: 1,
-              };
-
-              return (
-                <Cart
-                  key={index}
-                  product={cart}
-                  removeById={dataProduct._id}
-                  data={dataProduct}
-                />
-              );
+              return <Cart key={index} product={cart} />;
             })}
         </React.Fragment>
       ) : (

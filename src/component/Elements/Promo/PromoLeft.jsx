@@ -13,7 +13,7 @@ const PromoLeft = ({
   return (
     <>
       <section>
-        <div className="flex flex-col-reverse bg-light pt-4 max-md:grid-cols-1 md:grid md:grid-cols-2 md:pt-8">
+        <div className="bg-light flex flex-col-reverse pt-4 max-md:grid-cols-1 md:grid md:grid-cols-2 md:pt-6">
           <div
             className={`flex h-[375px] w-full items-center justify-center md:h-full ${background}`}
           >
@@ -33,9 +33,9 @@ const PromoLeft = ({
           <img
             src={image}
             alt={alt}
-            width="100%"
-            height="100%"
-            className="block"
+            width="20"
+            height="20"
+            className="block h-full w-full"
             loading="lazy"
           />
         </div>

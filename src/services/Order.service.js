@@ -32,22 +32,6 @@ export const AddToCart = async (data, callback) => {
     });
 };
 
-export const RemoveFromCart = async (_id, callback) => {
-  await axios
-    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/order/remove`, _id, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
-      },
-    })
-    .then((res) => {
-      callback(true, res);
-    })
-    .catch((error) => {
-      callback(false, error);
-    });
-};
-
 export const ClearCart = (callback) => {
   axios
     .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/clear-cart`, {

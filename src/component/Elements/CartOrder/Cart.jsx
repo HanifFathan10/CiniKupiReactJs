@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
-import { AddToCart, RemoveFromCart } from "../../../services/Order.service";
+import { AddToCart } from "../../../services/Order.service";
 import { totalItems } from "../../../Store/TotalItems";
 import { rupiah } from "../../../Hooks/useRupiah";
 import { useOptimistic } from "../../../Hooks/useOptimistic";
 import { useCustomToast } from "../../../Hooks/useToast";
+import { useDebounce } from "use-debounce";
+import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
 
-const Cart = ({ product, data, removeById }) => {
+const Cart = ({ product }) => {
   const [click, setClick] = useState(false);
+  const [render, setRender] = useState(false);
   const { SuccessToast, ErrorToast } = useCustomToast();
   const { useCount } = totalItems(
     useShallow((state) => ({
@@ -15,59 +18,78 @@ const Cart = ({ product, data, removeById }) => {
     })),
   );
 
-  const [quantity, addOptimisticQuantity, revertOptimisticQuantity] =
-    useOptimistic(product.quantity, (currentQuantity, newQuantity) => {
-      return Math.max(0, currentQuantity + newQuantity); // Ensure quantity stays positive
-    });
-
   useEffect(() => {
     if (click === true) {
       useCount();
     }
   }, [click]);
 
+  const [quantity, addOptimisticQuantity, revertOptimisticQuantity] =
+    useOptimistic(product.quantity, (currentQuantity, newQuantity) => {
+      return Math.max(0, currentQuantity + newQuantity);
+    });
+
+  const [debounceQuantity] = useDebounce(quantity, 1000, {
+    leading: false,
+    trailing: true,
+  });
+
   const handleAddToCart = async () => {
-    addOptimisticQuantity(data.quantity);
-
-    await AddToCart(data, (status, res) => {
-      if (status === true) {
-        setClick(true);
-        const id = "add-to-cart";
-        SuccessToast({
-          id,
-          title: res.data.message,
-        });
-      } else {
-        revertOptimisticQuantity();
-        ErrorToast({
-          id: "remove-from-cart",
-          title: res.response.data.message,
-        });
-      }
-    });
+    addOptimisticQuantity(1);
   };
 
-  const removeItem = async () => {
+  const handleRemoveItem = async () => {
     addOptimisticQuantity(-1);
+  };
 
-    const _id = { _id: removeById };
-    await RemoveFromCart(_id, (status, res) => {
-      if (status === true) {
-        setClick(true);
-      } else {
-        revertOptimisticQuantity();
+  useEffect(() => {
+    if (!render) {
+      setRender(true);
+      return;
+    }
+
+    let newData = { ...product, quantity: debounceQuantity };
+
+    try {
+      const fetchDataProduct = async () => {
+        await AddToCart(newData, (status, res) => {
+          if (status === true) {
+            setClick(true);
+            SuccessToast({
+              id: "add-to-cart",
+              title: res.data.message,
+            });
+          } else {
+            revertOptimisticQuantity();
+            ErrorToast({
+              id: "remove-from-cart",
+              title: res.response.data.message,
+            });
+          }
+        });
+      };
+
+      if (debounceQuantity == quantity) {
+        fetchDataProduct();
       }
-    });
-  };
+    } catch (error) {
+      revertOptimisticQuantity();
+      ErrorToast({
+        id: "remove-from-cart",
+        title: error.response.data.message,
+      });
+    }
 
-  const totalPrice = () => {
-    return rupiah(product.price * product.quantity);
-  };
+    return () => {
+      setRender(false);
+      setClick(false);
+    };
+  }, [debounceQuantity]);
 
   return (
     <section className="flex w-full justify-center px-4 py-2">
-      <div className="grid w-full max-w-lg grid-flow-col items-center justify-start gap-3 rounded-lg bg-[#ffffff] px-5 py-3 shadow-md">
-        <div className="flex h-24 w-24 items-center justify-center overflow-clip rounded-full border border-[#cba258] bg-[#212121] md:h-32 md:w-32 lg:h-40 lg:w-40">
+      <div className="grid w-full max-w-lg grid-flow-col items-center justify-start gap-3 rounded-lg bg-white px-5 py-3 shadow-md">
+        <div className="flex h-24 w-24 items-center justify-center overflow-clip rounded-full border border-secondary bg-[#212121] md:h-32 md:w-32 lg:h-40 lg:w-40">
           <img src={product.image} className="w-16 md:w-24 lg:w-28" />
         </div>
         <div className="flex flex-col">
@@ -75,41 +97,15 @@ const Cart = ({ product, data, removeById }) => {
             {product.name}
           </h1>
           <h3 className="full sm:text-md mb-1 flex w-fit gap-1 rounded text-sm text-neutral-700 lg:text-lg">
-            {totalPrice()}
+            {rupiah(product.price * debounceQuantity)}
           </h3>
-          <div className="item-center flex gap-1 text-[#ffffff]">
-            <button onClick={removeItem}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="#1f3933"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-7 w-7 lg:h-9 lg:w-9"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
+          <div className="item-center flex gap-1 text-white">
+            <button onClick={handleRemoveItem}>
+              <MinusCircleIcon className="h-7 w-7 text-chocolate lg:h-9 lg:w-9" />
             </button>
             <h2 className="leading-10 text-black">{quantity}</h2>
             <button onClick={handleAddToCart}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="#1f3933"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-7 w-7 lg:h-9 lg:w-9"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
+              <PlusCircleIcon className="h-7 w-7 text-chocolate lg:h-9 lg:w-9" />
             </button>
           </div>
         </div>
