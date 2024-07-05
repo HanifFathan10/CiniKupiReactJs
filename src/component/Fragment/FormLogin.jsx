@@ -3,14 +3,12 @@ import Button from "../Elements/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Login } from "../../services/AuthService";
-import { useToast } from "@chakra-ui/react";
 import { useCustomToast } from "../../Hooks/useToast";
 
 const FormLogin = () => {
   const [isLogin, setIsLogin] = useState(false);
   const { SuccessToast, ErrorToast } = useCustomToast();
   const Navigate = useNavigate();
-  const toast = useToast();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,14 +24,13 @@ const FormLogin = () => {
       await Login(data, (status, res) => {
         if (status === true) {
           sessionStorage.setItem("access_token", res.data.accessToken);
+          res.data.data.role === "admin" ? Navigate("/admin") : Navigate("/");
+          setIsLogin(false);
 
           SuccessToast({
             id: "login",
             title: res.data.message,
           });
-          res.data.data.role === "admin" ? Navigate("/admin") : Navigate("/");
-
-          setIsLogin(false);
         } else {
           ErrorToast({
             id: "login",
@@ -99,7 +96,7 @@ const FormLogin = () => {
         className="item-center flex justify-center gap-2 rounded bg-[#eaeaea] px-7 pb-2.5 pt-3 text-sm font-semibold uppercase text-[#212121] transition duration-300 hover:scale-105 hover:bg-slate-800 hover:text-[#ffffff]"
       >
         <img src="images/google.webp" alt="icon" width={20} height={20} />
-        <h1>Google</h1>
+        <h3>Google</h3>
       </button>
     </form>
   );

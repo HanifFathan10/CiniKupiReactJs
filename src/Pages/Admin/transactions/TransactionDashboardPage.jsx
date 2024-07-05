@@ -28,23 +28,27 @@ const TransactionDashboardPage = () => {
   const [totalPages, setTotalPages] = useState({});
   const [loading, setLoading] = useState(false);
 
+  const fetchTransactionData = async () => {
+    const data = {
+      page,
+      search: debounceSearch,
+    };
+
+    await getAllHistoryTransaction((status, res) => {
+      if (status === true) {
+        setUsers(res.data);
+        setTotalPages(res);
+        setLoading(false);
+      }
+    }, data);
+  };
+
   useEffect(() => {
     const fetchDataTransaction = async () => {
       setLoading(true);
 
       try {
-        const data = {
-          page,
-          search: debounceSearch,
-        };
-
-        await getAllHistoryTransaction((status, res) => {
-          if (status === true) {
-            setUsers(res.data);
-            setTotalPages(res);
-            setLoading(false);
-          }
-        }, data);
+        fetchTransactionData();
       } catch (error) {
         setLoading(false);
       }
@@ -66,6 +70,7 @@ const TransactionDashboardPage = () => {
     await DeleteHistoryTransaction(_id, (status, res) => {
       if (status === true) {
         setDeleted({});
+        fetchTransactionData();
       }
     });
   };

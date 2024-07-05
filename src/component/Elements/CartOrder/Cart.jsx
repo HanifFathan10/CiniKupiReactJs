@@ -24,12 +24,12 @@ const Cart = ({ product }) => {
     }
   }, [click]);
 
-  const [quantity, addOptimisticQuantity, revertOptimisticQuantity] =
+  const [optimisticQuantity, addOptimisticQuantity, revertOptimisticQuantity] =
     useOptimistic(product.quantity, (currentQuantity, newQuantity) => {
       return Math.max(0, currentQuantity + newQuantity);
     });
 
-  const [debounceQuantity] = useDebounce(quantity, 1000, {
+  const [debounceQuantity] = useDebounce(optimisticQuantity, 1000, {
     leading: false,
     trailing: true,
   });
@@ -48,11 +48,11 @@ const Cart = ({ product }) => {
       return;
     }
 
-    let newData = { ...product, quantity: debounceQuantity };
+    let newDataProduct = { ...product, quantity: debounceQuantity };
 
     try {
       const fetchDataProduct = async () => {
-        await AddToCart(newData, (status, res) => {
+        await AddToCart(newDataProduct, (status, res) => {
           if (status === true) {
             setClick(true);
             SuccessToast({
@@ -69,7 +69,13 @@ const Cart = ({ product }) => {
         });
       };
 
-      if (debounceQuantity == quantity) {
+      if (debounceQuantity > 8) {
+        ErrorToast({
+          id: "add-to-cart",
+          title: "Maximum order is 8 items. Please adjust your order.",
+        });
+        revertOptimisticQuantity();
+      } else {
         fetchDataProduct();
       }
     } catch (error) {
@@ -103,7 +109,7 @@ const Cart = ({ product }) => {
             <button onClick={handleRemoveItem}>
               <MinusCircleIcon className="h-7 w-7 text-chocolate lg:h-9 lg:w-9" />
             </button>
-            <h2 className="leading-10 text-black">{quantity}</h2>
+            <h2 className="leading-10 text-black">{optimisticQuantity}</h2>
             <button onClick={handleAddToCart}>
               <PlusCircleIcon className="h-7 w-7 text-chocolate lg:h-9 lg:w-9" />
             </button>

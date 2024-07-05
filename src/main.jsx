@@ -1,6 +1,9 @@
+// src/App.js
+import React, { useEffect } from "react";
+import { ChakraProvider } from "@chakra-ui/react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LandingPage from "./Pages/LandingPage";
 import ErrorPage from "./Pages/404";
 import LoginPage from "./Pages/LoginPage";
@@ -10,15 +13,14 @@ import Menu from "./Pages/Menu";
 import ProductCheckout from "./Pages/ProductCheckout";
 import HandleAuthSuccess from "./Pages/AuthLogin";
 import CartPage from "./Pages/MenuPage/CartPage";
-import { ChakraProvider } from "@chakra-ui/react";
 import AdminPage from "./Pages/Admin/Admin";
 import UserDashboardPage from "./Pages/Admin/users/UsersDashboardPage";
 import ProductDashboardPage from "./Pages/Admin/Menus/ProductDashboardPage";
 import MenuDashboardPage from "./Pages/Admin/Menus/MenuDashboardPage";
 import TransactionDashboardPage from "./Pages/Admin/transactions/TransactionDashboardPage";
-import "flowbite";
 import ProductMenuPage from "./Pages/ProductMenuPage";
 import HistoryTransactionPage from "./Pages/HistoryTransactionPage";
+import { RefreshToken } from "./services/AuthService";
 
 const router = createBrowserRouter([
   {
@@ -84,8 +86,27 @@ const router = createBrowserRouter([
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <ChakraProvider>
-    <RouterProvider router={router} />
-  </ChakraProvider>,
-);
+const App = () => {
+  useEffect(() => {
+    const checkAccessToken = sessionStorage.getItem("access_token");
+
+    const getNewAccessToken = async () => {
+      await RefreshToken((status, res) => {
+        if (status === true) {
+          sessionStorage.setItem("access_token", res.data.access_token);
+          window.location.reload();
+        }
+      });
+    };
+
+    if (!checkAccessToken) return getNewAccessToken();
+  }, []);
+
+  return (
+    <ChakraProvider>
+      <RouterProvider router={router} />
+    </ChakraProvider>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);

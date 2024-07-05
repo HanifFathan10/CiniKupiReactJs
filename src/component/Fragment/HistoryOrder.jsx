@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { rupiah } from "../../Hooks/useRupiah";
 import { PaymentService } from "../../services/PaymentService";
+import { CheckIcon, ClockIcon } from "@heroicons/react/24/solid";
 
 const HistoryOrder = ({ trx, formatDate, setDetails, setCancel }) => {
   const [dataPending, setDataPending] = useState({});
@@ -20,7 +21,7 @@ const HistoryOrder = ({ trx, formatDate, setDetails, setCancel }) => {
   return (
     <div class="mt-6 flow-root sm:mt-8">
       <div class="divide-y-2 divide-neutral-600">
-        <div class="flex flex-wrap items-center gap-4 py-6">
+        <div class="flex flex-wrap items-end gap-4 py-6">
           <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
             <dt class="font -medium text-base text-gray-400">Order ID:</dt>
             <dd class="mt-1.5 text-xs font-semibold text-white md:text-base">
@@ -56,41 +57,9 @@ const HistoryOrder = ({ trx, formatDate, setDetails, setCancel }) => {
               className={`${trx.status === "settlement" ? "bg-green-900 text-green-300" : "bg-primary-900 text-primary-300"}me-2 mt-1.5 inline-flex items-center rounded  px-2.5 py-0.5 text-xs font-medium  md:text-base`}
             >
               {trx.status === "settlement" ? (
-                <svg
-                  class="me-1 h-3 w-3"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 11.917 9.724 16.5 19 7.5"
-                  />
-                </svg>
+                <CheckIcon className="-mr-1 h-3 w-3" />
               ) : (
-                <svg
-                  class="me-1 h-3 w-3"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M18.5 4h-13m13 16h-13M8 20v-3.333a2 2 0 0 1 .4-1.2L10 12.6a1 1 0 0 0 0-1.2L8.4 8.533a2 2 0 0 1-.4-1.2V4h8v3.333a2 2 0 0 1-.4 1.2L13.957 11.4a1 1 0 0 0 0 1.2l1.643 2.867a2 2 0 0 1 .4 1.2V20H8Z"
-                  />
-                </svg>
+                <ClockIcon className="-ml-1 mr-1 h-3 w-3" />
               )}
               {trx.status === "settlement" ? "Success" : "Pending"}
             </dd>

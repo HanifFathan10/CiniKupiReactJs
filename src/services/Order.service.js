@@ -32,8 +32,8 @@ export const AddToCart = async (data, callback) => {
     });
 };
 
-export const ClearCart = (callback) => {
-  axios
+export const ClearCart = async (callback) => {
+  await axios
     .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/clear-cart`, {
       headers: {
         "Content-Type": "application/json",

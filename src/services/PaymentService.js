@@ -119,11 +119,11 @@ export const PaymentService = ({
             );
 
             if (!pendingTransaction) {
+              handleTransaction(res);
               localStorage.setItem(
                 "pendingTransaction",
                 JSON.stringify({ history, token }),
               );
-              handleTransaction(res);
               setIsLoading(false);
             }
 
