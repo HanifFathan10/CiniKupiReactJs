@@ -30,20 +30,23 @@ import "flowbite";
 import Plus from "../../../component/Elements/Icon/Plus";
 import { useDebounce } from "use-debounce";
 import Pagination from "../../../component/Elements/Pagination/Pagination";
+import useSearchTrim from "../../../Hooks/useSearchTrim";
 
 const ProductDashboardPage = () => {
-  const [products, setProducts] = useState([]);
-  const [menus, setMenus] = useState([]);
   const [images, setImages] = useState("");
-  const [modal, setModal] = useState(false);
+  const [page, setPage] = useState(1);
   const [show, setShow] = useState({});
   const [deleted, setDeleted] = useState({});
   const [updated, setUpdated] = useState({});
-  const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState({});
-  const [search, setSearch] = useState("");
+  const [products, setProducts] = useState([]);
+  const [menus, setMenus] = useState([]);
+  const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [debouncedSearch] = useDebounce(search, 800);
+
+  const { trimSearch, setTrimSearch, trimmedValue, handleSubmitChange } =
+    useSearchTrim();
+  const [debouncedSearch] = useDebounce(trimmedValue, 800);
 
   useEffect(() => {
     fetchDataProduct();
@@ -82,8 +85,9 @@ const ProductDashboardPage = () => {
     }
   };
 
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
+  const handleSearchProduct = (e) => {
+    setTrimSearch(e.target.value);
+    setPage(1);
   };
 
   const handlePageChange = (page) => {
@@ -169,8 +173,8 @@ const ProductDashboardPage = () => {
       <AdminLayouts>
         <div class="relative overflow-x-auto bg-white p-3 shadow-md sm:rounded-lg">
           <header className="flex justify-between p-4">
-            <div className="flex gap-4">
-              <label for="table-search" class="sr-only">
+            <form className="flex gap-4" onSubmit={handleSubmitChange}>
+              <label for="search-product" class="sr-only">
                 Search
               </label>
               <div class="relative">
@@ -178,19 +182,20 @@ const ProductDashboardPage = () => {
                   <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
+                  id="search-product"
                   type="text"
-                  value={search}
-                  onChange={handleSearchChange}
-                  class="block w-80 rounded-lg border border-gray-300 bg-gray-50 p-2 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  value={trimSearch}
+                  onChange={handleSearchProduct}
+                  class="block w-80 rounded-lg border border-gray-300 bg-gray-50 p-2 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
                   placeholder="Search for product name"
                 />
               </div>
-            </div>
+            </form>
             <div class="flex w-full flex-shrink-0 flex-col items-stretch justify-end space-y-2 md:w-auto md:flex-row md:items-center md:space-x-3 md:space-y-0">
               <button
                 type="button"
                 onClick={() => setModal(true)}
-                class="flex items-center justify-center rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                class="flex items-center justify-center rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
               >
                 <Plus />
                 Add New Product
@@ -198,8 +203,8 @@ const ProductDashboardPage = () => {
             </div>
           </header>
 
-          <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right">
-            <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+          <table class="w-full text-left text-sm text-gray-500  rtl:text-right">
+            <thead class="bg-gray-50 text-xs uppercase text-gray-700 ">
               <tr>
                 <th scope="col" class="px-6 py-3">
                   No
@@ -230,7 +235,7 @@ const ProductDashboardPage = () => {
                   <div role="status">
                     <svg
                       aria-hidden="true"
-                      class="h-8 w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
+                      class="h-8 w-8 animate-spin fill-blue-600 text-gray-200 "
                       viewBox="0 0 100 101"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -254,13 +259,13 @@ const ProductDashboardPage = () => {
                       (totalPages.currentPage - 1) * 10 + index + 1;
                     return (
                       <tr
-                        class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
+                        class="border-b bg-white hover:bg-gray-50  "
                         key={index}
                       >
                         <td class="px-6 py-4">{itemNumber}</td>
                         <th
                           scope="row"
-                          class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+                          class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 "
                         >
                           {product.name}
                         </th>
@@ -318,14 +323,14 @@ const ProductDashboardPage = () => {
 
       {modal === true && (
         <ModalInput onClose={() => setModal(false)}>
-          <div class="relative rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-5">
-            <div class="mb-4 flex items-center justify-between rounded-t border-b pb-4 dark:border-gray-600 sm:mb-5">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+          <div class="relative rounded-lg bg-white p-4 shadow  sm:p-5">
+            <div class="mb-4 flex items-center justify-between rounded-t border-b pb-4  sm:mb-5">
+              <h3 class="text-lg font-semibold text-gray-900 ">
                 Add New Product
               </h3>
               <button
                 type="button"
-                class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+                class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
                 onClick={() => setModal({})}
               >
                 <XMarkIcon className="h-s5 w-5"></XMarkIcon>
@@ -337,7 +342,7 @@ const ProductDashboardPage = () => {
                 <div>
                   <label
                     for="name"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Product Name
                   </label>
@@ -345,20 +350,20 @@ const ProductDashboardPage = () => {
                     type="text"
                     name="name"
                     id="name"
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
                     placeholder="Product name"
                   />
                 </div>
                 <div>
                   <label
                     for="menu"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Menus
                   </label>
                   <select
                     id="menu"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
                   >
                     <option selected disabled>
                       Choose a menu
@@ -373,7 +378,7 @@ const ProductDashboardPage = () => {
                 <div>
                   <label
                     for="price"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Price
                   </label>
@@ -381,14 +386,14 @@ const ProductDashboardPage = () => {
                     type="number"
                     name="price"
                     id="price"
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
                   />
                 </div>
               </div>
               <div className="mb-4">
                 <label
                   for="descriptions"
-                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  class="mb-2 block text-sm font-medium text-gray-900 "
                 >
                   Descriptions
                 </label>
@@ -396,7 +401,7 @@ const ProductDashboardPage = () => {
                   id="descriptions"
                   rows="4"
                   name="descriptions"
-                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="Write your descriptions here..."
                 ></textarea>
               </div>
@@ -404,7 +409,7 @@ const ProductDashboardPage = () => {
                 <div>
                   <label
                     for="calories"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Calories
                   </label>
@@ -412,7 +417,7 @@ const ProductDashboardPage = () => {
                     type="number"
                     name="calories"
                     id="calories"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
                     placeholder="12"
                     required=""
                   />
@@ -420,7 +425,7 @@ const ProductDashboardPage = () => {
                 <div>
                   <label
                     for="sugar"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Sugar
                   </label>
@@ -428,7 +433,7 @@ const ProductDashboardPage = () => {
                     type="number"
                     name="sugar"
                     id="sugar"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
                     placeholder="105"
                     required=""
                   />
@@ -436,7 +441,7 @@ const ProductDashboardPage = () => {
                 <div>
                   <label
                     for="fat"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Fat
                   </label>
@@ -444,7 +449,7 @@ const ProductDashboardPage = () => {
                     type="number"
                     name="fat"
                     id="fat"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
                     placeholder="15"
                     required=""
                   />
@@ -452,7 +457,7 @@ const ProductDashboardPage = () => {
                 <div>
                   <label
                     for="oz"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Oz
                   </label>
@@ -460,14 +465,14 @@ const ProductDashboardPage = () => {
                     type="number"
                     name="oz"
                     id="oz"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
                     placeholder="0"
                     required=""
                   />
                 </div>
               </div>
               <div class="mb-4">
-                <span class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                <span class="mb-2 block text-sm font-medium text-gray-900 ">
                   Product Images
                 </span>
                 {images ? (
@@ -480,7 +485,7 @@ const ProductDashboardPage = () => {
                     <div class="flex w-full items-center justify-center">
                       <label
                         for="dropzone-file"
-                        class="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                        class=" flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
                       >
                         <div class="flex flex-col items-center justify-center pb-6 pt-5">
                           <svg
@@ -498,11 +503,11 @@ const ProductDashboardPage = () => {
                               d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                             />
                           </svg>
-                          <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                          <p class="mb-2 text-sm text-gray-500 ">
                             <span class="font-semibold">Click to upload</span>
                             or drag and drop
                           </p>
-                          <p class="text-xs text-gray-500 dark:text-gray-400">
+                          <p class="text-xs text-gray-500 ">
                             SVG, PNG, JPG or GIF (MAX. 800x400px)
                           </p>
                         </div>
@@ -519,7 +524,7 @@ const ProductDashboardPage = () => {
                   <div class="flex w-full items-center justify-center">
                     <label
                       for="dropzone-file"
-                      class="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                      class=" flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
                     >
                       <div class="flex flex-col items-center justify-center pb-6 pt-5">
                         <svg
@@ -537,11 +542,11 @@ const ProductDashboardPage = () => {
                             d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                           />
                         </svg>
-                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                        <p class="mb-2 text-sm text-gray-500 ">
                           <span class="font-semibold">Click to upload</span>
                           or drag and drop
                         </p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                        <p class="text-xs text-gray-500 ">
                           SVG, PNG, JPG or GIF (MAX. 800x400px)
                         </p>
                       </div>
@@ -558,7 +563,7 @@ const ProductDashboardPage = () => {
               <div class="items-center space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
                 <button
                   type="submit"
-                  class="inline-flex w-full justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:w-auto"
+                  class="inline-flex w-full justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300  sm:w-auto"
                 >
                   <PlusIcon className="mr-2 h-5 w-5" />
                   Create
@@ -566,7 +571,7 @@ const ProductDashboardPage = () => {
                 <button
                   onClick={() => setModal({})}
                   type="button"
-                  class="inline-flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600 sm:w-auto"
+                  class="inline-flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300  sm:w-auto"
                 >
                   <XMarkIcon className="mr-2 h-5 w-5" />
                   Discard
@@ -578,7 +583,7 @@ const ProductDashboardPage = () => {
       )}
       {Object.keys(show).length ? (
         <ModalInput onClose={() => setShow({})}>
-          <div class="relative rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-5">
+          <div class="relative rounded-lg bg-white p-4 shadow  sm:p-5">
             <div class="mb-4 flex justify-between rounded-t sm:mb-5">
               <div className="flex items-center gap-4">
                 <div className="w-auto rounded-lg bg-gray-200 p-2">
@@ -598,7 +603,7 @@ const ProductDashboardPage = () => {
               <div>
                 <button
                   type="button"
-                  class="inline-flex rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+                  class="inline-flex rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
                   onClick={() => setShow({})}
                 >
                   <XMarkIcon class="h-6 w-6" />
@@ -607,44 +612,36 @@ const ProductDashboardPage = () => {
               </div>
             </div>
             <dl>
-              <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+              <dt class="mb-2 font-semibold leading-none text-gray-900 ">
                 Descriptions
               </dt>
-              <dd class="mb-4 font-light text-gray-500 dark:text-gray-400 sm:mb-5">
+              <dd class="mb-4 font-light text-gray-500  sm:mb-5">
                 {show.descriptions}
               </dd>
               <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="rounded-lg border border-gray-200 bg-gray-100 px-2 py-1.5 font-semibold text-gray-800">
-                  <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+                  <dt class="mb-2 font-semibold leading-none text-gray-900 ">
                     Calories
                   </dt>
-                  <dd class=" font-light text-gray-500 dark:text-gray-400">
-                    {show.calories}
-                  </dd>
+                  <dd class=" font-light text-gray-500 ">{show.calories}</dd>
                 </div>
                 <div className="rounded-lg border border-gray-200 bg-gray-100 px-2 py-1.5 font-semibold text-gray-800">
-                  <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+                  <dt class="mb-2 font-semibold leading-none text-gray-900 ">
                     Sugar
                   </dt>
-                  <dd class=" font-light text-gray-500 dark:text-gray-400">
-                    {show.sugar}
-                  </dd>
+                  <dd class=" font-light text-gray-500 ">{show.sugar}</dd>
                 </div>
                 <div className="rounded-lg border border-gray-200 bg-gray-100 px-2 py-1.5 font-semibold text-gray-800">
-                  <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+                  <dt class="mb-2 font-semibold leading-none text-gray-900 ">
                     Fat
                   </dt>
-                  <dd class=" font-light text-gray-500 dark:text-gray-400">
-                    {show.fat}
-                  </dd>
+                  <dd class=" font-light text-gray-500 ">{show.fat}</dd>
                 </div>
-                <div className="rounded-lg border border-gray-200 bg-gray-100 px-2 py-1.5 font-semibold text-gray-800 dark:border-gray-500 dark:bg-gray-600 dark:text-gray-100">
-                  <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+                <div className="rounded-lg border border-gray-200 bg-gray-100 px-2 py-1.5 font-semibold text-gray-800">
+                  <dt class="mb-2 font-semibold leading-none text-gray-900 ">
                     Oz
                   </dt>
-                  <dd class=" font-light text-gray-500 dark:text-gray-400">
-                    {show.oz}
-                  </dd>
+                  <dd class=" font-light text-gray-500 ">{show.oz}</dd>
                 </div>
               </dl>
             </dl>
@@ -653,14 +650,12 @@ const ProductDashboardPage = () => {
       ) : null}
       {Object.keys(updated).length ? (
         <ModalInput onClose={() => setUpdated({})}>
-          <div class="relative rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-5">
-            <div class="mb-4 flex items-center justify-between rounded-t border-b pb-4 dark:border-gray-600 sm:mb-5">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                Edit Product
-              </h3>
+          <div class="relative rounded-lg bg-white p-4 shadow  sm:p-5">
+            <div class="mb-4 flex items-center justify-between rounded-t border-b pb-4  sm:mb-5">
+              <h3 class="text-lg font-semibold text-gray-900 ">Edit Product</h3>
               <button
                 type="button"
-                class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+                class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
                 onClick={() => setUpdated({})}
               >
                 <XMarkIcon className="h-s5 w-5"></XMarkIcon>
@@ -672,7 +667,7 @@ const ProductDashboardPage = () => {
                 <div>
                   <label
                     for="name"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Product Name
                   </label>
@@ -680,7 +675,7 @@ const ProductDashboardPage = () => {
                     type="text"
                     name="name"
                     id="name"
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
                     placeholder="Product name"
                     defaultValue={updated.name}
                   />
@@ -688,13 +683,13 @@ const ProductDashboardPage = () => {
                 <div>
                   <label
                     for="menu"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Menus
                   </label>
                   <select
                     id="menu"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
                   >
                     <option selected disabled value={updated.id_menu.name}>
                       {updated.id_menu.name}
@@ -709,7 +704,7 @@ const ProductDashboardPage = () => {
                 <div>
                   <label
                     for="price"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Price
                   </label>
@@ -718,14 +713,14 @@ const ProductDashboardPage = () => {
                     name="price"
                     id="price"
                     defaultValue={updated.price}
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
                   />
                 </div>
               </div>
               <div className="mb-4">
                 <label
                   for="descriptions"
-                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  class="mb-2 block text-sm font-medium text-gray-900 "
                 >
                   Descriptions
                 </label>
@@ -733,7 +728,7 @@ const ProductDashboardPage = () => {
                   id="descriptions"
                   rows="4"
                   name="descriptions"
-                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="Write your descriptions here..."
                   defaultValue={updated.descriptions}
                 ></textarea>
@@ -742,7 +737,7 @@ const ProductDashboardPage = () => {
                 <div>
                   <label
                     for="calories"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Calories
                   </label>
@@ -750,7 +745,7 @@ const ProductDashboardPage = () => {
                     type="number"
                     name="calories"
                     id="calories"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
                     placeholder="12"
                     defaultValue={updated.calories}
                     required=""
@@ -759,7 +754,7 @@ const ProductDashboardPage = () => {
                 <div>
                   <label
                     for="sugar"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Sugar
                   </label>
@@ -767,7 +762,7 @@ const ProductDashboardPage = () => {
                     type="number"
                     name="sugar"
                     id="sugar"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
                     placeholder="105"
                     defaultValue={updated.sugar}
                     required=""
@@ -776,7 +771,7 @@ const ProductDashboardPage = () => {
                 <div>
                   <label
                     for="fat"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Fat
                   </label>
@@ -784,7 +779,7 @@ const ProductDashboardPage = () => {
                     type="number"
                     name="fat"
                     id="fat"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
                     placeholder="15"
                     defaultValue={updated.fat}
                     required=""
@@ -793,7 +788,7 @@ const ProductDashboardPage = () => {
                 <div>
                   <label
                     for="oz"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Oz
                   </label>
@@ -801,7 +796,7 @@ const ProductDashboardPage = () => {
                     type="number"
                     name="oz"
                     id="oz"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
                     placeholder="0"
                     defaultValue={updated.oz}
                     required=""
@@ -809,7 +804,7 @@ const ProductDashboardPage = () => {
                 </div>
               </div>
               <div class="mb-4">
-                <span class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                <span class="mb-2 block text-sm font-medium text-gray-900 ">
                   Product Images
                 </span>
                 {images ? (
@@ -822,7 +817,7 @@ const ProductDashboardPage = () => {
                     <div class="flex w-full items-center justify-center">
                       <label
                         for="dropzone-file"
-                        class="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                        class=" flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
                       >
                         <div class="flex flex-col items-center justify-center pb-6 pt-5">
                           <svg
@@ -840,11 +835,11 @@ const ProductDashboardPage = () => {
                               d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                             />
                           </svg>
-                          <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                          <p class="mb-2 text-sm text-gray-500 ">
                             <span class="font-semibold">Click to upload</span>
                             or drag and drop
                           </p>
-                          <p class="text-xs text-gray-500 dark:text-gray-400">
+                          <p class="text-xs text-gray-500 ">
                             SVG, PNG, JPG or GIF (MAX. 800x400px)
                           </p>
                         </div>
@@ -868,7 +863,7 @@ const ProductDashboardPage = () => {
                     <div class="flex w-full items-center justify-center">
                       <label
                         for="dropzone-file"
-                        class="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                        class=" flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
                       >
                         <div class="flex flex-col items-center justify-center pb-6 pt-5">
                           <svg
@@ -886,11 +881,11 @@ const ProductDashboardPage = () => {
                               d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                             />
                           </svg>
-                          <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                          <p class="mb-2 text-sm text-gray-500 ">
                             <span class="font-semibold">Click to upload</span>
                             or drag and drop
                           </p>
-                          <p class="text-xs text-gray-500 dark:text-gray-400">
+                          <p class="text-xs text-gray-500 ">
                             SVG, PNG, JPG or GIF (MAX. 800x400px)
                           </p>
                         </div>
@@ -909,7 +904,7 @@ const ProductDashboardPage = () => {
               <div class="items-center space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
                 <button
                   type="submit"
-                  class="inline-flex w-full justify-center rounded-lg bg-yellow-300 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:w-auto"
+                  class="inline-flex w-full justify-center rounded-lg bg-yellow-300 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-primary-300  sm:w-auto"
                 >
                   <PencilSquareIcon className="mr-2 h-5 w-5" />
                   Edit
@@ -917,7 +912,7 @@ const ProductDashboardPage = () => {
                 <button
                   onClick={() => setUpdated({})}
                   type="button"
-                  class="inline-flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600 sm:w-auto"
+                  class="inline-flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300  sm:w-auto"
                 >
                   <XMarkIcon className="mr-2 h-5 w-5" />
                   Discard
@@ -929,17 +924,17 @@ const ProductDashboardPage = () => {
       ) : null}
       {Object.keys(deleted).length ? (
         <ModalInput onClose={() => setDeleted({})}>
-          <div class="relative mx-auto w-fit rounded-lg bg-white p-4 text-center shadow dark:bg-gray-800 sm:p-5">
+          <div class="relative mx-auto w-fit rounded-lg bg-white p-4 text-center shadow  sm:p-5">
             <button
               type="button"
               onClick={() => setDeleted({})}
-              class="absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+              class="absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
             >
               <XMarkIcon className="h-5 w-5" />
               <span class="sr-only">Close modal</span>
             </button>
             <TrashIcon className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-            <p class="mb-4 text-gray-500 dark:text-gray-300">
+            <p class="mb-4 text-gray-500">
               Are you sure you want to delete{" "}
               <span className="font-bold text-neutral-600">{deleted.name}</span>
             </p>
@@ -947,13 +942,13 @@ const ProductDashboardPage = () => {
               <button
                 onClick={() => setDeleted({})}
                 type="button"
-                class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
+                class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 "
               >
                 No, cancel
               </button>
               <button
                 type="submit"
-                class="rounded-lg bg-red-600 px-3 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+                class="rounded-lg bg-red-600 px-3 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 "
                 onClick={() =>
                   handleDeleteProduct({
                     _id: deleted._id,

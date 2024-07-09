@@ -18,15 +18,18 @@ import {
 import { useDebounce } from "use-debounce";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import Pagination from "../../../component/Elements/Pagination/Pagination";
+import useSearchTrim from "../../../Hooks/useSearchTrim";
 
 const TransactionDashboardPage = () => {
-  const [users, setUsers] = useState([]);
-  const [deleted, setDeleted] = useState({});
-  const [search, setSearch] = useState("");
-  const [debounceSearch] = useDebounce(search, 500);
   const [page, setPage] = useState(1);
+  const [deleted, setDeleted] = useState({});
   const [totalPages, setTotalPages] = useState({});
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const { trimSearch, setTrimSearch, trimmedValue, handleSubmitChange } =
+    useSearchTrim();
+  const [debounceSearch] = useDebounce(trimmedValue, 1000);
 
   const fetchTransactionData = async () => {
     const data = {
@@ -58,7 +61,7 @@ const TransactionDashboardPage = () => {
   }, [debounceSearch, page]);
 
   const handleSearchTransaction = (e) => {
-    setSearch(e.target.value);
+    setTrimSearch(e.target.value);
     setPage(1);
   };
 
@@ -79,23 +82,23 @@ const TransactionDashboardPage = () => {
     <React.Fragment>
       <HeadMetaData title="Users Dashboard" description="users dashboard" />
       <AdminLayouts>
-        <div class="relative overflow-auto bg-white px-3 py-3 shadow-md dark:bg-gray-800 sm:rounded-lg">
+        <div class="relative overflow-auto bg-white px-3 py-3 shadow-md  sm:rounded-lg">
           <div class="flex flex-col items-center justify-between space-y-3 px-1 py-3 md:flex-row md:space-x-4 md:space-y-0">
             <div class="w-full md:w-1/2">
-              <form class="flex items-center">
-                <label for="simple-search" class="sr-only">
+              <form class="flex items-center" onSubmit={handleSubmitChange}>
+                <label for="search-transaction" class="sr-only">
                   Search
                 </label>
                 <div class="relative w-full">
                   <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <MagnifyingGlassIcon class="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                    <MagnifyingGlassIcon class="h-5 w-5 text-gray-500 " />
                   </div>
                   <input
                     type="text"
-                    id="simple-search"
-                    value={search}
+                    id="search-transaction"
+                    value={trimSearch}
                     onChange={handleSearchTransaction}
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 "
                     placeholder="Search Transactions"
                     required=""
                   />
@@ -107,7 +110,7 @@ const TransactionDashboardPage = () => {
                 <button
                   id="actionsDropdownButton"
                   data-dropdown-toggle="actionsDropdown"
-                  class="flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 md:w-auto"
+                  class="flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200  md:w-auto"
                   type="button"
                 >
                   <ChevronDownIcon class="-ml-1 mr-1 h-5 w-5" />
@@ -115,17 +118,14 @@ const TransactionDashboardPage = () => {
                 </button>
                 <div
                   id="actionsDropdown"
-                  class="z-10 hidden w-44 divide-y divide-gray-100 rounded bg-white shadow dark:divide-gray-600 dark:bg-gray-700"
+                  class="z-10 hidden w-44 divide-y divide-gray-100 rounded bg-white shadow "
                 >
                   <ul
-                    class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                    class="py-1 text-sm text-gray-700 "
                     aria-labelledby="actionsDropdownButton"
                   >
                     <li>
-                      <a
-                        href="#"
-                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
+                      <a href="#" class="block px-4 py-2 hover:bg-gray-100 ">
                         Mass Edit
                       </a>
                     </li>
@@ -133,7 +133,7 @@ const TransactionDashboardPage = () => {
                   <div class="py-1">
                     <a
                       href="#"
-                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  "
                     >
                       Delete all
                     </a>
@@ -142,7 +142,7 @@ const TransactionDashboardPage = () => {
                 <button
                   id="filterDropdownButton"
                   data-dropdown-toggle="filterDropdown"
-                  class="flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 md:w-auto"
+                  class="flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200  md:w-auto"
                   type="button"
                 >
                   <svg
@@ -175,9 +175,9 @@ const TransactionDashboardPage = () => {
                 </button>
                 <div
                   id="filterDropdown"
-                  class="z-10 hidden w-48 rounded-lg bg-white p-3 shadow dark:bg-gray-700"
+                  class="z-10 hidden w-48 rounded-lg bg-white p-3 shadow"
                 >
-                  <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
+                  <h6 class="mb-3 text-sm font-medium text-gray-900">
                     Choose brand
                   </h6>
                   <ul
@@ -189,11 +189,11 @@ const TransactionDashboardPage = () => {
                         id="apple"
                         type="checkbox"
                         value=""
-                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-primary-600"
+                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 "
                       />
                       <label
                         for="apple"
-                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
+                        class="ml-2 text-sm font-medium text-gray-900 "
                       >
                         Apple (56)
                       </label>
@@ -203,11 +203,11 @@ const TransactionDashboardPage = () => {
                         id="fitbit"
                         type="checkbox"
                         value=""
-                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-primary-600"
+                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500"
                       />
                       <label
                         for="fitbit"
-                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
+                        class="ml-2 text-sm font-medium text-gray-900 "
                       >
                         Microsoft (16)
                       </label>
@@ -217,11 +217,11 @@ const TransactionDashboardPage = () => {
                         id="razor"
                         type="checkbox"
                         value=""
-                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-primary-600"
+                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500"
                       />
                       <label
                         for="razor"
-                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
+                        class="ml-2 text-sm font-medium text-gray-900 "
                       >
                         Razor (49)
                       </label>
@@ -231,11 +231,11 @@ const TransactionDashboardPage = () => {
                         id="nikon"
                         type="checkbox"
                         value=""
-                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-primary-600"
+                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500"
                       />
                       <label
                         for="nikon"
-                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
+                        class="ml-2 text-sm font-medium text-gray-900 "
                       >
                         Nikon (12)
                       </label>
@@ -245,11 +245,11 @@ const TransactionDashboardPage = () => {
                         id="benq"
                         type="checkbox"
                         value=""
-                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-primary-600"
+                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500"
                       />
                       <label
                         for="benq"
-                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
+                        class="ml-2 text-sm font-medium text-gray-900 "
                       >
                         BenQ (74)
                       </label>
@@ -260,8 +260,8 @@ const TransactionDashboardPage = () => {
             </div>
           </div>
           <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-              <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+            <table class="w-full text-left text-sm text-gray-500 ">
+              <thead class="bg-gray-50 text-xs uppercase text-gray-700 ">
                 <tr>
                   <th scope="col" class="px-4 py-3">
                     No
@@ -316,7 +316,7 @@ const TransactionDashboardPage = () => {
                     <div role="status">
                       <svg
                         aria-hidden="true"
-                        class="h-8 w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
+                        class="h-8 w-8 animate-spin fill-blue-600 text-gray-200 "
                         viewBox="0 0 100 101"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
@@ -348,10 +348,10 @@ const TransactionDashboardPage = () => {
                         (totalPages.currentPage - 1) * 10 + index + 1;
 
                       return (
-                        <tr class="border-b dark:border-gray-700" key={index}>
+                        <tr class="border-b" key={index}>
                           <th
                             scope="row"
-                            class="whitespace-nowrap px-4 py-3 font-medium text-gray-900 dark:text-white"
+                            class="whitespace-nowrap px-4 py-3 font-medium text-gray-900"
                           >
                             {itemNumber}
                           </th>
@@ -392,17 +392,17 @@ const TransactionDashboardPage = () => {
 
       {Object.keys(deleted).length ? (
         <ModalInput onClose={() => setDeleted({})}>
-          <div class="relative mx-auto w-fit rounded-lg bg-white p-4 text-center shadow dark:bg-gray-800 sm:p-5">
+          <div class="relative mx-auto w-fit rounded-lg bg-white p-4 text-center shadow  sm:p-5">
             <button
               type="button"
               onClick={() => setDeleted({})}
-              class="absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+              class="absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 "
             >
               <XMarkIcon className="h-5 w-5" />
               <span class="sr-only">Close modal</span>
             </button>
             <TrashIcon className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-            <p class="mb-4 text-gray-500 dark:text-gray-300">
+            <p class="mb-4 text-gray-500">
               Are you sure you want to delete{" "}
               <span className="font-bold text-neutral-600">
                 {deleted.order.name}
@@ -412,13 +412,13 @@ const TransactionDashboardPage = () => {
               <button
                 onClick={() => setDeleted({})}
                 type="button"
-                class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
+                class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 "
               >
                 No, cancel
               </button>
               <button
                 type="button"
-                class="rounded-lg bg-red-600 px-3 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+                class="rounded-lg bg-red-600 px-3 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300"
                 onClick={() => handleDeleteUser(deleted._id)}
               >
                 Yes, I'm sure

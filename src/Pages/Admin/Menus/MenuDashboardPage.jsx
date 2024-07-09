@@ -116,7 +116,7 @@ const MenuDashboardPage = () => {
     <React.Fragment>
       <HeadMetaData title="Product Dashboard" description="Product dashboard" />
       <AdminLayouts>
-        <div class="h-full overflow-y-auto bg-white p-3 shadow-md dark:bg-gray-800 sm:rounded-lg">
+        <div class="relative h-full overflow-y-auto bg-white p-3 shadow-md sm:rounded-lg">
           <div class="flex flex-col items-center justify-between space-y-3 p-4 md:flex-row md:space-x-4 md:space-y-0">
             <div class="w-full max-w-xs">
               <form>
@@ -142,15 +142,15 @@ const MenuDashboardPage = () => {
               <button
                 type="button"
                 onClick={() => setModal(true)}
-                class="flex items-center justify-center rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                class="flex items-center justify-center rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
               >
                 <Plus />
                 Add menu
               </button>
             </div>
           </div>
-          <table class="h-fit w-full text-left text-sm text-gray-500">
-            <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+          <table class="w-full text-left text-sm text-gray-500">
+            <thead class="bg-gray-50 text-xs uppercase text-gray-700">
               <tr>
                 <th scope="col" class="px-4 py-3">
                   Menu
@@ -171,26 +171,16 @@ const MenuDashboardPage = () => {
             </thead>
             <tbody>
               {isLoading ? (
-                <div class="absolute flex w-full items-center justify-center">
-                  <div role="status">
-                    <svg
-                      aria-hidden="true"
-                      class="h-8 w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
-                      viewBox="0 0 100 101"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                        fill="currentColor"
-                      />
-                      <path
-                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                        fill="currentFill"
-                      />
-                    </svg>
-                    <span class="sr-only">Loading...</span>
-                  </div>
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                  <img
+                    src="/images/logo.png"
+                    alt="logo"
+                    width="20"
+                    height="20"
+                    fetchPriority="high"
+                    className="h-8 w-8 animate-spin fill-blue-600 text-gray-200"
+                  />
+                  <span class="sr-only">Loading...</span>
                 </div>
               ) : (
                 <React.Fragment>
@@ -201,10 +191,10 @@ const MenuDashboardPage = () => {
                     });
 
                     return (
-                      <tr class="border-b dark:border-gray-700" key={i}>
+                      <tr class="border-b" key={i}>
                         <th
                           scope="row"
-                          class="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white"
+                          class="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                         >
                           <img
                             src={menu.image}
@@ -219,7 +209,7 @@ const MenuDashboardPage = () => {
                         <td class="flex items-center justify-center gap-3 px-4 py-3">
                           <button
                             type="button"
-                            class="inline-flex w-full items-center justify-center rounded-lg bg-yellow-300 px-2 py-2 text-center text-sm font-medium text-white hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-yellow-300 dark:focus:ring-primary-800"
+                            class="inline-flex w-full items-center justify-center rounded-lg bg-yellow-300 px-2 py-2 text-center text-sm font-medium text-white hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-primary-300"
                             onClick={() => setUpdated(menu)}
                           >
                             <PencilSquareIcon className="-ml-1 mr-1 h-5 w-5" />
@@ -227,7 +217,7 @@ const MenuDashboardPage = () => {
                           </button>
                           <button
                             type="button"
-                            class="inline-flex w-full items-center justify-center rounded-lg bg-red-600 px-2 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+                            class="inline-flex w-full items-center justify-center rounded-lg bg-red-600 px-2 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300"
                             onClick={() => setDeleted(menu)}
                           >
                             <TrashIcon className="-ml-1 mr-1 h-5 w-5" />
@@ -247,13 +237,11 @@ const MenuDashboardPage = () => {
       {modal === true && (
         <ModalInput onClose={() => setModal(false)}>
           <div className="rounded-md bg-white p-4 shadow-md drop-shadow-md">
-            <div class="mb-4 flex items-center justify-between rounded-t border-b pb-4 dark:border-gray-600 sm:mb-5">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                Add Menu
-              </h3>
+            <div class="mb-4 flex items-center justify-between rounded-t border-b pb-4 sm:mb-5">
+              <h3 class="text-lg font-semibold text-gray-900 ">Add Menu</h3>
               <button
                 type="button"
-                class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+                class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
                 onClick={() => setModal(false)}
               >
                 <XMarkIcon className="h-5 w-5" />
@@ -265,7 +253,7 @@ const MenuDashboardPage = () => {
                 <div>
                   <label
                     for="name"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Name
                   </label>
@@ -275,7 +263,7 @@ const MenuDashboardPage = () => {
                     value={inputText}
                     onChange={handleInputChange}
                     id="name"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 "
                     placeholder="Menu"
                     required=""
                   />
@@ -283,7 +271,7 @@ const MenuDashboardPage = () => {
                 <div>
                   <label
                     for="nameurl"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Name Url
                   </label>
@@ -301,7 +289,7 @@ const MenuDashboardPage = () => {
                 <div>
                   <label
                     htmlFor="category"
-                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    className="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Category
                   </label>
@@ -323,7 +311,7 @@ const MenuDashboardPage = () => {
                   <div className="flex w-full flex-col items-start justify-center">
                     <label
                       htmlFor="dropzone-file"
-                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                      class="mb-2 block text-sm font-medium text-gray-900 "
                     >
                       Image
                     </label>
@@ -336,11 +324,11 @@ const MenuDashboardPage = () => {
                     ) : (
                       <label
                         for="dropzone-file"
-                        class="dark:hover:bg-bray-800 flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                        class="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
                       >
                         <div class="flex flex-col items-center justify-center pb-6 pt-5">
                           <svg
-                            class="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
+                            class="mb-4 h-8 w-8 text-gray-500"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -354,11 +342,11 @@ const MenuDashboardPage = () => {
                               d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                             />
                           </svg>
-                          <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                          <p class="mb-2 text-sm text-gray-500">
                             <span class="font-semibold">Click to upload</span>{" "}
                             or drag and drop
                           </p>
-                          <p class="text-xs text-gray-500 dark:text-gray-400">
+                          <p class="text-xs text-gray-500">
                             SVG, PNG, JPG or GIF (MAX. 800x400px)
                           </p>
                         </div>
@@ -377,7 +365,7 @@ const MenuDashboardPage = () => {
               </div>
               <button
                 type="submit"
-                class="inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                class="inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
               >
                 <Plus />
                 Add new product
@@ -390,13 +378,11 @@ const MenuDashboardPage = () => {
       {Object.keys(updated).length ? (
         <ModalInput onClose={() => setUpdated({})}>
           <div className="rounded-md bg-white p-4 shadow-md drop-shadow-md">
-            <div class="mb-4 flex items-center justify-between rounded-t border-b pb-4 dark:border-gray-600 sm:mb-5">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                Edit Menu
-              </h3>
+            <div class="mb-4 flex items-center justify-between rounded-t border-b pb-4 sm:mb-5">
+              <h3 class="text-lg font-semibold text-gray-900 ">Edit Menu</h3>
               <button
                 type="button"
-                class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+                class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
                 onClick={() => setUpdated({})}
               >
                 <XMarkIcon className="h-5 w-5" />
@@ -408,7 +394,7 @@ const MenuDashboardPage = () => {
                 <div>
                   <label
                     for="name"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Name
                   </label>
@@ -417,7 +403,7 @@ const MenuDashboardPage = () => {
                     name="name"
                     onChange={handleInputChange}
                     id="name"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
                     defaultValue={updated.name}
                     placeholder="Menu"
                     required=""
@@ -426,7 +412,7 @@ const MenuDashboardPage = () => {
                 <div>
                   <label
                     for="nameurl"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    class="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Name Url
                   </label>
@@ -444,7 +430,7 @@ const MenuDashboardPage = () => {
                 <div>
                   <label
                     htmlFor="category"
-                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    className="mb-2 block text-sm font-medium text-gray-900 "
                   >
                     Category
                   </label>
@@ -466,7 +452,7 @@ const MenuDashboardPage = () => {
                   <div className="flex w-full flex-col items-start justify-center">
                     <label
                       htmlFor="dropzone-file"
-                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                      class="mb-2 block text-sm font-medium text-gray-900 "
                     >
                       Image
                     </label>
@@ -492,17 +478,17 @@ const MenuDashboardPage = () => {
 
       {Object.keys(deleted).length ? (
         <ModalInput onClose={() => setDeleted({})}>
-          <div class="relative mx-auto w-fit rounded-lg bg-white p-4 text-center shadow dark:bg-gray-800 sm:p-5">
+          <div class="relative mx-auto w-fit rounded-lg bg-white p-4 text-center shadow sm:p-5">
             <button
               type="button"
               onClick={() => setDeleted({})}
-              class="absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+              class="absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 "
             >
               <XMarkIcon className="h-5 w-5" />
               <span class="sr-only">Close modal</span>
             </button>
             <TrashIcon className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-            <p class="mb-4 text-gray-500 dark:text-gray-300">
+            <p class="mb-4 text-gray-500">
               Are you sure you want to delete{" "}
               <span className="font-bold text-neutral-600">{deleted.name}</span>
             </p>
@@ -510,13 +496,13 @@ const MenuDashboardPage = () => {
               <button
                 onClick={() => setDeleted({})}
                 type="button"
-                class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
+                class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300"
               >
                 No, cancel
               </button>
               <button
                 type="submit"
-                class="rounded-lg bg-red-600 px-3 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+                class="rounded-lg bg-red-600 px-3 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300"
                 onClick={() => handleDeleteMenu(deleted._id)}
               >
                 Yes, I'm sure
