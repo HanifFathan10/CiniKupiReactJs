@@ -45,6 +45,10 @@ export const getAllHistoryTransaction = async (callback, data = {}) => {
       params: {
         page: data.page,
         search: data.search,
+        sortKey: data.sort.key,
+        sortOrder: data.sort.direction,
+        startDate: data.date.startDate,
+        endDate: data.date.endDate,
       },
     })
     .then((res) => {
@@ -154,7 +158,7 @@ export const PaymentService = ({
     let scriptTag = document.createElement("script");
     scriptTag.src = midtransUrl;
 
-    let midtransClientKey = import.meta.env.MIDTRANS_CLIENT_KEY; // Assuming you're using environment variables correctly
+    let midtransClientKey = import.meta.env.MIDTRANS_CLIENT_KEY;
     scriptTag.setAttribute("data-client-key", midtransClientKey);
 
     document.body.appendChild(scriptTag);

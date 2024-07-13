@@ -14,23 +14,23 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { rupiah } from "../../../Hooks/useRupiah";
 import { truncateText } from "../../../Hooks/useTruncateText";
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
-import ModalInput from "../../../component/Elements/InputForm/Modal";
 import { GetAllMenu } from "../../../services/Menu.service";
 import {
-  ChevronDownIcon,
   EllipsisHorizontalIcon,
   MagnifyingGlassIcon,
-  PlusIcon,
-  XMarkIcon,
 } from "@heroicons/react/24/solid";
 import "flowbite";
 import Plus from "../../../component/Elements/Icon/Plus";
 import { useDebounce } from "use-debounce";
 import Pagination from "../../../component/Elements/Pagination/Pagination";
 import useSearchTrim from "../../../Hooks/useSearchTrim";
+import Create from "../../../component/Elements/Modal/admin/product/Create";
+import Show from "../../../component/Elements/Modal/admin/product/Show";
+import { rupiah } from "../../../utils/rupiah";
+import Edit from "../../../component/Elements/Modal/admin/product/Edit";
+import Delete from "../../../component/Elements/Modal/admin/product/Delete";
+import { useCustomToast } from "../../../Hooks/useToast";
 
 const ProductDashboardPage = () => {
   const [images, setImages] = useState("");
@@ -44,6 +44,7 @@ const ProductDashboardPage = () => {
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const { SuccessToast } = useCustomToast();
   const { trimSearch, setTrimSearch, trimmedValue, handleSubmitChange } =
     useSearchTrim();
   const [debouncedSearch] = useDebounce(trimmedValue, 800);
@@ -85,15 +86,6 @@ const ProductDashboardPage = () => {
     }
   };
 
-  const handleSearchProduct = (e) => {
-    setTrimSearch(e.target.value);
-    setPage(1);
-  };
-
-  const handlePageChange = (page) => {
-    setPage(page);
-  };
-
   const handleAddProduct = async (e) => {
     e.preventDefault();
 
@@ -112,6 +104,10 @@ const ProductDashboardPage = () => {
     await createProductMenu(data, (status, res) => {
       if (status === true) {
         setModal(false);
+        SuccessToast({
+          id: "add-product",
+          title: res.dagta,
+        });
       }
     });
   };
@@ -135,6 +131,10 @@ const ProductDashboardPage = () => {
     await updateProductMenu(data, (status, res) => {
       if (status === true) {
         setUpdated({});
+        SuccessToast({
+          id: "edit-product",
+          title: res.message,
+        });
         fetchDataProduct();
       }
     });
@@ -148,171 +148,162 @@ const ProductDashboardPage = () => {
     await deleteProductMenu(data, (status, res) => {
       if (status === true) {
         setDeleted({});
+        SuccessToast({
+          id: "delete-product",
+          title: res.message,
+        });
         window.location.reload();
       }
     });
   };
 
-  const convertToBase64 = (e) => {
-    const file = e.target.files[0];
+  const handleSearchProduct = (e) => {
+    setTrimSearch(e.target.value);
+    setPage(1);
+  };
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      setImages(reader.result);
-    };
-
-    reader.onerror = (error) => {
-      return;
-    };
+  const handlePageChange = (page) => {
+    setPage(page);
   };
 
   return (
     <React.Fragment>
       <HeadMetaData title="Product Dashboard" description="Product dashboard" />
       <AdminLayouts>
-        <div class="relative overflow-x-auto bg-white p-3 shadow-md sm:rounded-lg">
-          <header className="flex justify-between p-4">
-            <form className="flex gap-4" onSubmit={handleSubmitChange}>
-              <label for="search-product" class="sr-only">
-                Search
-              </label>
-              <div class="relative">
-                <div class="rtl:inset-r-0 pointer-events-none absolute inset-y-0 left-0 flex items-center ps-3 rtl:right-0">
-                  <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="search-product"
-                  type="text"
-                  value={trimSearch}
-                  onChange={handleSearchProduct}
-                  class="block w-80 rounded-lg border border-gray-300 bg-gray-50 p-2 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
-                  placeholder="Search for product name"
-                />
-              </div>
-            </form>
-            <div class="flex w-full flex-shrink-0 flex-col items-stretch justify-end space-y-2 md:w-auto md:flex-row md:items-center md:space-x-3 md:space-y-0">
-              <button
-                type="button"
-                onClick={() => setModal(true)}
-                class="flex items-center justify-center rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
-              >
-                <Plus />
-                Add New Product
-              </button>
-            </div>
-          </header>
-
-          <table class="w-full text-left text-sm text-gray-500  rtl:text-right">
-            <thead class="bg-gray-50 text-xs uppercase text-gray-700 ">
-              <tr>
-                <th scope="col" class="px-6 py-3">
-                  No
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Product name
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Image
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Menu
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Price
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Description
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody className="relative">
-              {loading ? (
-                <div class="absolute flex w-full items-center justify-center">
-                  <div role="status">
-                    <svg
-                      aria-hidden="true"
-                      class="h-8 w-8 animate-spin fill-blue-600 text-gray-200 "
-                      viewBox="0 0 100 101"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                        fill="currentColor"
-                      />
-                      <path
-                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                        fill="currentFill"
-                      />
-                    </svg>
-                    <span class="sr-only">Loading...</span>
+        <div className="relative flex h-full flex-col justify-between overflow-x-auto bg-white p-3 shadow-md sm:rounded-lg">
+          <div>
+            <header className="flex justify-between p-4">
+              <form className="flex gap-4" onSubmit={handleSubmitChange}>
+                <label htmlFor="search-product" className="sr-only">
+                  Search
+                </label>
+                <div className="relative">
+                  <div className="rtl:inset-r-0 pointer-events-none absolute inset-y-0 left-0 flex items-center ps-3 rtl:right-0">
+                    <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
                   </div>
+                  <input
+                    id="search-product"
+                    type="text"
+                    value={trimSearch}
+                    onChange={handleSearchProduct}
+                    className="block w-80 rounded-lg border border-gray-300 bg-gray-50 p-2 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
+                    placeholder="Search for product name"
+                  />
                 </div>
-              ) : (
-                <React.Fragment>
-                  {products.map((product, index) => {
-                    const itemNumber =
-                      (totalPages.currentPage - 1) * 10 + index + 1;
-                    return (
-                      <tr
-                        class="border-b bg-white hover:bg-gray-50  "
-                        key={index}
-                      >
-                        <td class="px-6 py-4">{itemNumber}</td>
-                        <th
-                          scope="row"
-                          class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 "
-                        >
-                          {product.name}
-                        </th>
-                        <td class="px-6 py-4">
-                          <img
-                            src={product.image}
-                            alt={product.image}
-                            width={100}
-                            height={100}
-                            className="h-12 w-12 rounded bg-cover bg-center object-contain"
-                          />
-                        </td>
-                        <td class="px-6 py-4">{product.id_menu.name}</td>
-                        <td class="px-6 py-4">{rupiah(product.price)}</td>
-                        <td class="px-6 py-4">
-                          {truncateText(product.descriptions, 10)}
-                        </td>
-                        <td class="flex items-center justify-center px-4 py-3">
-                          <Menu>
-                            <MenuButton
-                              as="button"
-                              rightIcon={<ChevronDownIcon />}
-                            >
-                              <EllipsisHorizontalIcon className="h-6 w-6" />
-                            </MenuButton>
-                            <MenuList>
-                              <MenuItem onClick={() => setShow(product)}>
-                                Detail
-                              </MenuItem>
+              </form>
+              <div className="flex w-full flex-shrink-0 flex-col items-stretch justify-end space-y-2 md:w-auto md:flex-row md:items-center md:space-x-3 md:space-y-0">
+                <button
+                  type="button"
+                  onClick={() => setModal(true)}
+                  className="flex items-center justify-center rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
+                >
+                  <Plus />
+                  Add New Product
+                </button>
+              </div>
+            </header>
 
-                              <MenuItem onClick={() => setUpdated(product)}>
-                                Edit
-                              </MenuItem>
-                              <MenuDivider />
-                              <MenuItem onClick={() => setDeleted(product)}>
-                                Delete
-                              </MenuItem>
-                            </MenuList>
-                          </Menu>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </React.Fragment>
-              )}
-            </tbody>
-          </table>
+            <table className="w-full text-left text-sm text-gray-500  rtl:text-right">
+              <thead className="bg-gray-50 text-xs uppercase text-gray-700 ">
+                <tr>
+                  <th scope="col" className="px-6 py-3">
+                    No
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Product name
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Image
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Menu
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Price
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Description
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <td>
+                      <img
+                        src="/images/logo.png"
+                        alt="logo"
+                        width="20"
+                        height="20"
+                        loading="lazy"
+                        className="h-8 w-8 animate-spin fill-blue-600 text-gray-200"
+                      />
+                      <span className="sr-only">Loading...</span>
+                    </td>
+                  </tr>
+                ) : (
+                  <React.Fragment>
+                    {products.map((product, index) => {
+                      const itemNumber =
+                        (totalPages.currentPage - 1) * 10 + index + 1;
+                      return (
+                        <tr
+                          className="border-b bg-white hover:bg-gray-50  "
+                          key={index}
+                        >
+                          <td className="px-6 py-4">{itemNumber}</td>
+                          <th
+                            scope="row"
+                            className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 "
+                          >
+                            {product.name}
+                          </th>
+                          <td className="px-6 py-4">
+                            <img
+                              src={product.image}
+                              alt={product.image}
+                              width={100}
+                              height={100}
+                              className="h-12 w-12 rounded bg-cover bg-center object-contain"
+                            />
+                          </td>
+                          <td className="px-6 py-4">{product.id_menu.name}</td>
+                          <td className="px-6 py-4">{rupiah(product.price)}</td>
+                          <td className="px-6 py-4">
+                            {truncateText(product.descriptions, 10)}
+                          </td>
+                          <td className="flex items-center justify-center px-4 py-3">
+                            <Menu>
+                              <MenuButton as="button">
+                                <EllipsisHorizontalIcon className="h-6 w-6" />
+                              </MenuButton>
+                              <MenuList>
+                                <MenuItem onClick={() => setShow(product)}>
+                                  Detail
+                                </MenuItem>
+
+                                <MenuItem onClick={() => setUpdated(product)}>
+                                  Edit
+                                </MenuItem>
+                                <MenuDivider />
+                                <MenuItem onClick={() => setDeleted(product)}>
+                                  Delete
+                                </MenuItem>
+                              </MenuList>
+                            </Menu>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </React.Fragment>
+                )}
+              </tbody>
+            </table>
+          </div>
+
           <Pagination
             totalPages={totalPages}
             page={page}
@@ -321,647 +312,35 @@ const ProductDashboardPage = () => {
         </div>
       </AdminLayouts>
 
-      {modal === true && (
-        <ModalInput onClose={() => setModal(false)}>
-          <div class="relative rounded-lg bg-white p-4 shadow  sm:p-5">
-            <div class="mb-4 flex items-center justify-between rounded-t border-b pb-4  sm:mb-5">
-              <h3 class="text-lg font-semibold text-gray-900 ">
-                Add New Product
-              </h3>
-              <button
-                type="button"
-                class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-                onClick={() => setModal({})}
-              >
-                <XMarkIcon className="h-s5 w-5"></XMarkIcon>
-                <span class="sr-only">Close modal</span>
-              </button>
-            </div>
-            <form onSubmit={handleAddProduct}>
-              <div class="mb-4 grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label
-                    for="name"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Product Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
-                    placeholder="Product name"
-                  />
-                </div>
-                <div>
-                  <label
-                    for="menu"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Menus
-                  </label>
-                  <select
-                    id="menu"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                  >
-                    <option selected disabled>
-                      Choose a menu
-                    </option>
-                    {menus.map((menu, i) => (
-                      <option value={menu._id} key={i}>
-                        {menu.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label
-                    for="price"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Price
-                  </label>
-                  <input
-                    type="number"
-                    name="price"
-                    id="price"
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
-                  />
-                </div>
-              </div>
-              <div className="mb-4">
-                <label
-                  for="descriptions"
-                  class="mb-2 block text-sm font-medium text-gray-900 "
-                >
-                  Descriptions
-                </label>
-                <textarea
-                  id="descriptions"
-                  rows="4"
-                  name="descriptions"
-                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                  placeholder="Write your descriptions here..."
-                ></textarea>
-              </div>
-              <div class="mb-4 grid gap-4 sm:col-span-2 sm:grid-cols-4 md:gap-6">
-                <div>
-                  <label
-                    for="calories"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Calories
-                  </label>
-                  <input
-                    type="number"
-                    name="calories"
-                    id="calories"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
-                    placeholder="12"
-                    required=""
-                  />
-                </div>
-                <div>
-                  <label
-                    for="sugar"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Sugar
-                  </label>
-                  <input
-                    type="number"
-                    name="sugar"
-                    id="sugar"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
-                    placeholder="105"
-                    required=""
-                  />
-                </div>
-                <div>
-                  <label
-                    for="fat"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Fat
-                  </label>
-                  <input
-                    type="number"
-                    name="fat"
-                    id="fat"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
-                    placeholder="15"
-                    required=""
-                  />
-                </div>
-                <div>
-                  <label
-                    for="oz"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Oz
-                  </label>
-                  <input
-                    type="number"
-                    name="oz"
-                    id="oz"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
-                    placeholder="0"
-                    required=""
-                  />
-                </div>
-              </div>
-              <div class="mb-4">
-                <span class="mb-2 block text-sm font-medium text-gray-900 ">
-                  Product Images
-                </span>
-                {images ? (
-                  <div className="grid grid-cols-2 place-items-center">
-                    <img
-                      src={images}
-                      alt={images}
-                      className="w-32 bg-cover bg-center object-contain"
-                    />
-                    <div class="flex w-full items-center justify-center">
-                      <label
-                        for="dropzone-file"
-                        class=" flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
-                      >
-                        <div class="flex flex-col items-center justify-center pb-6 pt-5">
-                          <svg
-                            aria-hidden="true"
-                            class="mb-3 h-10 w-10 text-gray-400"
-                            fill="none"
-                            stroke="currentColor"
-                            viewbox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                            />
-                          </svg>
-                          <p class="mb-2 text-sm text-gray-500 ">
-                            <span class="font-semibold">Click to upload</span>
-                            or drag and drop
-                          </p>
-                          <p class="text-xs text-gray-500 ">
-                            SVG, PNG, JPG or GIF (MAX. 800x400px)
-                          </p>
-                        </div>
-                        <input
-                          id="dropzone-file"
-                          type="file"
-                          class="hidden"
-                          onChange={convertToBase64}
-                        />
-                      </label>
-                    </div>
-                  </div>
-                ) : (
-                  <div class="flex w-full items-center justify-center">
-                    <label
-                      for="dropzone-file"
-                      class=" flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
-                    >
-                      <div class="flex flex-col items-center justify-center pb-6 pt-5">
-                        <svg
-                          aria-hidden="true"
-                          class="mb-3 h-10 w-10 text-gray-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewbox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                          />
-                        </svg>
-                        <p class="mb-2 text-sm text-gray-500 ">
-                          <span class="font-semibold">Click to upload</span>
-                          or drag and drop
-                        </p>
-                        <p class="text-xs text-gray-500 ">
-                          SVG, PNG, JPG or GIF (MAX. 800x400px)
-                        </p>
-                      </div>
-                      <input
-                        id="dropzone-file"
-                        type="file"
-                        class="hidden"
-                        onChange={convertToBase64}
-                      />
-                    </label>
-                  </div>
-                )}
-              </div>
-              <div class="items-center space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
-                <button
-                  type="submit"
-                  class="inline-flex w-full justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300  sm:w-auto"
-                >
-                  <PlusIcon className="mr-2 h-5 w-5" />
-                  Create
-                </button>
-                <button
-                  onClick={() => setModal({})}
-                  type="button"
-                  class="inline-flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300  sm:w-auto"
-                >
-                  <XMarkIcon className="mr-2 h-5 w-5" />
-                  Discard
-                </button>
-              </div>
-            </form>
-          </div>
-        </ModalInput>
-      )}
-      {Object.keys(show).length ? (
-        <ModalInput onClose={() => setShow({})}>
-          <div class="relative rounded-lg bg-white p-4 shadow  sm:p-5">
-            <div class="mb-4 flex justify-between rounded-t sm:mb-5">
-              <div className="flex items-center gap-4">
-                <div className="w-auto rounded-lg bg-gray-200 p-2">
-                  <img
-                    src={show.image}
-                    alt={show.name}
-                    width={100}
-                    height={100}
-                    className="h-16 w-16 bg-cover bg-center object-contain"
-                  />
-                </div>
-                <div class="text-lg text-gray-900">
-                  <h3 class="font-bold ">{show.name}</h3>
-                  <p class="text-base font-semibold">{rupiah(show.price)}</p>
-                </div>
-              </div>
-              <div>
-                <button
-                  type="button"
-                  class="inline-flex rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-                  onClick={() => setShow({})}
-                >
-                  <XMarkIcon class="h-6 w-6" />
-                  <span class="sr-only">Close modal</span>
-                </button>
-              </div>
-            </div>
-            <dl>
-              <dt class="mb-2 font-semibold leading-none text-gray-900 ">
-                Descriptions
-              </dt>
-              <dd class="mb-4 font-light text-gray-500  sm:mb-5">
-                {show.descriptions}
-              </dd>
-              <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="rounded-lg border border-gray-200 bg-gray-100 px-2 py-1.5 font-semibold text-gray-800">
-                  <dt class="mb-2 font-semibold leading-none text-gray-900 ">
-                    Calories
-                  </dt>
-                  <dd class=" font-light text-gray-500 ">{show.calories}</dd>
-                </div>
-                <div className="rounded-lg border border-gray-200 bg-gray-100 px-2 py-1.5 font-semibold text-gray-800">
-                  <dt class="mb-2 font-semibold leading-none text-gray-900 ">
-                    Sugar
-                  </dt>
-                  <dd class=" font-light text-gray-500 ">{show.sugar}</dd>
-                </div>
-                <div className="rounded-lg border border-gray-200 bg-gray-100 px-2 py-1.5 font-semibold text-gray-800">
-                  <dt class="mb-2 font-semibold leading-none text-gray-900 ">
-                    Fat
-                  </dt>
-                  <dd class=" font-light text-gray-500 ">{show.fat}</dd>
-                </div>
-                <div className="rounded-lg border border-gray-200 bg-gray-100 px-2 py-1.5 font-semibold text-gray-800">
-                  <dt class="mb-2 font-semibold leading-none text-gray-900 ">
-                    Oz
-                  </dt>
-                  <dd class=" font-light text-gray-500 ">{show.oz}</dd>
-                </div>
-              </dl>
-            </dl>
-          </div>
-        </ModalInput>
-      ) : null}
-      {Object.keys(updated).length ? (
-        <ModalInput onClose={() => setUpdated({})}>
-          <div class="relative rounded-lg bg-white p-4 shadow  sm:p-5">
-            <div class="mb-4 flex items-center justify-between rounded-t border-b pb-4  sm:mb-5">
-              <h3 class="text-lg font-semibold text-gray-900 ">Edit Product</h3>
-              <button
-                type="button"
-                class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-                onClick={() => setUpdated({})}
-              >
-                <XMarkIcon className="h-s5 w-5"></XMarkIcon>
-                <span class="sr-only">Close modal</span>
-              </button>
-            </div>
-            <form onSubmit={handleEditProduct}>
-              <div class="mb-4 grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label
-                    for="name"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Product Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
-                    placeholder="Product name"
-                    defaultValue={updated.name}
-                  />
-                </div>
-                <div>
-                  <label
-                    for="menu"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Menus
-                  </label>
-                  <select
-                    id="menu"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                  >
-                    <option selected disabled value={updated.id_menu.name}>
-                      {updated.id_menu.name}
-                    </option>
-                    {menus.map((menu, i) => (
-                      <option value={menu._id} name="menu" key={i}>
-                        {menu.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label
-                    for="price"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Price
-                  </label>
-                  <input
-                    type="number"
-                    name="price"
-                    id="price"
-                    defaultValue={updated.price}
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
-                  />
-                </div>
-              </div>
-              <div className="mb-4">
-                <label
-                  for="descriptions"
-                  class="mb-2 block text-sm font-medium text-gray-900 "
-                >
-                  Descriptions
-                </label>
-                <textarea
-                  id="descriptions"
-                  rows="4"
-                  name="descriptions"
-                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                  placeholder="Write your descriptions here..."
-                  defaultValue={updated.descriptions}
-                ></textarea>
-              </div>
-              <div class="mb-4 grid gap-4 sm:col-span-2 sm:grid-cols-4 md:gap-6">
-                <div>
-                  <label
-                    for="calories"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Calories
-                  </label>
-                  <input
-                    type="number"
-                    name="calories"
-                    id="calories"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
-                    placeholder="12"
-                    defaultValue={updated.calories}
-                    required=""
-                  />
-                </div>
-                <div>
-                  <label
-                    for="sugar"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Sugar
-                  </label>
-                  <input
-                    type="number"
-                    name="sugar"
-                    id="sugar"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
-                    placeholder="105"
-                    defaultValue={updated.sugar}
-                    required=""
-                  />
-                </div>
-                <div>
-                  <label
-                    for="fat"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Fat
-                  </label>
-                  <input
-                    type="number"
-                    name="fat"
-                    id="fat"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
-                    placeholder="15"
-                    defaultValue={updated.fat}
-                    required=""
-                  />
-                </div>
-                <div>
-                  <label
-                    for="oz"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Oz
-                  </label>
-                  <input
-                    type="number"
-                    name="oz"
-                    id="oz"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
-                    placeholder="0"
-                    defaultValue={updated.oz}
-                    required=""
-                  />
-                </div>
-              </div>
-              <div class="mb-4">
-                <span class="mb-2 block text-sm font-medium text-gray-900 ">
-                  Product Images
-                </span>
-                {images ? (
-                  <div className="grid grid-cols-2 place-items-center">
-                    <img
-                      src={images}
-                      alt={images}
-                      className="w-32 bg-cover bg-center object-contain"
-                    />
-                    <div class="flex w-full items-center justify-center">
-                      <label
-                        for="dropzone-file"
-                        class=" flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
-                      >
-                        <div class="flex flex-col items-center justify-center pb-6 pt-5">
-                          <svg
-                            aria-hidden="true"
-                            class="mb-3 h-10 w-10 text-gray-400"
-                            fill="none"
-                            stroke="currentColor"
-                            viewbox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                            />
-                          </svg>
-                          <p class="mb-2 text-sm text-gray-500 ">
-                            <span class="font-semibold">Click to upload</span>
-                            or drag and drop
-                          </p>
-                          <p class="text-xs text-gray-500 ">
-                            SVG, PNG, JPG or GIF (MAX. 800x400px)
-                          </p>
-                        </div>
-                        <input
-                          id="dropzone-file"
-                          type="file"
-                          class="hidden"
-                          name="image"
-                          onChange={convertToBase64}
-                        />
-                      </label>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-2 place-items-center">
-                    <img
-                      src={updated.image}
-                      alt={updated.image}
-                      className="w-32 bg-cover bg-center object-contain"
-                    />
-                    <div class="flex w-full items-center justify-center">
-                      <label
-                        for="dropzone-file"
-                        class=" flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
-                      >
-                        <div class="flex flex-col items-center justify-center pb-6 pt-5">
-                          <svg
-                            aria-hidden="true"
-                            class="mb-3 h-10 w-10 text-gray-400"
-                            fill="none"
-                            stroke="currentColor"
-                            viewbox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                            />
-                          </svg>
-                          <p class="mb-2 text-sm text-gray-500 ">
-                            <span class="font-semibold">Click to upload</span>
-                            or drag and drop
-                          </p>
-                          <p class="text-xs text-gray-500 ">
-                            SVG, PNG, JPG or GIF (MAX. 800x400px)
-                          </p>
-                        </div>
-                        <input
-                          id="dropzone-file"
-                          type="file"
-                          class="hidden"
-                          name="image"
-                          onChange={convertToBase64}
-                        />
-                      </label>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div class="items-center space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
-                <button
-                  type="submit"
-                  class="inline-flex w-full justify-center rounded-lg bg-yellow-300 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-primary-300  sm:w-auto"
-                >
-                  <PencilSquareIcon className="mr-2 h-5 w-5" />
-                  Edit
-                </button>
-                <button
-                  onClick={() => setUpdated({})}
-                  type="button"
-                  class="inline-flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300  sm:w-auto"
-                >
-                  <XMarkIcon className="mr-2 h-5 w-5" />
-                  Discard
-                </button>
-              </div>
-            </form>
-          </div>
-        </ModalInput>
-      ) : null}
-      {Object.keys(deleted).length ? (
-        <ModalInput onClose={() => setDeleted({})}>
-          <div class="relative mx-auto w-fit rounded-lg bg-white p-4 text-center shadow  sm:p-5">
-            <button
-              type="button"
-              onClick={() => setDeleted({})}
-              class="absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-            >
-              <XMarkIcon className="h-5 w-5" />
-              <span class="sr-only">Close modal</span>
-            </button>
-            <TrashIcon className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-            <p class="mb-4 text-gray-500">
-              Are you sure you want to delete{" "}
-              <span className="font-bold text-neutral-600">{deleted.name}</span>
-            </p>
-            <div class="flex items-center justify-center space-x-4">
-              <button
-                onClick={() => setDeleted({})}
-                type="button"
-                class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 "
-              >
-                No, cancel
-              </button>
-              <button
-                type="submit"
-                class="rounded-lg bg-red-600 px-3 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 "
-                onClick={() =>
-                  handleDeleteProduct({
-                    _id: deleted._id,
-                    id_menu: deleted.id_menu,
-                  })
-                }
-              >
-                Yes, I'm sure
-              </button>
-            </div>
-          </div>
-        </ModalInput>
-      ) : null}
+      {/* MODAL */}
+      <Create
+        modal={modal}
+        setModal={setModal}
+        handleAddProduct={handleAddProduct}
+        images={images}
+        menus={menus}
+        setImages={setImages}
+        key={Math.random()}
+      />
+
+      <Show show={show} setShow={setShow} />
+
+      <Edit
+        handleEditProduct={handleEditProduct}
+        images={images}
+        menus={menus}
+        setUpdated={setUpdated}
+        updated={updated}
+        setImages={setImages}
+        key={Math.random()}
+      />
+
+      <Delete
+        deleted={deleted}
+        handleDeleteProduct={handleDeleteProduct}
+        setDeleted={setDeleted}
+        key={Math.random()}
+      />
     </React.Fragment>
   );
 };

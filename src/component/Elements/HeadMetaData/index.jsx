@@ -11,6 +11,11 @@ export const HeadMetaData = ({
   const pageUrl = new URL(pathname, baseUrl).toString();
   return (
     <Helmet>
+      <meta charset="UTF-8"></meta>
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+      ></meta>
       <title>{title + " | " + defaultTitle}</title>
       {/* metadata */}
       <meta name="title" content={title + " | " + defaultTitle} />

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { AddToCart } from "../../../services/Order.service";
 import { totalItems } from "../../../Store/TotalItems";
-import { rupiah } from "../../../Hooks/useRupiah";
 import { useOptimistic } from "../../../Hooks/useOptimistic";
 import { useCustomToast } from "../../../Hooks/useToast";
 import { useDebounce } from "use-debounce";
 import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
+import { rupiah } from "../../../utils/rupiah";
 
 const Cart = ({ product }) => {
   const [click, setClick] = useState(false);

@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useEffect } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -20,7 +19,8 @@ import MenuDashboardPage from "./Pages/Admin/Menus/MenuDashboardPage";
 import TransactionDashboardPage from "./Pages/Admin/transactions/TransactionDashboardPage";
 import ProductMenuPage from "./Pages/ProductMenuPage";
 import HistoryTransactionPage from "./Pages/HistoryTransactionPage";
-import { RefreshToken } from "./services/AuthService";
+import "flowbite";
+import useGetNewToken from "./Store/GetNewToken";
 
 const router = createBrowserRouter([
   {
@@ -87,20 +87,15 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
+  const getNewToken = useGetNewToken((state) => state.getNewToken);
+
+  const token = sessionStorage.getItem("access_token");
+
   useEffect(() => {
-    const checkAccessToken = sessionStorage.getItem("access_token");
-
-    const getNewAccessToken = async () => {
-      await RefreshToken((status, res) => {
-        if (status === true) {
-          sessionStorage.setItem("access_token", res.data.access_token);
-          window.location.reload();
-        }
-      });
-    };
-
-    if (!checkAccessToken) return getNewAccessToken();
-  }, []);
+    if (!token) {
+      getNewToken();
+    }
+  }, [token]);
 
   return (
     <ChakraProvider>

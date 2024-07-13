@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import QuestionMark from "../Elements/Icon/QuestionMark";
 import Plus from "../Elements/Icon/Plus";
-import { rupiah } from "../../Hooks/useRupiah";
 import {
   Button,
   Popover,
@@ -11,12 +9,13 @@ import {
   PopoverHeader,
   PopoverTrigger,
 } from "@chakra-ui/react";
-import { SingleStar } from "../Elements/Icon/SingleStar";
 import { AddToCart } from "../../services/Order.service";
 import { totalItems } from "../../Store/TotalItems";
 import { useShallow } from "zustand/react/shallow";
 import { getMenuProductById } from "../../services/product.service";
 import { useCustomToast } from "../../Hooks/useToast";
+import { rupiah } from "../../utils/rupiah";
+import { QuestionMarkCircleIcon, StarIcon } from "@heroicons/react/24/solid";
 
 const DetailProduct = ({
   _id,
@@ -120,9 +119,9 @@ const DetailProduct = ({
       </div>
       <div className="flex w-full flex-col items-center justify-center px-2 py-6 text-white md:mt-10">
         <div className="md:w-4/5">
-          <div className="full mb-4 flex w-fit items-center justify-center rounded border border-secondary px-2 text-secondary md:text-lg">
+          <div className="full mb-4 flex w-fit items-center justify-center gap-1 rounded border border-secondary px-2 text-secondary md:text-lg">
             <h1>200</h1>
-            <SingleStar />
+            <StarIcon className="h-4 w-4" />
             <h1>Items</h1>
           </div>
           <div className="mb-4 max-w-xs md:max-w-sm">
@@ -134,14 +133,14 @@ const DetailProduct = ({
             {!fat && !calories && !sugar && !oz ? (
               ""
             ) : (
-              <React.Fragment>
+              <span className="flex items-center justify-center">
                 <h3 className="text-xs font-semibold">
                   {calories} Calories, {sugar}g sugar, {fat}g fat {oz} oz
                 </h3>
                 <Popover placement="top-start">
                   <PopoverTrigger>
                     <Button variant="white">
-                      <QuestionMark />
+                      <QuestionMarkCircleIcon className="h-4 w-4 text-secondary" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent
@@ -157,7 +156,7 @@ const DetailProduct = ({
                     <PopoverCloseButton />
                   </PopoverContent>
                 </Popover>
-              </React.Fragment>
+              </span>
             )}
           </div>
           <div className="flex w-full items-center justify-end">

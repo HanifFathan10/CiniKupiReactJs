@@ -2,13 +2,14 @@ import InputForm from "../Elements/InputForm";
 import Button from "../Elements/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Login } from "../../services/AuthService";
 import { useCustomToast } from "../../Hooks/useToast";
+import useAuthStore from "../../Store/AuthStore";
 
 const FormLogin = () => {
   const [isLogin, setIsLogin] = useState(false);
   const { SuccessToast, ErrorToast } = useCustomToast();
   const Navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -21,29 +22,20 @@ const FormLogin = () => {
         password: e.target.password.value,
       };
 
-      await Login(data, (status, res) => {
+      await login(data, (status, res) => {
         if (status === true) {
-          sessionStorage.setItem("access_token", res.data.accessToken);
           res.data.data.role === "admin" ? Navigate("/admin") : Navigate("/");
-          setIsLogin(false);
-
           SuccessToast({
-            id: "login",
+            id: "login-success",
             title: res.data.message,
           });
         } else {
           ErrorToast({
-            id: "login",
+            id: "login-error",
             title: res.response.data.message,
           });
-
-          setIsLogin(false);
         }
       });
-
-      if (!sessionStorage.getItem("access_token")) {
-        Navigate("/login");
-      }
     } catch (error) {
       setIsLogin(false);
     } finally {

@@ -1,26 +1,21 @@
 import { useDisclosure } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
-import { useRef } from "react";
-import { Logout } from "../../../../services/AuthService";
+import React, { useRef } from "react";
 import ConfirmLogout from "../ConfirmLogout";
+import useAuthStore from "../../../../Store/AuthStore";
 
 const NavigasiList = () => {
   const Navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
+  const logout = useAuthStore((state) => state.logout);
 
   const handleLogout = async (e) => {
     e.preventDefault();
 
-    const token = sessionStorage.getItem("access_token");
-
-    await Logout(token, (status, res) => {
-      if (status === true) {
-        onClose;
-        sessionStorage.removeItem("access_token");
-        localStorage.removeItem("PAYMENT_RESULT");
-        localStorage.removeItem("ADD_TO_CART");
-        window.location.href = "/";
+    await logout((status) => {
+      if (status) {
+        window.location.reload();
       }
     });
   };
@@ -35,32 +30,35 @@ const NavigasiList = () => {
   ].filter((link) => link !== null);
 
   return (
-    <>
+    <React.Fragment>
       {Links.map((href) => (
         <li className="my-2 md:mx-4" key={href.name}>
           <Link
             to={href.link}
-            className="text-md px-2 font-semibold duration-500 hover:text-slate-600 max-md:text-[#ffffff]"
+            className="relative inline cursor-pointer rounded border-teal-600 text-sm font-bold before:absolute before:-bottom-0 before:-left-0 before:block before:h-[4px] before:w-full before:origin-bottom-right before:scale-x-0 before:bg-teal-600 before:transition before:duration-300 before:ease-in-out hover:rounded-b-none hover:before:origin-bottom-left hover:before:scale-x-100 lg:px-4 lg:py-2"
           >
             {href.name}
           </Link>
         </li>
       ))}
       {token ? (
-        <div className="my-2 flex items-center justify-center rounded-full bg-orange-900 px-4 py-1 md:mx-4">
-          <button onClick={onOpen} className="p-0 text-sm font-semibold">
+        <li>
+          <button
+            onClick={onOpen}
+            className="my-2 flex items-center justify-center rounded-full bg-orange-900 px-4 py-1 text-sm font-semibold md:mx-4"
+          >
             LOG OUT
           </button>
-        </div>
+        </li>
       ) : (
-        <div className="my-2 flex items-center justify-center rounded-full bg-green-700 px-4 py-1 md:mx-4">
+        <li>
           <button
             onClick={() => Navigate("/login")}
-            className="p-0 text-sm font-semibold"
+            className="my-2 flex items-center justify-center rounded-full bg-green-700 px-4 py-1 text-sm font-semibold md:mx-4"
           >
             LOG IN
           </button>
-        </div>
+        </li>
       )}
       <ConfirmLogout
         cancelRef={cancelRef}
@@ -68,7 +66,7 @@ const NavigasiList = () => {
         isOpen={isOpen}
         onClose={onClose}
       />
-    </>
+    </React.Fragment>
   );
 };
 

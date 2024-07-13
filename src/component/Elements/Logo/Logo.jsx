@@ -1,6 +1,9 @@
 export const Logo = () => {
   return (
-    <a href="/" className="flex items-center gap-2 text-xl font-bold">
+    <a
+      href="https://cini-kupi.vercel.app"
+      className="flex items-center gap-2 text-xl font-bold"
+    >
       <svg
         fill="#ffffff"
         height="30px"
@@ -30,7 +33,7 @@ export const Logo = () => {
         </g>
       </svg>
       <h1 className="hidden md:mt-2 md:block">
-        Cini<span className="italic text-teal-700">Kupi</span>
+        Cini<span className="italic text-neutral-400">Kupi</span>
       </h1>
     </a>
   );

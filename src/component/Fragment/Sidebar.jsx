@@ -11,19 +11,18 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import ConfirmLogout from "../Elements/NavigasiBar/ConfirmLogout";
-import { Logout } from "../../services/AuthService";
+import useAuthStore from "../../Store/AuthStore";
 
 const Sidebar = () => {
+  const cancelRef = useRef();
   const { pathname } = useLocation();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef();
+  const logout = useAuthStore((state) => state.logout);
 
   const handleLogout = async (e) => {
     e.preventDefault();
 
-    const token = sessionStorage.getItem("access_token");
-
-    await Logout(token, (status, res) => {
+    await logout((status, res) => {
       if (status === true) {
         onClose;
         sessionStorage.removeItem("access_token");
@@ -35,9 +34,9 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="absolute left-0 top-0 z-[9999] flex h-screen w-72 -translate-x-full flex-col justify-between overflow-y-hidden rounded-e-xl border-4 border-solid bg-light-200 px-5 py-3 text-black duration-300 ease-linear lg:static lg:translate-x-0">
+    <div className="absolute left-0 top-0 z-[9999] flex h-screen w-72 -translate-x-full flex-col justify-between overflow-y-hidden rounded-e-sm border-4 border-solid bg-light-200 px-5 py-3 text-black duration-300 ease-linear lg:static lg:translate-x-0">
       <div>
-        <Link to={"/admin"} className="flex w-full items-end gap-2 p-3">
+        <Link to="/admin" className="flex w-full items-end gap-2 p-3">
           <svg
             fill="#081225"
             height="30px"
@@ -73,7 +72,7 @@ const Sidebar = () => {
       </div>
       <ul className="flex flex-col gap-3">
         <li
-          className={`rounded-md ${pathname === "/admin/users" ? "bg-dark text-white" : "text-dark hover:bg-gray-200"} p-3 `}
+          className={`rounded-md ${pathname === "/admin/users" ? "bg-dark text-white" : "text-dark hover:bg-gray-200"} cursor-pointer p-3 `}
         >
           <Link to="/admin/users" className="flex items-center gap-2">
             <UserIcon className="h-6 w-6" />
@@ -98,7 +97,7 @@ const Sidebar = () => {
 
             <AccordionPanel pb={4}>
               <li
-                className={`rounded-md ${pathname === "/admin/menus/menu" ? "bg-dark text-white" : ""} p-3`}
+                className={`rounded-md ${pathname === "/admin/menus/menu" ? "bg-dark text-white" : ""} cursor-pointer p-3`}
               >
                 <Link
                   to="/admin/menus/menu"
@@ -109,7 +108,7 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li
-                className={`rounded-md ${pathname === "/admin/menus/product" ? "bg-dark text-white" : ""} p-3`}
+                className={`rounded-md ${pathname === "/admin/menus/product" ? "bg-dark text-white" : ""} cursor-pointer p-3`}
               >
                 <Link
                   to="/admin/menus/product"
@@ -123,7 +122,7 @@ const Sidebar = () => {
           </AccordionItem>
         </Accordion>
         <li
-          className={`rounded-md ${pathname === "/admin/transactions" ? "bg-dark text-white" : "text-dark hover:bg-gray-200"} p-3 `}
+          className={`rounded-md ${pathname === "/admin/transactions" ? "bg-dark text-white" : "text-dark hover:bg-gray-200"} cursor-pointer p-3`}
         >
           <Link to="/admin/transactions" className="flex items-center gap-2">
             <BanknotesIcon className="h-6 w-6" />

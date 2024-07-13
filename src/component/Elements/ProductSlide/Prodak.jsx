@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useScrollTop } from "../../../Hooks/useScrollTop";
-import { rupiah } from "../../../Hooks/useRupiah";
+import { rupiah } from "../../../utils/rupiah";
 
 const Prodak = ({ name, price, image, alt, _id }) => {
   const navigate = useNavigate();

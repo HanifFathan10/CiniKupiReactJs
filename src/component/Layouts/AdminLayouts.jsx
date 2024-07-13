@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import Sidebar from "../Fragment/Sidebar";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 const AdminLayouts = ({ children }) => {
   const navigate = useNavigate();

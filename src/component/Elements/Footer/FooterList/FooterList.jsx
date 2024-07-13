@@ -25,7 +25,7 @@ const FooterList = ({ title, id }) => {
   return (
     <div id={id} className="cursor-pointer">
       <div onClick={onToggle} className="my-5 flex justify-between px-5">
-        <h6 className="font-base uppercase italic text-black">{title}</h6>
+        <h1 className="font-base uppercase italic text-black">{title}</h1>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

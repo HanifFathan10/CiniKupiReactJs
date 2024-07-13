@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { HeadMetaData } from "../../../component/Elements/HeadMetaData";
 import AdminLayouts from "../../../component/Layouts/AdminLayouts";
-import { Select } from "@chakra-ui/react";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
-import ModalInput from "../../../component/Elements/InputForm/Modal";
 import {
   CreateDataMenu,
   DeleteDataMenu,
@@ -12,19 +10,22 @@ import {
 } from "../../../services/Menu.service";
 import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
-import useSlug from "../../../Hooks/useSlug";
 import Plus from "../../../component/Elements/Icon/Plus";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import Create from "../../../component/Elements/Modal/admin/menu/Create";
+import Edit from "../../../component/Elements/Modal/admin/menu/Edit";
+import Delete from "../../../component/Elements/Modal/admin/menu/Delete";
+import { useCustomToast } from "../../../Hooks/useToast";
 
 const MenuDashboardPage = () => {
-  const [menus, setMenus] = useState([]);
+  const [images, setImages] = useState("");
+  const [category, setCategory] = useState("");
   const [updated, setUpdated] = useState({});
   const [deleted, setDeleted] = useState({});
-  const [images, setImages] = useState("");
+  const [menus, setMenus] = useState([]);
   const [modal, setModal] = useState(false);
-  const [category, setCategory] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { inputText, slug, handleInputChange } = useSlug();
+
+  const { SuccessToast } = useCustomToast();
 
   useEffect(() => {
     setIsLoading(true);
@@ -62,6 +63,10 @@ const MenuDashboardPage = () => {
     await CreateDataMenu(data, (status, res) => {
       if (status === true) {
         setModal(false);
+        SuccessToast({
+          id: "create-menu",
+          title: res.message,
+        });
       }
     });
   };
@@ -80,6 +85,10 @@ const MenuDashboardPage = () => {
       if (status === true) {
         setUpdated({});
         fetchDataMenu();
+        SuccessToast({
+          id: "edit-menu",
+          title: res.message,
+        });
       }
     });
   };
@@ -89,99 +98,84 @@ const MenuDashboardPage = () => {
       if (status === true) {
         setDeleted({});
         fetchDataMenu();
+        SuccessToast({
+          id: "delete-menu",
+          title: res.message,
+        });
       }
     });
-  };
-
-  const convertToBase64 = (e) => {
-    const file = e.target.files[0];
-    const maxSize = 3 * 1024 * 1024; // 3MB
-
-    if (file.size > maxSize) {
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      setImages(reader.result);
-    };
-
-    reader.onerror = (error) => {
-      return;
-    };
   };
 
   return (
     <React.Fragment>
       <HeadMetaData title="Product Dashboard" description="Product dashboard" />
       <AdminLayouts>
-        <div class="relative h-full overflow-y-auto bg-white p-3 shadow-md sm:rounded-lg">
-          <div class="flex flex-col items-center justify-between space-y-3 p-4 md:flex-row md:space-x-4 md:space-y-0">
-            <div class="w-full max-w-xs">
+        <div className="relative h-full overflow-y-auto bg-white p-3 shadow-md sm:rounded-lg">
+          <div className="flex flex-col items-center justify-between space-y-3 p-4 md:flex-row md:space-x-4 md:space-y-0">
+            <div className="w-full max-w-xs">
               <form>
-                <label for="underline_select" class="sr-only">
+                <label htmlFor="underline_select" className="sr-only">
                   Filter Menu
                 </label>
                 <select
                   id="underline_select"
                   onChange={handleCategoryChange}
                   value={category}
-                  class="peer block w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-0 py-2.5 text-sm text-gray-500 focus:border-gray-200 focus:outline-none focus:ring-0"
+                  className="peer block w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-0 py-2.5 text-sm text-gray-500 focus:border-gray-200 focus:outline-none focus:ring-0"
                 >
-                  <option selected value="">
-                    All
-                  </option>
+                  <option value="">All</option>
                   <option value="food">Food</option>
                   <option value="drinks">Drinks</option>
                   <option value="coffe beans">Coffe Beans</option>
                 </select>
               </form>
             </div>
-            <div class="flex w-full flex-shrink-0 flex-col items-stretch justify-end space-y-2 md:w-auto md:flex-row md:items-center md:space-x-3 md:space-y-0">
+            <div className="flex w-full flex-shrink-0 flex-col items-stretch justify-end space-y-2 md:w-auto md:flex-row md:items-center md:space-x-3 md:space-y-0">
               <button
                 type="button"
                 onClick={() => setModal(true)}
-                class="flex items-center justify-center rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
+                className="flex items-center justify-center rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
               >
                 <Plus />
                 Add menu
               </button>
             </div>
           </div>
-          <table class="w-full text-left text-sm text-gray-500">
-            <thead class="bg-gray-50 text-xs uppercase text-gray-700">
+          <table className="w-full text-left text-sm text-gray-500">
+            <thead className="bg-gray-50 text-xs uppercase text-gray-700">
               <tr>
-                <th scope="col" class="px-4 py-3">
+                <th scope="col" className="px-4 py-3">
                   Menu
                 </th>
-                <th scope="col" class="px-4 py-3">
+                <th scope="col" className="px-4 py-3">
                   Category
                 </th>
-                <th scope="col" class="px-4 py-3">
+                <th scope="col" className="px-4 py-3">
                   Name Url
                 </th>
-                <th scope="col" class="px-4 py-3">
+                <th scope="col" className="px-4 py-3">
                   Last Update
                 </th>
-                <th scope="col" class="px-4 py-3">
-                  <span class="sr-only">Actions</span>
+                <th scope="col" className="px-4 py-3">
+                  <span className="sr-only">Actions</span>
                 </th>
               </tr>
             </thead>
             <tbody>
               {isLoading ? (
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <img
-                    src="/images/logo.png"
-                    alt="logo"
-                    width="20"
-                    height="20"
-                    fetchPriority="high"
-                    className="h-8 w-8 animate-spin fill-blue-600 text-gray-200"
-                  />
-                  <span class="sr-only">Loading...</span>
-                </div>
+                <tr className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                  <td>
+                    <img
+                      src="/images/logo.png"
+                      alt="logo"
+                      width="20"
+                      height="20"
+                      loading="eager"
+                      className="h-8 w-8 animate-spin fill-blue-600 text-gray-200"
+                    />
+                    <span className="sr-only">Loading...</span>
+                  </td>
+                </tr>
               ) : (
                 <React.Fragment>
                   {menus.map((menu, i) => {
@@ -191,25 +185,25 @@ const MenuDashboardPage = () => {
                     });
 
                     return (
-                      <tr class="border-b" key={i}>
+                      <tr className="border-b" key={i}>
                         <th
                           scope="row"
-                          class="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900"
+                          className="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                         >
                           <img
                             src={menu.image}
                             alt={menu.name}
-                            class="mr-3 h-10 w-auto bg-cover bg-center object-contain"
+                            className="mr-3 h-10 w-auto bg-cover bg-center object-contain"
                           />
                           {menu.name}
                         </th>
-                        <td class="px-4 py-3">{menu.category}</td>
-                        <td class="px-4 py-3">{menu.nameurl}</td>
-                        <td class="px-4 py-3">{lastUpdate}</td>
-                        <td class="flex items-center justify-center gap-3 px-4 py-3">
+                        <td className="px-4 py-3">{menu.category}</td>
+                        <td className="px-4 py-3">{menu.nameurl}</td>
+                        <td className="px-4 py-3">{lastUpdate}</td>
+                        <td className="flex items-center justify-center gap-3 px-4 py-3">
                           <button
                             type="button"
-                            class="inline-flex w-full items-center justify-center rounded-lg bg-yellow-300 px-2 py-2 text-center text-sm font-medium text-white hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-primary-300"
+                            className="inline-flex w-full items-center justify-center rounded-lg bg-yellow-300 px-2 py-2 text-center text-sm font-medium text-white hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-primary-300"
                             onClick={() => setUpdated(menu)}
                           >
                             <PencilSquareIcon className="-ml-1 mr-1 h-5 w-5" />
@@ -217,7 +211,7 @@ const MenuDashboardPage = () => {
                           </button>
                           <button
                             type="button"
-                            class="inline-flex w-full items-center justify-center rounded-lg bg-red-600 px-2 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300"
+                            className="inline-flex w-full items-center justify-center rounded-lg bg-red-600 px-2 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300"
                             onClick={() => setDeleted(menu)}
                           >
                             <TrashIcon className="-ml-1 mr-1 h-5 w-5" />
@@ -234,283 +228,27 @@ const MenuDashboardPage = () => {
         </div>
       </AdminLayouts>
 
-      {modal === true && (
-        <ModalInput onClose={() => setModal(false)}>
-          <div className="rounded-md bg-white p-4 shadow-md drop-shadow-md">
-            <div class="mb-4 flex items-center justify-between rounded-t border-b pb-4 sm:mb-5">
-              <h3 class="text-lg font-semibold text-gray-900 ">Add Menu</h3>
-              <button
-                type="button"
-                class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-                onClick={() => setModal(false)}
-              >
-                <XMarkIcon className="h-5 w-5" />
-                <span class="sr-only">Close modal</span>
-              </button>
-            </div>
-            <form onSubmit={handleCreateMenu}>
-              <div class="mb-4 grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label
-                    for="name"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={inputText}
-                    onChange={handleInputChange}
-                    id="name"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 "
-                    placeholder="Menu"
-                    required=""
-                  />
-                </div>
-                <div>
-                  <label
-                    for="nameurl"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Name Url
-                  </label>
-                  <input
-                    type="text"
-                    id="disabled-input"
-                    aria-label="disabled input"
-                    name="nameurl"
-                    class="focus:ring-blue-500s mb-6 block w-full cursor-not-allowed rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm text-slate-400 focus:border-blue-500"
-                    value={slug}
-                    placeholder="Menu url"
-                    disabled
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="category"
-                    className="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Category
-                  </label>
-                  <Select
-                    name="category"
-                    id="category"
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
-                    required
-                  >
-                    <option disabled selected>
-                      Select Category
-                    </option>
-                    <option value="drinks">Drinks</option>
-                    <option value="foods">Foods</option>
-                    <option value="coffe beans">Coffe Beans</option>
-                  </Select>
-                </div>
-                <div>
-                  <div className="flex w-full flex-col items-start justify-center">
-                    <label
-                      htmlFor="dropzone-file"
-                      class="mb-2 block text-sm font-medium text-gray-900 "
-                    >
-                      Image
-                    </label>
-                    {images ? (
-                      <img
-                        src={images}
-                        alt="image"
-                        className="h-32 w-full rounded-lg bg-cover object-contain"
-                      />
-                    ) : (
-                      <label
-                        for="dropzone-file"
-                        class="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
-                      >
-                        <div class="flex flex-col items-center justify-center pb-6 pt-5">
-                          <svg
-                            class="mb-4 h-8 w-8 text-gray-500"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 20 16"
-                          >
-                            <path
-                              stroke="currentColor"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                            />
-                          </svg>
-                          <p class="mb-2 text-sm text-gray-500">
-                            <span class="font-semibold">Click to upload</span>{" "}
-                            or drag and drop
-                          </p>
-                          <p class="text-xs text-gray-500">
-                            SVG, PNG, JPG or GIF (MAX. 800x400px)
-                          </p>
-                        </div>
-                        <input
-                          id="dropzone-file"
-                          type="file"
-                          className="hidden"
-                          onChange={convertToBase64}
-                          required
-                          name="image"
-                        />
-                      </label>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <button
-                type="submit"
-                class="inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
-              >
-                <Plus />
-                Add new product
-              </button>
-            </form>
-          </div>
-        </ModalInput>
-      )}
+      <Create
+        handleCreateMenu={handleCreateMenu}
+        modal={modal}
+        setModal={setModal}
+        images={images}
+        setImages={setImages}
+        key={Math.random()}
+      />
 
-      {Object.keys(updated).length ? (
-        <ModalInput onClose={() => setUpdated({})}>
-          <div className="rounded-md bg-white p-4 shadow-md drop-shadow-md">
-            <div class="mb-4 flex items-center justify-between rounded-t border-b pb-4 sm:mb-5">
-              <h3 class="text-lg font-semibold text-gray-900 ">Edit Menu</h3>
-              <button
-                type="button"
-                class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-                onClick={() => setUpdated({})}
-              >
-                <XMarkIcon className="h-5 w-5" />
-                <span class="sr-only">Close modal</span>
-              </button>
-            </div>
-            <form onSubmit={handleEditMenu}>
-              <div class="mb-4 grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label
-                    for="name"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    onChange={handleInputChange}
-                    id="name"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
-                    defaultValue={updated.name}
-                    placeholder="Menu"
-                    required=""
-                  />
-                </div>
-                <div>
-                  <label
-                    for="nameurl"
-                    class="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Name Url
-                  </label>
-                  <input
-                    type="text"
-                    id="nameurl"
-                    aria-label="nameurl"
-                    name="nameurl"
-                    class="focus:ring-blue-500s mb-6 block w-full cursor-not-allowed rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm text-slate-400 focus:border-blue-500"
-                    value={slug}
-                    placeholder="Menu url"
-                    disabled
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="category"
-                    className="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Category
-                  </label>
-                  <Select
-                    name="category"
-                    id="category"
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
-                    required
-                  >
-                    <option disabled selected value={updated.category}>
-                      {updated.category}
-                    </option>
-                    <option value="drinks">Drinks</option>
-                    <option value="foods">Foods</option>
-                    <option value="coffe beans">Coffe Beans</option>
-                  </Select>
-                </div>
-                <div>
-                  <div className="flex w-full flex-col items-start justify-center">
-                    <label
-                      htmlFor="dropzone-file"
-                      class="mb-2 block text-sm font-medium text-gray-900 "
-                    >
-                      Image
-                    </label>
-                    <img
-                      src={updated.image}
-                      alt="image"
-                      className="h-32 w-full rounded-lg bg-cover object-contain"
-                    />
-                  </div>
-                </div>
-              </div>
-              <button
-                type="submit"
-                class="inline-flex items-center rounded-lg bg-yellow-300 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-300"
-              >
-                <PencilSquareIcon className="mr -ml-1 mr-1 h-5 w-5" />
-                Edit
-              </button>
-            </form>
-          </div>
-        </ModalInput>
-      ) : null}
+      <Edit
+        handleEditMenu={handleEditMenu}
+        setUpdated={setUpdated}
+        updated={updated}
+      />
 
-      {Object.keys(deleted).length ? (
-        <ModalInput onClose={() => setDeleted({})}>
-          <div class="relative mx-auto w-fit rounded-lg bg-white p-4 text-center shadow sm:p-5">
-            <button
-              type="button"
-              onClick={() => setDeleted({})}
-              class="absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 "
-            >
-              <XMarkIcon className="h-5 w-5" />
-              <span class="sr-only">Close modal</span>
-            </button>
-            <TrashIcon className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-            <p class="mb-4 text-gray-500">
-              Are you sure you want to delete{" "}
-              <span className="font-bold text-neutral-600">{deleted.name}</span>
-            </p>
-            <div class="flex items-center justify-center space-x-4">
-              <button
-                onClick={() => setDeleted({})}
-                type="button"
-                class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300"
-              >
-                No, cancel
-              </button>
-              <button
-                type="submit"
-                class="rounded-lg bg-red-600 px-3 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300"
-                onClick={() => handleDeleteMenu(deleted._id)}
-              >
-                Yes, I'm sure
-              </button>
-            </div>
-          </div>
-        </ModalInput>
-      ) : null}
+      <Delete
+        deleted={deleted}
+        handleDeleteMenu={handleDeleteMenu}
+        setDeleted={setDeleted}
+        key={Math.random()}
+      />
     </React.Fragment>
   );
 };

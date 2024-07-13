@@ -12,12 +12,14 @@ const ListImages = ({ type }) => {
 
   return (
     <div className="flex justify-center">
-      <div className="grid gap-3 sm:flex">
+      <div className="grid w-[80vw] gap-3 sm:flex sm:w-full">
         <div className="grid grid-cols-1">
           {type === "default" ? (
             <img
               src="images/1.jpg"
               alt="coffe1"
+              width={100}
+              height={100}
               className="h-full w-full cursor-pointer rounded-lg grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
               loading="lazy"
             />
@@ -28,8 +30,8 @@ const ListImages = ({ type }) => {
         <div
           className={`${
             type === "default"
-              ? "grid grid-cols-2 gap-3 text-black"
-              : "grid grid-cols-2 gap-3 text-black md:grid-cols-3"
+              ? "grid grid-cols-2 gap-3"
+              : "grid grid-cols-2 gap-3 md:grid-cols-3"
           } `}
         >
           {gambar.map((image) => {
@@ -40,7 +42,7 @@ const ListImages = ({ type }) => {
                   src={image.image}
                   alt={image.name}
                   loading="lazy"
-                  className="h-full w-full cursor-pointer rounded-lg grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
+                  className="h-full w-full cursor-pointer rounded-lg bg-cover bg-center object-cover grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
                 />
               );
             } else if (image.category === "coffe" && type === "coffe") {
@@ -50,7 +52,7 @@ const ListImages = ({ type }) => {
                   src={image.image}
                   alt={image.name}
                   loading="lazy"
-                  className="h-full w-full cursor-pointer rounded-lg grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
+                  className="h-full w-full cursor-pointer rounded-lg bg-cover bg-center object-cover grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
                 />
               );
             } else if (image.category === "drink" && type === "drink") {
@@ -60,7 +62,7 @@ const ListImages = ({ type }) => {
                   src={image.image}
                   alt={image.name}
                   loading="lazy"
-                  className="h-full w-full cursor-pointer rounded-lg grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
+                  className="h-full w-full cursor-pointer rounded-lg bg-cover bg-center object-cover grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
                 />
               );
             } else if (image.category === "dessert" && type === "dessert") {
@@ -70,7 +72,7 @@ const ListImages = ({ type }) => {
                   src={image.image}
                   alt={image.name}
                   loading="lazy"
-                  className="h-full w-full cursor-pointer rounded-lg grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
+                  className="h-full w-full cursor-pointer rounded-lg bg-cover bg-center object-cover grayscale transition duration-500 ease-in-out hover:scale-110 hover:grayscale-0"
                 />
               );
             }

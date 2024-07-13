@@ -111,65 +111,65 @@ const FormCheckout = () => {
     <div className=" w-full bg-chocolate px-3 py-6 text-white">
       <h1 className="mb-3 text-xl font-bold tracking-wide">CUSTOMER DETAILS</h1>
       <form onSubmit={handleCheckout}>
-        <label for="name" class="mb-2 block text-sm font-medium ">
+        <label htmlFor="name" className="mb-2 block text-sm font-medium ">
           Your Name
         </label>
-        <div class="relative mb-6 lg:max-w-lg">
-          <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5">
-            <UserIcon class="h-4 w-4 text-gray-500" />
+        <div className="relative mb-6 lg:max-w-lg">
+          <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5">
+            <UserIcon className="h-4 w-4 text-gray-500" />
           </div>
           <input
             type="text"
             id="name"
             name="name"
-            class="block w-full rounded-lg border border-gray-300  bg-transparent p-2.5 ps-10 text-sm placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
+            className="block w-full rounded-lg border border-gray-300  bg-transparent p-2.5 ps-10 text-sm placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
             placeholder="your name"
             required
           />
         </div>
 
-        <label for="email" class="mb-2 block text-sm font-medium ">
+        <label htmlFor="email" className="mb-2 block text-sm font-medium ">
           Your Email
         </label>
-        <div class="relative mb-6 lg:max-w-lg">
-          <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5">
-            <InboxIcon class="h-4 w-4 text-gray-500" />
+        <div className="relative mb-6 lg:max-w-lg">
+          <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5">
+            <InboxIcon className="h-4 w-4 text-gray-500" />
           </div>
           <input
             type="email"
             id="email"
             name="email"
-            class="block w-full rounded-lg border border-gray-300 bg-transparent p-2.5 ps-10 text-sm placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
+            className="block w-full rounded-lg border border-gray-300 bg-transparent p-2.5 ps-10 text-sm placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
             placeholder="youremail@gmail.com"
             required
           />
         </div>
 
-        <label for="phone" class="mb-2 block text-sm font-medium ">
+        <label htmlFor="phone" className="mb-2 block text-sm font-medium ">
           Phone number or Whatsapp:
         </label>
-        <div class="relative mb-4 lg:max-w-lg">
-          <div class="pointer-events-none absolute inset-y-0 start-0 top-0 flex items-center ps-3.5">
-            <PhoneIcon class="h-4 w-4 text-gray-500" />
+        <div className="relative mb-4 lg:max-w-lg">
+          <div className="pointer-events-none absolute inset-y-0 start-0 top-0 flex items-center ps-3.5">
+            <PhoneIcon className="h-4 w-4 text-gray-500" />
           </div>
           <input
             type="number"
             id="phone"
             name="phone"
             aria-describedby="helper-text-explanation"
-            class="block w-full rounded-lg border border-gray-300 bg-transparent p-2.5 ps-10 text-sm  focus:border-blue-500 focus:ring-blue-500"
+            className="block w-full rounded-lg border border-gray-300 bg-transparent p-2.5 ps-10 text-sm  focus:border-blue-500 focus:ring-blue-500"
             pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
             placeholder="+62 812 3456 7890"
             required
           />
         </div>
 
-        <label for="address" class="mb-2 block text-sm font-medium ">
+        <label htmlFor="address" className="mb-2 block text-sm font-medium ">
           Shipping address
         </label>
-        <div class="relative mb-6 lg:max-w-lg">
-          <div class="pointer-events-none absolute inset-y-0 start-0 flex items-start py-3 ps-3.5">
-            <HomeModernIcon class="h-4 w-4 text-gray-500" />
+        <div className="relative mb-6 lg:max-w-lg">
+          <div className="pointer-events-none absolute inset-y-0 start-0 flex items-start py-3 ps-3.5">
+            <HomeModernIcon className="h-4 w-4 text-gray-500" />
           </div>
           <textarea
             rows="4"
@@ -177,7 +177,7 @@ const FormCheckout = () => {
             type="text"
             id="address"
             name="address"
-            class="block w-full rounded-lg border border-gray-300 bg-transparent p-2.5 ps-10 text-sm  placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 "
+            className="block w-full rounded-lg border border-gray-300 bg-transparent p-2.5 ps-10 text-sm  placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 "
             placeholder="jl. jalan jalan no. 1 rt. 00 rw. 00 kota wakanda"
             required
           />

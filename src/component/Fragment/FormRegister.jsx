@@ -2,13 +2,14 @@ import { useState } from "react";
 import Button from "../Elements/Button/Button";
 import InputForm from "../Elements/InputForm";
 import { useNavigate } from "react-router-dom";
-import { Register } from "../../services/AuthService";
-import { useToast } from "@chakra-ui/react";
+import useAuthStore from "../../Store/AuthStore";
+import { useCustomToast } from "../../Hooks/useToast";
 
 const FormRegister = () => {
   const [isRegister, setIsRegister] = useState(false);
   const Navigate = useNavigate();
-  const toast = useToast();
+  const register = useAuthStore((state) => state.register);
+  const { SuccessToast, ErrorToast } = useCustomToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,65 +24,18 @@ const FormRegister = () => {
         confirmPassword: e.target.confirmPassword.value,
       };
 
-      if (data.password !== data.confirmPassword) {
-        if (!toast.isActive("error_password")) {
-          // Memeriksa apakah toast sudah aktif
-          toast({
-            id: "error_password",
-            title: "Password tidak cocok",
-            containerStyle: {
-              marginTop: "80px",
-              fontSize: "12px",
-            },
-            status: "error",
-            position: "top",
-            variant: "top-accent",
-            isClosable: true,
-          });
-        }
-      }
-
-      await Register(data, (status, res) => {
+      await register(data, (status, res) => {
         if (status === true) {
-          const successMsg = res.data.message; // Pesan sukses dari server
-          setIsRegister(false);
-
-          if (!toast.isActive("register")) {
-            // Memeriksa apakah toast sudah aktif
-            toast({
-              id: "register",
-              title: successMsg,
-              containerStyle: {
-                marginTop: "80px",
-                fontSize: "12px",
-              },
-              status: "success",
-              position: "top",
-              variant: "top-accent",
-              isClosable: true,
-            });
-          }
-
           Navigate("/login");
+          SuccessToast({
+            id: "register-success",
+            title: res.data.message,
+          });
         } else {
-          const errorMsg = res.response.data.message; // Pesan error dari server
-          setIsRegister(false);
-
-          if (!toast.isActive("error_id")) {
-            // Memeriksa apakah toast sudah aktif
-            toast({
-              id: "error_id",
-              title: errorMsg,
-              containerStyle: {
-                marginTop: "80px",
-                fontSize: "12px",
-              },
-              status: "error",
-              position: "top",
-              variant: "left-accent",
-              isClosable: true,
-            });
-          }
+          ErrorToast({
+            id: "register-error",
+            title: res.data.message,
+          });
         }
       });
     } catch (error) {

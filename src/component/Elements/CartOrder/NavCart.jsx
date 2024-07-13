@@ -1,10 +1,10 @@
+import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import React from "react";
 import { Link } from "react-router-dom";
 
 const NavCart = () => {
   return (
     <nav className="flex items-end">
-      {/* Logo */}
       <svg
         fill="#ffffff"
         height="40px"
@@ -34,22 +34,11 @@ const NavCart = () => {
           </g>{" "}
         </g>
       </svg>
-      {/* Arrow back */}
-      <Link to={"/menu"} className="flex">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="#ffffff"
-          className="h-6 w-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15.75 19.5L8.25 12l7.5-7.5"
-          />
-        </svg>
+      <Link
+        to={"/menu"}
+        className="flex transition duration-300 hover:text-secondary"
+      >
+        <ChevronLeftIcon className="h-6 w-6" />
         <h3 className="ml-1 hidden font-semibold md:block">Back To Menu</h3>
       </Link>
     </nav>

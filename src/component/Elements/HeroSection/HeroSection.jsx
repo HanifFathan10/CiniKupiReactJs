@@ -9,9 +9,9 @@ const HeroSection = () => {
             Lebih jujur pahitnya kopi daripada ucapanmu
           </h2>
           <h1 className="my-3 text-5xl font-bold italic md:text-6xl">
-            Cini<span className="text-zinc-500">Kupi</span>
+            Cini<span className="text-neutral-400">Kupi</span>
           </h1>
-          <p className="mb-3 font-mono text-xs md:text-sm">
+          <p className="mb-3 w-[80vw] max-w-sm font-mono text-xs leading-4 tracking-wide text-neutral-100 md:text-sm">
             Mari menikmati secangkir kopi, seperti halnya sebuah kopi, semahal
             dan seindah apapun tampilannya dalam sebuah cangkir. tak akan bisa
             menyembunyikan rasa pahit.
