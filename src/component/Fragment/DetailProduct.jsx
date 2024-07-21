@@ -8,6 +8,7 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
+  Tooltip,
 } from "@chakra-ui/react";
 import { AddToCart } from "../../services/Order.service";
 import { totalItems } from "../../Store/TotalItems";
@@ -119,11 +120,13 @@ const DetailProduct = ({
       </div>
       <div className="flex w-full flex-col items-center justify-center px-2 py-6 text-white md:mt-10">
         <div className="md:w-4/5">
-          <div className="full mb-4 flex w-fit items-center justify-center gap-1 rounded border border-secondary px-2 text-secondary md:text-lg">
-            <h1>200</h1>
-            <StarIcon className="h-4 w-4" />
-            <h1>Items</h1>
-          </div>
+          <Tooltip label="200 Items sold" aria-label="200 Items">
+            <span className=" mb-4 flex w-fit items-center justify-center gap-1 rounded border border-secondary px-2 text-secondary md:text-lg">
+              <h1>200</h1>
+              <StarIcon className="h-4 w-4" />
+              <h1>Items</h1>
+            </span>
+          </Tooltip>
           <div className="mb-4 max-w-xs md:max-w-sm">
             <p className="text-xs text-[#b2b4a1] lg:text-base">
               {descriptions}

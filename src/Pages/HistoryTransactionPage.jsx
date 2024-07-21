@@ -48,11 +48,15 @@ const HistoryTransactionPage = () => {
   };
 
   const handleStatusChange = (e) => {
+    e.preventDefault();
+
     setStatus(e.target.value);
     setPage(1);
   };
 
   const handleTimeChange = (e) => {
+    e.preventDefault();
+
     setTime(e.target.value);
     setPage(1);
   };
@@ -76,7 +80,7 @@ const HistoryTransactionPage = () => {
         metaDescription="Order status by CiniKupi"
       />
       <AuthLayouth>
-        <section className="mx-auto mt-20 h-full w-full max-w-7xl rounded-md bg-chocolate py-6 antialiased">
+        <section className="mx-auto mt-20 h-full w-full max-w-7xl rounded-md bg-zinc-800 py-6 antialiased">
           <div className="mx-auto h-full px-4">
             <div className="gap-4 sm:flex sm:items-center sm:justify-between">
               <h2 className="text-xl font-semibold text-white sm:text-2xl">

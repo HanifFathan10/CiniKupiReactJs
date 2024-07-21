@@ -7,7 +7,7 @@ const Pagination = ({ page, totalPages, handlePageChange }) => {
       className="mt-6 flex items-center justify-between sm:mt-8"
       aria-label="Page navigation example"
     >
-      <span className="text-sm font-normal  text-gray-200">
+      <span className="text-sm font-normal text-gray-700">
         Showing
         <span className="px-1 font-semibold">{totalPages.currentPage}</span>
         of

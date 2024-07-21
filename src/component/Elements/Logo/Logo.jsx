@@ -33,7 +33,7 @@ export const Logo = () => {
         </g>
       </svg>
       <h1 className="hidden md:mt-2 md:block">
-        Cini<span className="italic text-neutral-400">Kupi</span>
+        Cini<span className="italic text-teal-700">Kupi</span>
       </h1>
     </a>
   );

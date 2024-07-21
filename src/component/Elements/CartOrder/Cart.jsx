@@ -11,7 +11,7 @@ import { rupiah } from "../../../utils/rupiah";
 const Cart = ({ product }) => {
   const [click, setClick] = useState(false);
   const [render, setRender] = useState(false);
-  const { SuccessToast, ErrorToast } = useCustomToast();
+  const { ErrorToast } = useCustomToast();
   const { useCount } = totalItems(
     useShallow((state) => ({
       useCount: state.useCount,
@@ -19,14 +19,23 @@ const Cart = ({ product }) => {
   );
 
   useEffect(() => {
-    if (click === true) {
-      useCount();
-    }
+    const fetchUseClict = async () => {
+      if (click === true) {
+        await useCount();
+      }
+    };
+
+    fetchUseClict();
   }, [click]);
 
   const [optimisticQuantity, addOptimisticQuantity, revertOptimisticQuantity] =
     useOptimistic(product.quantity, (currentQuantity, newQuantity) => {
-      return Math.max(0, currentQuantity + newQuantity);
+      if (
+        currentQuantity + newQuantity > 8 ||
+        currentQuantity + newQuantity < 0
+      )
+        return currentQuantity;
+      return currentQuantity + newQuantity;
     });
 
   const [debounceQuantity] = useDebounce(optimisticQuantity, 1000, {
@@ -55,10 +64,6 @@ const Cart = ({ product }) => {
         await AddToCart(newDataProduct, (status, res) => {
           if (status === true) {
             setClick(true);
-            SuccessToast({
-              id: "add-to-cart",
-              title: res.data.message,
-            });
           } else {
             revertOptimisticQuantity();
             ErrorToast({

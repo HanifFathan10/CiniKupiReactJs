@@ -38,7 +38,7 @@ const LandingFirst = ({ title }) => {
 
   return (
     <div
-      className="flex min-h-screen items-center justify-center bg-[#212121] shadow-lg"
+      className="flex min-h-screen items-center justify-center bg-[#212121]"
       id="menu"
     >
       <div className="mb-24 flex w-full flex-col items-center px-4 pt-16 md:max-w-lg md:pt-20">
