@@ -5,15 +5,12 @@ export const totalItems = create((set) => ({
   items: [],
   isLoading: false,
   useCount: async () => {
-    // Memeriksa apakah access_token tersedia
     const access_token = sessionStorage.getItem("access_token");
     if (!access_token) {
-      // Jika tidak ada access_token, langsung kembalikan null
       return null;
     }
 
     try {
-      // Memulai loading
       set({ isLoading: true });
 
       const response = await fetch(
@@ -29,17 +26,15 @@ export const totalItems = create((set) => ({
 
       const data = await response.json();
 
-      // Mengupdate state dengan respon yang sukses
       set((state) => ({
         ...state,
         items: data.data,
-        count: data.data.length, // Mengatur count ke panjang array data
+        count: data.data.length,
         isLoading: false,
       }));
 
       return data;
     } catch (error) {
-      // Menghentikan loading dan menampilkan pesan error
       set({ isLoading: false });
       throw error;
     }

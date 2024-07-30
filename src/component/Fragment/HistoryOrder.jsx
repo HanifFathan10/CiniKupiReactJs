@@ -51,7 +51,7 @@ const HistoryOrder = ({ trx, formatDate, setDetails, setCancel }) => {
               className={`${trx.status === "settlement" ? "bg-green-900 text-green-300" : "bg-primary-900 text-primary-300"}me-2 mt-1.5 inline-flex items-center rounded  px-2.5 py-0.5 text-xs font-medium  md:text-base`}
             >
               {trx.status === "settlement" ? (
-                <CheckIcon className="-mr-1 h-3 w-3" />
+                <CheckIcon className="-ml-1 mr-1 h-3 w-3" />
               ) : (
                 <ClockIcon className="-ml-1 mr-1 h-3 w-3" />
               )}

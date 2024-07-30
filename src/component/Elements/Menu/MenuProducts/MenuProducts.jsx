@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import { Cart } from "../Cart";
 import CartSkeleton from "../CartSkeleton";
 import { Skeleton } from "@chakra-ui/react";
+import BreadCrumbMenu from "../../BreadCrumb/BreadCrumbMenu";
 
 const MenuProducts = ({ title, id, image, isLoading }) => {
   return (
     <section id={id} className="mt-6">
-      <h2 className="mb-5 text-xl font-semibold">
+      <h2 className="mb-3 text-xl font-semibold">
         {isLoading ? (
           <Skeleton
             width={32}
@@ -17,11 +18,11 @@ const MenuProducts = ({ title, id, image, isLoading }) => {
             rounded={10}
           />
         ) : (
-          title
+          <BreadCrumbMenu linkMenu={title} hrefMenu={"/menu"} />
         )}
       </h2>
       <hr aria-hidden="true" className="pb-7" />
-      <div className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 md:grid-cols-2">
         {isLoading ? (
           <CartSkeleton />
         ) : (

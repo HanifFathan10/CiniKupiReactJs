@@ -11,11 +11,17 @@ export const getResponse = async (callback) => {
     });
 };
 
-export const generateResponse = async (prompt, callback) => {
+export const generateResponse = async (data, callback) => {
   await axios
-    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/generate-response`, {
-      prompt,
-    })
+    .post(
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/generate-response`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    )
     .then((res) => {
       callback(true, res);
     })

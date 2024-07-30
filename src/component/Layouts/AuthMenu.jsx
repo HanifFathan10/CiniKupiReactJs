@@ -4,16 +4,10 @@ import Footer from "../Elements/Footer/Footer";
 import MenuList from "../Elements/Menu/MenuList/MenuList";
 import PopUpOrder from "../Elements/PopUpOrder/PopUpOrder";
 import { useScrollTop } from "../../Hooks/useScrollTop";
+import { kebabToTitleCase } from "../../utils/kebabToTitleCase";
 
 const AuthMenu = ({ children, title }) => {
   useScrollTop();
-
-  function kebabToTitleCase(str) {
-    return str
-      .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(" ");
-  }
 
   return (
     <div className="min-h-screen w-full text-white">

@@ -13,8 +13,8 @@ const useGeminiAIChat = create(
         }));
       },
 
-      getResponseAI: async (prompt, callback) => {
-        await generateResponse(prompt, (status, res) => {
+      getResponseAI: async (data, callback) => {
+        await generateResponse(data, (status, res) => {
           if (status === true) {
             let response = {};
 
@@ -24,9 +24,9 @@ const useGeminiAIChat = create(
               histories: [...state.histories, response],
             }));
 
-            callback(true, res);
+            callback(status, res);
           } else {
-            callback(false, res);
+            callback(status, res);
           }
         });
       },

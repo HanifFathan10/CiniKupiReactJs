@@ -20,6 +20,8 @@ const MenuList = () => {
     fetchData();
   }, []);
 
+  const animateClass = "";
+
   const CartMenu = ({ title, id }) => {
     return (
       <>
@@ -68,7 +70,7 @@ const MenuList = () => {
                     <li key={index} className="my-3">
                       <Link
                         to={`/menu/${img.nameurl}`}
-                        className="font-extralight"
+                        className="relative inline cursor-pointer rounded border-secondary text-sm font-extralight before:absolute before:-bottom-0 before:-left-0 before:block before:h-[4px] before:w-full before:origin-bottom-right before:scale-x-0 before:bg-secondary before:transition before:duration-300 before:ease-in-out hover:rounded-b-none hover:before:origin-bottom-left hover:before:scale-x-100 lg:py-1"
                       >
                         {img.name}
                       </Link>
@@ -79,7 +81,7 @@ const MenuList = () => {
                     <li key={index} className="my-3">
                       <Link
                         to={`/menu/${img.nameurl}`}
-                        className="font-extralight"
+                        className="relative inline cursor-pointer rounded border-secondary text-sm font-extralight before:absolute before:-bottom-0 before:-left-0 before:block before:h-[4px] before:w-full before:origin-bottom-right before:scale-x-0 before:bg-secondary before:transition before:duration-300 before:ease-in-out hover:rounded-b-none hover:before:origin-bottom-left hover:before:scale-x-100 lg:py-1"
                       >
                         {img.name}
                       </Link>
@@ -93,7 +95,7 @@ const MenuList = () => {
                     <li key={index} className="my-3">
                       <Link
                         to={`/menu/${img.nameurl}`}
-                        className="font-extralight"
+                        className="relative inline cursor-pointer rounded border-secondary text-sm font-extralight before:absolute before:-bottom-0 before:-left-0 before:block before:h-[4px] before:w-full before:origin-bottom-right before:scale-x-0 before:bg-secondary before:transition before:duration-300 before:ease-in-out hover:rounded-b-none hover:before:origin-bottom-left hover:before:scale-x-100 lg:py-1"
                       >
                         {img.name}
                       </Link>

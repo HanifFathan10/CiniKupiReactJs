@@ -85,7 +85,7 @@ const DetailProduct = ({
             } else {
               ErrorToast({
                 id: "error-fetching",
-                title: res.data.message,
+                title: res.response.data.message,
               });
             }
           });

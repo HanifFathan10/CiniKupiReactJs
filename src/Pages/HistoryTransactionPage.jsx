@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { HeadMetaData } from "../component/Elements/HeadMetaData";
 import HistoryOrder from "../component/Fragment/HistoryOrder";
 import AuthLayouth from "../component/Layouts/AuthLayouth";
-import { GetHistoryTransaction } from "../services/PaymentService";
+import {
+  DeleteHistoryTransactionByOrderId,
+  GetHistoryTransaction,
+} from "../services/PaymentService";
 import Pagination from "../component/Elements/Pagination/Pagination";
 import { useLocation } from "react-router-dom";
 import { Skeleton, Stack } from "@chakra-ui/react";
@@ -61,6 +64,15 @@ const HistoryTransactionPage = () => {
     setPage(1);
   };
 
+  const handleCancelTransaction = async (order_id) => {
+    await DeleteHistoryTransactionByOrderId(order_id, (status, res) => {
+      if (status) {
+        localStorage.removeItem("pendingTransaction");
+        setCancel({});
+      }
+    });
+  };
+
   useEffect(() => {
     const searchParams = new URLSearchParams(location?.search);
     const statusCode = searchParams.get("status_code");
@@ -80,8 +92,8 @@ const HistoryTransactionPage = () => {
         metaDescription="Order status by CiniKupi"
       />
       <AuthLayouth>
-        <section className="mx-auto mt-20 h-full w-full max-w-7xl rounded-md bg-zinc-800 py-6 antialiased">
-          <div className="mx-auto h-full px-4">
+        <section className="mx-auto mt-20 w-full max-w-7xl rounded-md bg-zinc-800 py-6 antialiased">
+          <div className="mx-auto h-full min-h-screen px-4">
             <div className="gap-4 sm:flex sm:items-center sm:justify-between">
               <h2 className="text-xl font-semibold text-white sm:text-2xl">
                 My orders
@@ -187,7 +199,8 @@ const HistoryTransactionPage = () => {
                 })}
               </React.Fragment>
             )}
-
+          </div>
+          <div className="px-3">
             <Pagination
               page={page}
               totalPages={totalPages}
@@ -199,7 +212,6 @@ const HistoryTransactionPage = () => {
 
       <Details details={details} setDetails={setDetails} key={Math.random()} />
       <Cancel cancel={cancel} setCancel={setCancel} key={Math.random()} />
-      {}
     </React.Fragment>
   );
 };

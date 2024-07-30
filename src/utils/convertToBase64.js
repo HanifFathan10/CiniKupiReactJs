@@ -8,7 +8,8 @@ export const convertToBase64 = (event, setImages) => {
   }
 
   reader.onload = () => {
-    setImages(reader.result);
+    const base64String = reader.result;
+    setImages(base64String);
   };
 
   reader.onerror = (error) => {

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
-import { AddToCart } from "../../../services/Order.service";
 import { totalItems } from "../../../Store/TotalItems";
 import { useOptimistic } from "../../../Hooks/useOptimistic";
 import { useCustomToast } from "../../../Hooks/useToast";
 import { useDebounce } from "use-debounce";
 import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
 import { rupiah } from "../../../utils/rupiah";
+import { AddManyItemToCart } from "../../../services/Order.service";
 
 const Cart = ({ product }) => {
   const [click, setClick] = useState(false);
   const [render, setRender] = useState(false);
-  const { ErrorToast } = useCustomToast();
+  const { SuccessToast, ErrorToast } = useCustomToast();
   const { useCount } = totalItems(
     useShallow((state) => ({
       useCount: state.useCount,
@@ -61,9 +61,13 @@ const Cart = ({ product }) => {
 
     try {
       const fetchDataProduct = async () => {
-        await AddToCart(newDataProduct, (status, res) => {
+        await AddManyItemToCart(newDataProduct, (status, res) => {
           if (status === true) {
             setClick(true);
+            SuccessToast({
+              id: "add-to-cart",
+              title: res.data.message,
+            });
           } else {
             revertOptimisticQuantity();
             ErrorToast({
@@ -89,6 +93,8 @@ const Cart = ({ product }) => {
         id: "remove-from-cart",
         title: error.response.data.message,
       });
+    } finally {
+      setClick(false);
     }
 
     return () => {

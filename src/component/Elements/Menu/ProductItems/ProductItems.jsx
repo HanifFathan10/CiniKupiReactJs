@@ -2,24 +2,8 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Cart } from "../Cart";
 import CartSkeleton from "../CartSkeleton";
-import { getAllMenuProduct } from "../../../../services/product.service";
 
-const ProductItems = ({ nameUrl }) => {
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await getAllMenuProduct((status, res) => {
-        if (status === true) {
-          setProducts(res.data.products);
-          setIsLoading(false);
-        }
-      });
-    };
-
-    fetchData();
-  }, []);
+const ProductItems = ({ nameUrl, isLoading, products }) => {
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
       {isLoading ? (

@@ -34,6 +34,7 @@ import { useCustomToast } from "../../../Hooks/useToast";
 
 const ProductDashboardPage = () => {
   const [images, setImages] = useState("");
+  const [imageEdit, setImageEdit] = useState("");
   const [page, setPage] = useState(1);
   const [show, setShow] = useState({});
   const [deleted, setDeleted] = useState({});
@@ -152,7 +153,7 @@ const ProductDashboardPage = () => {
           id: "delete-product",
           title: res.message,
         });
-        window.location.reload();
+        fetchDataProduct();
       }
     });
   };
@@ -203,7 +204,7 @@ const ProductDashboardPage = () => {
               </div>
             </header>
 
-            <table className="w-full text-left text-sm text-gray-500  rtl:text-right">
+            <table className="w-full table-auto border-collapse text-left text-sm text-gray-500 rtl:text-right">
               <thead className="bg-gray-50 text-xs uppercase text-gray-700 ">
                 <tr>
                   <th scope="col" className="px-6 py-3">
@@ -224,8 +225,8 @@ const ProductDashboardPage = () => {
                   <th scope="col" className="px-6 py-3">
                     Description
                   </th>
-                  <th scope="col" className="px-6 py-3">
-                    Action
+                  <th scope="col" className="px-4 py-3">
+                    <span className="sr-only">Actions</span>
                   </th>
                 </tr>
               </thead>
@@ -251,17 +252,22 @@ const ProductDashboardPage = () => {
                         (totalPages.currentPage - 1) * 10 + index + 1;
                       return (
                         <tr
-                          className="border-b bg-white hover:bg-gray-50  "
+                          className="w-full border-b bg-white hover:bg-gray-50"
                           key={index}
                         >
-                          <td className="px-6 py-4">{itemNumber}</td>
+                          <td className="whitespace-nowrap px-6 py-4">
+                            {itemNumber}
+                          </td>
                           <th
                             scope="row"
                             className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 "
                           >
                             {product.name}
                           </th>
-                          <td className="px-6 py-4">
+                          <td
+                            scope="row"
+                            className="whitespace-nowrap px-6 py-4"
+                          >
                             <img
                               src={product.image}
                               alt={product.image}
@@ -270,9 +276,19 @@ const ProductDashboardPage = () => {
                               className="h-12 w-12 rounded bg-cover bg-center object-contain"
                             />
                           </td>
-                          <td className="px-6 py-4">{product.id_menu.name}</td>
-                          <td className="px-6 py-4">{rupiah(product.price)}</td>
-                          <td className="px-6 py-4">
+                          <td
+                            scope="row"
+                            className="whitespace-nowrap px-6 py-4"
+                          >
+                            {product.id_menu.name}
+                          </td>
+                          <td
+                            scope="row"
+                            className="whitespace-nowrap px-6 py-4"
+                          >
+                            {rupiah(product.price)}
+                          </td>
+                          <td scope="row" className="px-6 py-4">
                             {truncateText(product.descriptions, 10)}
                           </td>
                           <td className="flex items-center justify-center px-4 py-3">
@@ -327,11 +343,11 @@ const ProductDashboardPage = () => {
 
       <Edit
         handleEditProduct={handleEditProduct}
-        images={images}
-        menus={menus}
-        setUpdated={setUpdated}
+        images={imageEdit}
+        setImages={setImageEdit}
         updated={updated}
-        setImages={setImages}
+        setUpdated={setUpdated}
+        menus={menus}
         key={Math.random()}
       />
 

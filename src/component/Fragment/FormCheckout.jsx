@@ -20,8 +20,8 @@ const FormCheckout = () => {
   const Navigate = useNavigate();
   const location = useLocation();
 
-  const { WarningToast, ErrorToast } = useCustomToast();
   const product = totalItems(useShallow((state) => state.items));
+  const { WarningToast, ErrorToast } = useCustomToast();
   const accessToken = sessionStorage.getItem("access_token");
   const dataPending = localStorage.getItem("pendingTransaction");
 
@@ -80,7 +80,7 @@ const FormCheckout = () => {
           setToken(res.data.token);
           let data = {
             order: {
-              name: res.data.data.customer_details.name,
+              name: res.data.data.customer_details.first_name,
               email: res.data.data.customer_details.email,
               phone: res.data.data.customer_details.phone,
               order_id: res.data.data.transaction_details.order_id,
@@ -154,6 +154,7 @@ const FormCheckout = () => {
           </div>
           <input
             type="number"
+            inputMode="numeric"
             id="phone"
             name="phone"
             aria-describedby="helper-text-explanation"

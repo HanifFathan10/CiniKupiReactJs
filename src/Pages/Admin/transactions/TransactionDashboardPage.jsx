@@ -147,7 +147,7 @@ const TransactionDashboardPage = () => {
                       value={trimSearch}
                       onChange={handleSearchTransaction}
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
-                      placeholder="Search Transactions"
+                      placeholder="Search by name or email"
                       required=""
                     />
                   </div>
@@ -193,11 +193,22 @@ const TransactionDashboardPage = () => {
                     <th scope="col" className="px-4 py-3">
                       No
                     </th>
-                    <th scope="col" className="px-4 py-3">
-                      Name
+                    <th
+                      scope="col"
+                      className="cursor-pointer px-4 py-3"
+                      onClick={() => handleSort("name")}
+                    >
+                      <div className="flex items-center">
+                        Name
+                        {getIcon("name")}
+                      </div>
                     </th>
                     <th scope="col" className="px-4 py-3">
                       Email
+                    </th>
+
+                    <th scope="col" className="px-4 py-3">
+                      <div className="flex items-center">Total items</div>
                     </th>
                     <th
                       scope="col"
@@ -207,16 +218,6 @@ const TransactionDashboardPage = () => {
                       <div className="flex items-center">
                         Total Price
                         {getIcon("gross_amount")}
-                      </div>
-                    </th>
-                    <th
-                      scope="col"
-                      className="cursor-pointer px-4 py-3"
-                      onClick={() => handleSort("item_details")}
-                    >
-                      <div className="flex items-center">
-                        Total items
-                        {getIcon("item_details")}
                       </div>
                     </th>
                     <th
@@ -273,19 +274,20 @@ const TransactionDashboardPage = () => {
 
                         return (
                           <tr className="border-b" key={index}>
-                            <th
+                            <td
                               scope="row"
                               className="whitespace-nowrap px-4 py-3 font-medium text-gray-900"
                             >
                               {itemNumber}
-                            </th>
+                            </td>
                             <td className="px-4 py-3">{user.order.name}</td>
                             <td className="px-4 py-3">{user.order.email}</td>
-                            <td className="px-4 py-3">
-                              {rupiah(user.order.gross_amount)}
-                            </td>
+
                             <td className="px-4 py-3">
                               {user.item_details.length}
+                            </td>
+                            <td className="px-4 py-3">
+                              {rupiah(user.order.gross_amount)}
                             </td>
                             <td className="px-4 py-3">{formatDate}</td>
                             <td className="flex items-center justify-center px-4 py-3">

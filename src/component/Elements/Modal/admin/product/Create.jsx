@@ -56,7 +56,7 @@ const Create = ({
                   id="menu"
                   name="menu"
                   defaultValue="Choose a menu"
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                  className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
                 >
                   {menus.map((menu, i) => (
                     <option value={menu._id} key={i}>
@@ -162,9 +162,12 @@ const Create = ({
               </div>
             </div>
             <div className="mb-4">
-              <span className="mb-2 block text-sm font-medium text-gray-900 ">
+              <label
+                htmlFor="dropzone-file"
+                className="mb-2 block text-sm font-medium text-gray-900 "
+              >
                 Product Images
-              </span>
+              </label>
               {images ? (
                 <div className="grid grid-cols-2 place-items-center">
                   <img
@@ -203,7 +206,7 @@ const Create = ({
                       </div>
                       <input
                         id="dropzone-file"
-                        type="file"
+                        type="image"
                         className="hidden"
                         onChange={convertToBase64}
                       />

@@ -145,6 +145,9 @@ const MenuDashboardPage = () => {
             <thead className="bg-gray-50 text-xs uppercase text-gray-700">
               <tr>
                 <th scope="col" className="px-4 py-3">
+                  No
+                </th>
+                <th scope="col" className="px-4 py-3">
                   Menu
                 </th>
                 <th scope="col" className="px-4 py-3">
@@ -186,6 +189,7 @@ const MenuDashboardPage = () => {
 
                     return (
                       <tr className="border-b" key={i}>
+                        <td className="whitespace-nowrap px-4 py-3">{i + 1}</td>
                         <th
                           scope="row"
                           className="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900"

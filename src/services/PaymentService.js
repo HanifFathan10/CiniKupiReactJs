@@ -91,6 +91,25 @@ export const DeleteHistoryTransaction = async (_id, callback) => {
     });
 };
 
+export const DeleteHistoryTransactionByOrderId = async (order_id, callback) => {
+  await axios
+    .delete(
+      `${import.meta.env.VITE_BACKEND_URL}/api/history/order_id/${order_id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+        },
+      },
+    )
+    .then((res) => {
+      callback(true, res);
+    })
+    .catch((error) => {
+      callback(false, error);
+    });
+};
+
 export const PaymentService = ({
   history,
   token,
@@ -103,12 +122,14 @@ export const PaymentService = ({
         setIsLoading(true);
         history.status = res.transaction_status;
 
-        await HistoryTransaction(history, (status) => {
+        await HistoryTransaction(history, (status, res) => {
           if (status === true) {
             setIsLoading(false);
           }
         });
       } catch (error) {
+        setIsLoading(false);
+      } finally {
         setIsLoading(false);
       }
     };
@@ -145,18 +166,15 @@ export const PaymentService = ({
 
     makePayment();
 
-    // Clean up effect if needed
     return () => {};
   }, [token, history]);
 
   useEffect(() => {
     if (!accessToken) return Navigate("/login");
 
-    // Load Midtrans script
-    const midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
-
     let scriptTag = document.createElement("script");
-    scriptTag.src = midtransUrl;
+    let midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
+    scriptTag.setAttribute("src", midtransUrl);
 
     let midtransClientKey = import.meta.env.MIDTRANS_CLIENT_KEY;
     scriptTag.setAttribute("data-client-key", midtransClientKey);

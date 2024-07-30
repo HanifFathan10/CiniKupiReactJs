@@ -12,3 +12,31 @@
 body {
   font-family: "Poppins", sans-serif;
 }
+
+*::-webkit-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #081225;
+  display: block;
+  width: 4px;
+  height: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: #ffffff;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #cba258;
+}
+*::-webkit-scrollbar-corner {
+  background-color: #cba258;
+}
+@supports (-moz-appearance: none) {
+  * {
+    scrollbar-width: thin;
+  }
+}
+*::-webkit-scrollbar {
+  display: block;
+  width: 11px;
+  height: 11px;
+}

@@ -79,8 +79,8 @@ const UserDashboardPage = () => {
                 <th scope="col" className="px-6 py-3">
                   Role
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  Action
+                <th scope="col" className="px-4 py-3">
+                  <span className="sr-only">Actions</span>
                 </th>
               </tr>
             </thead>

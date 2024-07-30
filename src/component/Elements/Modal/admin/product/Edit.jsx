@@ -54,7 +54,7 @@ const Edit = ({
                 id="menu"
                 name="menu"
                 defaultValue={updated.id_menu.name}
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
               >
                 {menus.map((menu, i) => (
                   <option value={menu._id} name="menu" key={i}>
