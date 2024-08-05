@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom";
+
 export const Logo = () => {
   return (
-    <a
-      href="https://cini-kupi.vercel.app"
+    <Link
+      to='/'
       className="flex items-center gap-2 text-xl font-bold"
     >
       <svg
@@ -35,6 +37,6 @@ export const Logo = () => {
       <h1 className="hidden md:mt-2 md:block">
         Cini<span className="italic text-teal-700">Kupi</span>
       </h1>
-    </a>
+    </Link>
   );
 };

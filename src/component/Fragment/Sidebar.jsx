@@ -34,7 +34,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="absolute left-0 top-0 z-[9999] flex h-screen w-72 -translate-x-full flex-col justify-between overflow-y-hidden rounded-e-sm border-4 border-solid bg-light-200 px-5 py-3 text-black duration-300 ease-linear lg:static lg:translate-x-0">
+    <div className="absolute left-0 top-0 z-[9999] flex h-screen w-72 -translate-x-full flex-col justify-between overflow-y-hidden rounded-e-xl border-4 border-solid bg-light-200 px-5 py-3 text-black duration-300 ease-linear lg:static lg:translate-x-0">
       <div>
         <Link to="/admin" className="flex w-full items-end gap-2 p-3">
           <svg
