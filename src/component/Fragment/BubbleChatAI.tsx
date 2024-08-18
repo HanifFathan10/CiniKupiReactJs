@@ -17,7 +17,7 @@ import {
   SparklesIcon,
 } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 import useGeminiAIChat from "../../Store/AIStore";
 import Showdown from "showdown";
 import parse from "html-react-parser";
@@ -25,36 +25,29 @@ import { convertToBase64 } from "../../utils/convertToBase64";
 import PreviewImg from "../Elements/Modal/PreviewImg";
 
 const BubbleChatAI = () => {
-  const [chat, setChat] = useState<GeminiAIRequest>({
-    prompt: "",
-    image: "",
-    mimeType: "",
-  });
-  const [image, setImage] = useState("");
-  const [mimeType, setMimeType] = useState("");
-  const [previewData, setPreviewData] = useState({});
+  const [image, setImage] = useState<string>("");
+  const [mimeType, setMimeType] = useState<string>("");
+  const [chat, setChat] = useState<GeminiAIRequest>({});
+  const [previewData, setPreviewData] = useState<HistoryGeminiAIResponse>({});
 
   const getResponseAI = useGeminiAIChat((state) => state.getResponseAI);
   const histories = useGeminiAIChat((state) => state.histories);
   const setHistories = useGeminiAIChat((state) => state.setHistories);
 
   const token = sessionStorage.getItem("access_token");
-  const user: IDataUser = jwtDecode(token as string);
+  const user: any = token ? jwtDecode(token) : null;
+
   const converter = new Showdown.Converter();
 
   useEffect(() => {
     const fetchGeminiChat = () => {
       getResponseAI(chat, (status, res) => {
-        setChat({
-          prompt: "",
-          image: "",
-          mimeType: "",
-        });
+        setChat({});
         setMimeType("");
       });
     };
 
-    if (chat.prompt !== "") {
+    if (Object.keys(chat).length > 0) {
       fetchGeminiChat();
     }
   }, [chat]);
@@ -67,10 +60,10 @@ const BubbleChatAI = () => {
     if (inputChat.trim() === "" || inputChat.length < 3) return;
 
     setHistories({
-      sender: "User",
       response: inputChat,
       image,
-      user: user.username,
+      sender: "user",
+      user: user._doc.username,
       time: new Date().toLocaleString("id-ID", {
         timeZone: "Asia/Jakarta",
         hour: "numeric",
@@ -119,7 +112,7 @@ const BubbleChatAI = () => {
               <PopoverHeader className="text-md font-semibold text-neutral-800">
                 Hello{" "}
                 <span className="font-bold uppercase leading-7">
-                  {user ? user.username : "You"}
+                  {user ? user._doc.username : "You"}
                 </span>
               </PopoverHeader>
               <PopoverCloseButton className="border-chocolate text-neutral-800" />
@@ -147,25 +140,21 @@ const BubbleChatAI = () => {
                   </div>
                 ) : (
                   histories.map((history, index) => {
-                    const text = converter.makeHtml(history.response);
+                    const text = converter.makeHtml(history.response!);
                     return (
                       <div
                         className={`flex items-start gap-2.5 ${
-                          history.sender === "User"
+                          history.sender === "user"
                             ? "justify-end"
                             : "justify-start"
                         }`}
                         key={index}
                       >
                         {history.sender == null && (
-                          <img
-                            className="h-8 w-8 rounded-full bg-white p-1"
-                            src="/images/google.webp"
-                            alt="Jese image"
-                          />
+                          <SparklesIcon className="h-7 w-7 rounded-full bg-white p-1.5 text-primary-700" />
                         )}
                         <div
-                          className={`leading-1.5 flex w-fit max-w-[320px] flex-col border p-3 ${history.sender == "User" ? "rounded-s-xl rounded-ee-xl border-gray-700 bg-chocolate text-gray-100" : "rounded-e-xl rounded-es-xl border-gray-200 bg-white text-gray-800"}`}
+                          className={`leading-1.5 flex w-fit max-w-[320px] flex-col border p-3 ${history.sender == "user" ? "rounded-s-xl rounded-ee-xl border-gray-700 bg-chocolate text-gray-100" : "rounded-e-xl rounded-es-xl border-gray-200 bg-white text-gray-800"}`}
                         >
                           <div className="flex items-center space-x-2 rtl:space-x-reverse">
                             <span className="text-sm font-bold tracking-wider">

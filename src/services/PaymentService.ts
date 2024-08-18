@@ -9,6 +9,7 @@ export const PaymentRequest = async (
     .post(`${import.meta.env.VITE_BACKEND_URL}/api/token`, data, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
       },
     })
     .then((res) => {
@@ -57,6 +58,10 @@ export const getAllHistoryTransaction = async (
         sortDirection: data.sortDirection,
         startDate: data.startDate,
         endDate: data.endDate,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
       },
     })
     .then((res) => {

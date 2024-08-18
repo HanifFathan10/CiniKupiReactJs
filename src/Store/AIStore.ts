@@ -3,8 +3,8 @@ import { generateResponse } from "../services/AI.service";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 interface IGeminiAIChatStore {
-  histories: GeminiAIResponse[];
-  setHistories: (newHistories: GeminiAIResponse) => void;
+  histories: HistoryGeminiAIResponse[];
+  setHistories: (newHistories: HistoryGeminiAIResponse) => void;
   getResponseAI: (data: GeminiAIRequest, callback: TCallback) => void;
 }
 
@@ -23,9 +23,8 @@ const useGeminiAIChat = create<IGeminiAIChatStore>()(
         await generateResponse(data, (status, res) => {
           if (status === true) {
             set((state) => ({
-              histories: [...state.histories, res.data],
+              histories: [...state.histories, res],
             }));
-
             callback(status, res);
           } else {
             callback(status, res);

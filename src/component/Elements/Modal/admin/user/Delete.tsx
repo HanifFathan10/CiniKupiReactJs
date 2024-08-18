@@ -2,18 +2,18 @@ import React from "react";
 import ModalInput from "../../../InputForm/Modal";
 import { TrashIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useCustomToast } from "../../../../../Hooks/useToast";
-import { DeleteHistoryTransaction } from "../../../../../services/PaymentService";
+import { DeleteDataUser } from "../../../../../services/AuthService";
 
 interface DeleteUserProps {
-  deleted: AllDataTransaction;
-  setDeleted: React.Dispatch<React.SetStateAction<AllDataTransaction>>;
+  deleted: IDataUser;
+  setDeleted: React.Dispatch<React.SetStateAction<IDataUser>>;
   fetchData: () => void;
 }
 
 const Delete = ({ deleted, setDeleted, fetchData }: DeleteUserProps) => {
   const { SuccessToast, ErrorToast } = useCustomToast();
   const handleDeleteUser = async (_id: string) => {
-    await DeleteHistoryTransaction(_id, (status, res) => {
+    await DeleteDataUser(_id, (status, res) => {
       if (status === true) {
         setDeleted({});
         SuccessToast({
@@ -45,7 +45,7 @@ const Delete = ({ deleted, setDeleted, fetchData }: DeleteUserProps) => {
         <p className="mb-4 text-gray-500 ">
           Are you sure you want to delete{" "}
           <span className="font-bold text-neutral-600">
-            {deleted.order?.name}
+            {deleted.username}
           </span>
         </p>
         <div className="flex items-center justify-center space-x-4">

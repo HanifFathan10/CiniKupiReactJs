@@ -12,11 +12,9 @@ interface IGetNewToken {
 }
 
 interface IResponseRefreshToken {
-  data: {
-    status: boolean;
-    message: string;
-    access_token: string;
-  };
+  status: boolean;
+  message: string;
+  access_token: string;
 }
 
 const useGetNewToken = create<IGetNewToken>()(
@@ -36,7 +34,7 @@ const useGetNewToken = create<IGetNewToken>()(
               isSuccess: true,
             });
 
-            sessionStorage.setItem("access_token", res.data.access_token);
+            sessionStorage.setItem("access_token", res.access_token);
           } else {
             set({
               isLoading: false,

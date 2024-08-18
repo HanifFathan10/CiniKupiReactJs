@@ -13,6 +13,10 @@ export const getMonthlySales = async (
       params: {
         year: data.year,
       },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+      },
     })
     .then((res) => {
       callback(true, res.data);
@@ -24,7 +28,12 @@ export const getMonthlySales = async (
 
 export const getStatusDistribution = async (callback: TCallback) => {
   await axios
-    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/status-distribution`)
+    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/status-distribution`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+      },
+    })
     .then((res) => {
       callback(true, res.data);
     })
@@ -35,7 +44,12 @@ export const getStatusDistribution = async (callback: TCallback) => {
 
 export const getTopSellingProducts = async (callback: TCallback) => {
   await axios
-    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/top-selling-products`)
+    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/top-selling-products`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+      },
+    })
     .then((res) => {
       callback(true, res.data);
     })

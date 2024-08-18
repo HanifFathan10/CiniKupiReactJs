@@ -139,7 +139,6 @@ const Edit = ({
                   maxLength={6}
                   value={price ? price : updated.price}
                   onChange={handleChange}
-                  defaultValue={updated.price}
                   className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
                   placeholder="0"
                 />

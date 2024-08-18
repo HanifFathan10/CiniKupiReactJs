@@ -16,7 +16,13 @@ export const UpdateDataUser = async (
   callback: TCallback,
 ) => {
   await axios
-    .patch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users`, data)
+    .patch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users`, data, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+        "Content-Type": "application/json",
+      },
+    })
     .then((res) => {
       callback(true, res.data);
     })
@@ -27,7 +33,13 @@ export const UpdateDataUser = async (
 
 export const DeleteDataUser = async (_id: string, callback: TCallback) => {
   await axios
-    .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/${_id}`)
+    .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/${_id}`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+        "Content-Type": "application/json",
+      },
+    })
     .then((res) => {
       callback(true, res.data);
     })
@@ -66,6 +78,10 @@ export const Logout = async (data: IDataUser, callback: TCallback) => {
       `${import.meta.env.VITE_BACKEND_URL}/api/v1/logout`,
       { token: data.token },
       {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+        },
         withCredentials: true,
       },
     )
@@ -86,7 +102,7 @@ export const RefreshToken = async (callback: TCallback) => {
       },
     })
     .then((res) => {
-      callback(true, res);
+      callback(true, res.data);
     })
     .catch((error) => {
       callback(false, error);

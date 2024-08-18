@@ -48,7 +48,12 @@ export const getImageMenuById = (_id: string, callback: TCallback) => {
 
 export const CreateDataMenu = async (data: TDataMenu, callback: TCallback) => {
   await axios
-    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu`, data)
+    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+      },
+    })
     .then((res) => {
       callback(true, res.data);
     })
@@ -59,7 +64,12 @@ export const CreateDataMenu = async (data: TDataMenu, callback: TCallback) => {
 
 export const EditDataMenu = async (data: TDataMenu, callback: TCallback) => {
   await axios
-    .patch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu`, data)
+    .patch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+      },
+    })
     .then((res) => {
       callback(true, res.data);
     })
@@ -70,7 +80,12 @@ export const EditDataMenu = async (data: TDataMenu, callback: TCallback) => {
 
 export const DeleteDataMenu = async (_id: string, callback: TCallback) => {
   await axios
-    .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/${_id}`)
+    .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/${_id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+      },
+    })
     .then((res) => {
       callback(true, res.data);
     })

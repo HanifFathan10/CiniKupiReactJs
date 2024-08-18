@@ -2,7 +2,12 @@ import axios from "axios";
 
 export const getResponse = async (callback: TCallback) => {
   await axios
-    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/generate`)
+    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/generate`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+      },
+    })
     .then((res) => {
       callback(true, res);
     })
@@ -12,7 +17,7 @@ export const getResponse = async (callback: TCallback) => {
 };
 
 export const generateResponse = async (
-  data: IDataPromptAI,
+  data: GeminiAIRequest,
   callback: TCallback,
 ) => {
   await axios
@@ -22,11 +27,12 @@ export const generateResponse = async (
       {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
         },
       },
     )
     .then((res) => {
-      callback(true, res);
+      callback(true, res.data);
     })
     .catch((error) => {
       callback(false, error);

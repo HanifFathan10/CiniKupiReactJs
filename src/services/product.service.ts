@@ -65,6 +65,10 @@ export const createProductMenu = async (
   await axios
     .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product`, data, {
       withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+      },
     })
     .then((res) => {
       callback(true, res.data);
@@ -82,6 +86,12 @@ export const updateProductMenu = async (
     .patch(
       `${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product/${data._id}/edit`,
       data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+        },
+      },
     )
     .then((res) => {
       callback(true, res.data);
@@ -98,7 +108,13 @@ export const deleteProductMenu = async (
   await axios
     .delete(
       `${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product/${data._id}`,
-      { data: { id_menu: data.id_menu } },
+      {
+        data: { id_menu: data.id_menu },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+        },
+      },
     )
     .then((res) => {
       callback(true, res.data);

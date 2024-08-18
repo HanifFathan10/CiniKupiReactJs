@@ -1,10 +1,15 @@
 import React from "react";
 import ModalInput from "../InputForm/Modal";
 
-const PreviewImg = ({ previewData, setPreviewData }) => {
+interface PreviewImgProps {
+  previewData: HistoryGeminiAIResponse;
+  setPreviewData: React.Dispatch<React.SetStateAction<HistoryGeminiAIResponse>>;
+}
+
+const PreviewImg = ({ previewData, setPreviewData }: PreviewImgProps) => {
   return Object.keys(previewData).length ? (
     <ModalInput onClose={() => setPreviewData({})}>
-      <div class="relative mx-auto flex w-full items-center justify-center rounded-md bg-white p-4 shadow sm:p-5">
+      <div className="relative mx-auto flex w-full items-center justify-center rounded-md bg-white p-4 shadow sm:p-5">
         <img
           src={previewData.image}
           alt="gambar"

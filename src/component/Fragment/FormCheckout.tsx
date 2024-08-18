@@ -92,65 +92,6 @@ const FormCheckout = () => {
       setIsLoading(false);
     }
   };
-  // const handleCheckout = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   try {
-  //     e.preventDefault();
-  //     setIsLoading(true);
-
-  //     const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-  //     const form = e.target as HTMLFormElement;
-  //     const emailInput = form.email as HTMLInputElement;
-  //     const nameInput = form.elements.namedItem("name") as HTMLInputElement;
-  //     const phoneInput = form.phone as HTMLInputElement;
-  //     const addressInput = form.address as HTMLInputElement;
-
-  //     const matchResult = emailInput.value.match(gmailPattern);
-  //     let validEmail: string | null = null;
-  //     if (matchResult) {
-  //       validEmail = matchResult[0];
-  //     }
-
-  //     const data = {
-  //       customer_name: nameInput.value,
-  //       customer_email: validEmail,
-  //       customer_phone: phoneInput.value,
-  //       customer_address: addressInput.value,
-  //       products: product,
-  //     };
-
-  //     console.log("🚀 ~ handleCheckout ~ data:", data);
-
-  //     if (data.products.length === 0) {
-  //       return WarningToast({
-  //         title: "Please order at least 1 item",
-  //         status: "warning",
-  //       });
-  //     }
-
-  //     if (!validEmail) {
-  //       return WarningToast({
-  //         title: "Please enter a valid email!!",
-  //         status: "warning",
-  //       });
-  //     }
-
-  //     if (dataPending) {
-  //       return ErrorToast({
-  //         title:
-  //           "You have a pending transaction, please check in history transaction",
-  //         status: "error",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     setIsLoading(false);
-  //     ErrorToast({
-  //       title: "Error during checkout",
-  //       status: "error",
-  //     });
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   PaymentService({ token, history, accessToken, setIsLoading });
 

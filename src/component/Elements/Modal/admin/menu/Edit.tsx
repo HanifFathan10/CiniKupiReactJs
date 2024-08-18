@@ -91,7 +91,6 @@ const Edit = ({ updated, setUpdated, fetchDataMenu }: ModalEditMenuProps) => {
                 name="nameurl"
                 className="focus:ring-blue-500s mb-6 block w-full cursor-not-allowed rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm text-slate-400 focus:border-blue-500"
                 value={slug ? slug : updated.nameurl}
-                defaultValue={updated.nameurl}
                 placeholder="Menu url"
                 disabled
               />

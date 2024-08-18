@@ -1,7 +1,7 @@
 // TYPES
 type TCallback = (success: boolean, data: any) => void;
 type IDataPromptAI = {
-  prompt: string;
+  prompt?: string;
   image?: string;
   mimeType?: string;
 };
