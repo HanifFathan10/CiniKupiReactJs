@@ -35,13 +35,13 @@ const BubbleChatAI = () => {
   const setHistories = useGeminiAIChat((state) => state.setHistories);
 
   const token = sessionStorage.getItem("access_token");
-  const user: any = token ? jwtDecode(token) : null;
+  const { data }: any = token ? jwtDecode(token) : null;
 
   const converter = new Showdown.Converter();
 
   useEffect(() => {
-    const fetchGeminiChat = () => {
-      getResponseAI(chat, (status, res) => {
+    const fetchGeminiChat = async () => {
+      await getResponseAI(chat, (status, res) => {
         setChat({});
         setMimeType("");
       });
@@ -63,7 +63,7 @@ const BubbleChatAI = () => {
       response: inputChat,
       image,
       sender: "user",
-      user: user._doc.username,
+      user: data.username,
       time: new Date().toLocaleString("id-ID", {
         timeZone: "Asia/Jakarta",
         hour: "numeric",
@@ -112,7 +112,7 @@ const BubbleChatAI = () => {
               <PopoverHeader className="text-md font-semibold text-neutral-800">
                 Hello{" "}
                 <span className="font-bold uppercase leading-7">
-                  {user ? user._doc.username : "You"}
+                  {data ? data.username : "You"}
                 </span>
               </PopoverHeader>
               <PopoverCloseButton className="border-chocolate text-neutral-800" />

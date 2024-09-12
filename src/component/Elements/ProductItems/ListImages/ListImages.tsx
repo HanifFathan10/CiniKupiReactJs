@@ -10,9 +10,9 @@ const ListImages = ({ type }: ListImagesProps) => {
 
   useEffect(() => {
     const fetchDefaultMenu = async () => {
-      await getAllDefaultProduct((status, data) => {
+      await getAllDefaultProduct((status, res) => {
         if (!status) return;
-        setGambar(data);
+        setGambar(res.data);
       });
     };
 

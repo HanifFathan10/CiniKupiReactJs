@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 const AdminLayouts = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const TOKEN = sessionStorage.getItem("access_token")!;
-  const decode: any = jwtDecode(TOKEN);
+  const { data }: any = jwtDecode(TOKEN);
 
   useEffect(() => {
-    if (decode._doc.role !== "admin") {
+    if (data.role !== "admin") {
       navigate("/", {
         preventScrollReset: true,
         replace: true,
@@ -25,8 +25,7 @@ const AdminLayouts = ({ children }: { children: React.ReactNode }) => {
           <div className="flex h-20 w-full items-center rounded-es-xl bg-white px-5 py-10 drop-shadow-md">
             <div className="flex w-full justify-between">
               <h1 className="text-xl font-normal">
-                Welcome back{" "}
-                <span className="font-bold">{decode._doc.username}</span>
+                Welcome back <span className="font-bold">{data.username}</span>
               </h1>
             </div>
           </div>

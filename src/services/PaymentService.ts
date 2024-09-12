@@ -6,7 +6,7 @@ export const PaymentRequest = async (
   callback: TCallback,
 ) => {
   await axios
-    .post(`${import.meta.env.VITE_BACKEND_URL}/api/token`, data, {
+    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/token`, data, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
@@ -25,7 +25,7 @@ export const GetHistoryTransaction = async (
   data: TQueryParamsHistoryTrx,
 ) => {
   await axios
-    .get(`${import.meta.env.VITE_BACKEND_URL}/api/history`, {
+    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/history`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
@@ -50,7 +50,7 @@ export const getAllHistoryTransaction = async (
   data: TQueryParamsHistoryTrx,
 ) => {
   await axios
-    .get(`${import.meta.env.VITE_BACKEND_URL}/api/histories`, {
+    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/histories`, {
       params: {
         page: data.page,
         search: data.search,
@@ -77,7 +77,7 @@ export const HistoryTransaction = async (
   callback: TCallback,
 ) => {
   await axios
-    .post(`${import.meta.env.VITE_BACKEND_URL}/api/history`, data, {
+    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/history`, data, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
@@ -96,7 +96,7 @@ export const DeleteHistoryTransaction = async (
   callback: TCallback,
 ) => {
   await axios
-    .delete(`${import.meta.env.VITE_BACKEND_URL}/api/history/${_id}`, {
+    .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/history/${_id}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
@@ -116,7 +116,7 @@ export const DeleteHistoryTransactionByOrderId = async (
 ) => {
   await axios
     .delete(
-      `${import.meta.env.VITE_BACKEND_URL}/api/history/order_id/${order_id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/history/order_id/${order_id}`,
       {
         headers: {
           "Content-Type": "application/json",
