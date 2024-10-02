@@ -94,8 +94,8 @@ const HistoryTransactionPage = () => {
         metaDescription="Order status by CiniKupi"
       />
       <AuthLayouth>
-        <section className="mx-auto mt-20 w-full max-w-7xl rounded-md bg-zinc-800 py-6 antialiased">
-          <div className="mx-auto h-full min-h-screen px-4">
+        <section className="bg-zinc-800 py-6 antialiased pt-24 text-white">
+          <div className="px-4">
             <div className="gap-4 sm:flex sm:items-center sm:justify-between">
               <h2 className="text-xl font-semibold text-white sm:text-2xl">
                 My orders

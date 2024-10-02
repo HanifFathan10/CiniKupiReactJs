@@ -205,7 +205,7 @@ export const PaymentService = ({
     }
 
     let scriptTag = document.createElement("script");
-    let midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
+    let midtransUrl = import.meta.env.VITE_MIDTRANS_SNAP_URL;
     scriptTag.setAttribute("src", midtransUrl);
 
     let midtransClientKey = import.meta.env.MIDTRANS_CLIENT_KEY;

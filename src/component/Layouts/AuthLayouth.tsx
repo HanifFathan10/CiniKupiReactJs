@@ -3,18 +3,23 @@ import NavigationBar from "../Elements/NavigasiBar/NavigationBar";
 import Footer from "../Elements/Footer/Footer";
 import { useScrollTop } from "../../Hooks/useScrollTop";
 import BubbleChatAI from "../Fragment/BubbleChatAI";
+import MainLayout from "./MainLayout";
 
-const AuthLayouth = ({ children }: { children: React.ReactNode }) => {
+interface AuthLayouthProps {
+  children: React.ReactNode;
+}
+
+const AuthLayouth = ({ children }: AuthLayouthProps) => {
   const token = sessionStorage.getItem("access_token");
 
   useScrollTop();
   return (
-    <div className="relative min-h-screen w-full text-white">
-      <NavigationBar />
-      {children}
-      <Footer />
-      {token && <BubbleChatAI />}
-    </div>
+    <MainLayout>
+        <NavigationBar />
+        {children}
+        <Footer />
+        {token && <BubbleChatAI />}
+    </MainLayout>
   );
 };
 

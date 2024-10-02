@@ -42,6 +42,7 @@ const BubbleChatAI = () => {
   useEffect(() => {
     const fetchGeminiChat = async () => {
       await getResponseAI(chat, (status, res) => {
+        console.log("🚀 ~ awaitgetResponseAI ~ res:", res)
         setChat({});
         setMimeType("");
       });

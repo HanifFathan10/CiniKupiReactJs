@@ -42,7 +42,7 @@ const LandingFirst = ({ title }: LandingFirstProps) => {
 
   return (
     <div
-      className="flex min-h-screen items-center justify-center bg-[#212121]"
+      className="flex min-h-screen items-center justify-center bg-[#212121] text-white"
       id="menu"
     >
       <div className="mb-24 flex w-full flex-col items-center px-4 pt-16 md:max-w-lg md:pt-20">

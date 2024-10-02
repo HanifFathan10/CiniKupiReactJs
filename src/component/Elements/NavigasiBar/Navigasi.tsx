@@ -28,7 +28,7 @@ const Navigasi = () => {
     <>
       <div
         onClick={handleToggleClick}
-        className="toggle-button absolute right-7 top-6 flex cursor-pointer flex-col text-2xl md:hidden"
+        className="toggle-button absolute right-7 top-[14px] flex cursor-pointer flex-col text-2xl md:hidden"
       >
         <span
           className={`my-[2px] h-[4px] w-6 bg-white transition-all duration-300 ${

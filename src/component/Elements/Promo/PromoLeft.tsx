@@ -12,9 +12,7 @@ const PromoLeft = ({
   background,
 }: PromoUIProps) => {
   return (
-    <>
-      <section>
-        <div className="bg-light flex flex-col-reverse pt-4 max-md:grid-cols-1 md:grid md:grid-cols-2 md:pt-6">
+      <section className="bg-light flex flex-col-reverse pt-4 max-md:grid-cols-1 md:grid md:grid-cols-2 md:pt-6 text-white">
           <div
             className={`flex h-[375px] w-full items-center justify-center md:h-full ${background}`}
           >
@@ -39,9 +37,7 @@ const PromoLeft = ({
             className="block h-full w-full"
             loading="lazy"
           />
-        </div>
       </section>
-    </>
   );
 };
 

@@ -12,9 +12,7 @@ const PromoRight = ({
   background,
 }: PromoUIProps) => {
   return (
-    <>
-      <section>
-        <div className="bg-light grid grid-cols-1 place-content-center place-items-center pt-4 md:grid-cols-2 md:pt-6">
+      <section className="bg-light grid grid-cols-1 place-content-center place-items-center pt-4 md:grid-cols-2 md:pt-6 text-white">
           <img
             src={image}
             alt={alt}
@@ -39,9 +37,7 @@ const PromoRight = ({
               </Link>
             </div>
           </div>
-        </div>
       </section>
-    </>
   );
 };
 

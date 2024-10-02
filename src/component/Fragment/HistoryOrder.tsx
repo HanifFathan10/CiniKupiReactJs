@@ -38,7 +38,7 @@ const HistoryOrder = ({
   return (
     <div className="mt-6 flow-root sm:mt-8">
       <div className="divide-y-2 divide-neutral-600">
-        <div className="flex flex-wrap items-end gap-4 py-6">
+        <div className="flex flex-wrap items-start gap-4 py-6">
           <dl className="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
             <dt className="font -medium text-base text-gray-300">Order ID:</dt>
             <dd className="mt-1.5 text-xs font-semibold text-white md:text-base">
