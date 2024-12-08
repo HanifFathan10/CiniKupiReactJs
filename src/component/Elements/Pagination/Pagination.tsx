@@ -21,7 +21,7 @@ const Pagination = ({
         Showing
         <span className="px-1 font-semibold">{totalPages.currentPage}</span>
         of
-        <span className="px-1 font-semibold">{totalPages.totalPages}</span>
+        <span className="px-1 font-semibold">{totalPages.totalPage}</span>
       </span>
       <ul className="flex h-8 items-center -space-x-px text-sm">
         {page > 1 && (
@@ -35,7 +35,7 @@ const Pagination = ({
             </button>
           </li>
         )}
-        {Array.from({ length: totalPages.totalPages! }).map((_, i) => (
+        {Array.from({ length: totalPages.totalPage! }).map((_, i) => (
           <li key={i}>
             <button
               onClick={() => handlePageChange(i + 1)}
@@ -51,7 +51,7 @@ const Pagination = ({
             </button>
           </li>
         ))}
-        {page < totalPages.totalPages! && (
+        {page < totalPages.totalPage! && (
           <li>
             <button
               onClick={() => handlePageChange(page + 1)}

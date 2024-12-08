@@ -1,23 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { HeadMetaData } from "../component/Elements/HeadMetaData";
 import AuthMenu from "../component/Layouts/AuthMenu";
 import MenuProducts from "../component/Elements/Menu/MenuProducts/MenuProducts";
-import { GetAllMenu } from "../services/Menu.service";
+import useMenuStore from "../Store/MenuProduct";
 
 const Menu = () => {
-  const [menus, setMenus] = useState<TDataMenu[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [menus, getDataMenu, isLoading] = useMenuStore((state) => [
+    state.menus,
+    state.getDataMenu,
+    state.isLoading,
+  ]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await GetAllMenu((status, res) => {
-        if (status === true) {
-          setMenus(res.data);
-          setIsLoading(false);
-        }
-      });
-    };
-    fetchData();
+    getDataMenu();
   }, []);
   return (
     <>

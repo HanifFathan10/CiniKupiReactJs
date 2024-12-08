@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import AuthDetail from "../component/Layouts/AuthDetail";
 import ProductCOskeleton from "../component/Elements/CartOrder/ProductCOskeleton";
@@ -6,27 +6,15 @@ import ProdakSlide from "../component/Elements/ProductSlide/ProdakSlide";
 import { HeadMetaData } from "../component/Elements/HeadMetaData";
 import HeaderBack from "../component/Elements/HeaderBack";
 import DetailProduct from "../component/Fragment/DetailProduct";
-import { getMenuProductById } from "../services/product.service";
+import useProductStore from "../Store/ProductStore";
 
 const ProductCheckout = () => {
   const { _id } = useParams();
-  const [product, setProduct] = useState<TDataSingleProduct>({});
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-
-      await getMenuProductById(_id!, (status, res) => {
-        if (status === true) {
-          setProduct(res.data);
-          setIsLoading(false);
-        }
-      });
-    };
-
-    fetchData();
-  }, [_id]);
+  const [products, isLoading] = useProductStore((state) => [
+    state.products,
+    state.isLoading,
+  ]);
+  const product = products.find((val) => val._id === _id);
 
   return (
     <React.Fragment>

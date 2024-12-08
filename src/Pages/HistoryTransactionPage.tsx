@@ -2,48 +2,42 @@ import React, { useEffect, useState } from "react";
 import { HeadMetaData } from "../component/Elements/HeadMetaData";
 import HistoryOrder from "../component/Fragment/HistoryOrder";
 import AuthLayouth from "../component/Layouts/AuthLayouth";
-import {
-  DeleteHistoryTransactionByOrderId,
-  GetHistoryTransaction,
-} from "../services/PaymentService";
+import { DeleteHistoryTransactionByOrderId } from "../services/PaymentService";
 import Pagination from "../component/Elements/Pagination/Pagination";
 import { useLocation } from "react-router-dom";
-import { Skeleton, Stack } from "@chakra-ui/react";
+import { Skeleton } from "@chakra-ui/react";
 import Details from "../component/Elements/Modal/history/Details";
 import Cancel from "../component/Elements/Modal/history/Cancel";
+import useHistoryTrxStore from "../Store/HistoryTrx";
 
 const HistoryTransactionPage = () => {
   const [status, setStatus] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [page, setPage] = useState<number>(1);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [totalPages, setTotalPages] = useState<Pagination>({});
   const [cancel, setCancel] = useState<TDataHistoryTrx>({});
   const [details, setDetails] = useState<TDataHistoryTrx>({});
-  const [transaction, setTransaction] = useState<TDataHistoryTrx[]>([]);
+
   const location = useLocation();
+  const [historyTrx, getHistoryTrx, currentPage, totalPage, isLoading] =
+    useHistoryTrxStore((state) => [
+      state.historyTrx,
+      state.getHistoryTrx,
+      state.currentPage,
+      state.totalPage,
+      state.isLoading,
+    ]);
 
   const dataPending = JSON.parse(localStorage.getItem("pendingTransaction")!);
+  const totalPages = { currentPage, totalPage };
 
   useEffect(() => {
-    setIsLoading(true);
-    const fetchDataTransaction = async () => {
-      const data = {
-        page,
-        limit: 5,
-        status,
-        time,
-      };
-      await GetHistoryTransaction((status, res) => {
-        if (status) {
-          setTransaction(res.data.data);
-          setTotalPages(res.data);
-          setIsLoading(false);
-        }
-      }, data);
+    const data: TQueryParamsHistoryTrx = {
+      page,
+      limit: 10,
+      status,
+      time,
     };
-
-    fetchDataTransaction();
+    getHistoryTrx(data);
   }, [page, status, time, location]);
 
   const handlePageChange = (newPage: number) => {
@@ -94,7 +88,7 @@ const HistoryTransactionPage = () => {
         metaDescription="Order status by CiniKupi"
       />
       <AuthLayouth>
-        <section className="bg-zinc-800 py-6 antialiased pt-24 text-white">
+        <section className="bg-zinc-800 py-6 pt-24 text-white antialiased">
           <div className="px-4">
             <div className="gap-4 sm:flex sm:items-center sm:justify-between">
               <h2 className="text-xl font-semibold text-white sm:text-2xl">
@@ -178,7 +172,7 @@ const HistoryTransactionPage = () => {
               </>
             ) : (
               <React.Fragment>
-                {transaction.map((trx: TDataHistoryTrx, i: number) => {
+                {historyTrx.map((trx: TDataHistoryTrx, i: number) => {
                   const date = new Date(trx.createdAt!);
                   const formatDate = date.toLocaleString("id-ID", {
                     day: "numeric",

@@ -35,14 +35,13 @@ const BubbleChatAI = () => {
   const setHistories = useGeminiAIChat((state) => state.setHistories);
 
   const token = sessionStorage.getItem("access_token");
-  const { data }: any = token ? jwtDecode(token) : null;
+  const data: IDataUser = jwtDecode(token!);
 
   const converter = new Showdown.Converter();
 
   useEffect(() => {
     const fetchGeminiChat = async () => {
       await getResponseAI(chat, (status, res) => {
-        console.log("🚀 ~ awaitgetResponseAI ~ res:", res)
         setChat({});
         setMimeType("");
       });

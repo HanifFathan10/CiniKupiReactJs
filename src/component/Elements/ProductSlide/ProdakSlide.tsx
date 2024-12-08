@@ -1,28 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Prodak from "./Prodak";
 import "react-multi-carousel/lib/styles.css";
 import Carousel from "react-multi-carousel";
 import { reproduce } from "../../../services/Menu.service";
 import "react-multi-carousel/lib/styles.css";
-import { getAllMenuProduct } from "../../../services/product.service";
+import useProductStore from "../../../Store/ProductStore";
 
 const ProdakSlide = () => {
-  const [products, setProducts] = useState<TDataSingleProductPopulatedMenu[]>(
-    [],
-  );
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await getAllMenuProduct((status, res) => {
-        if (status === true) {
-          const result = reproduce(res.data.products, 6);
-          setProducts(result.data);
-        }
-      });
-    };
-
-    fetchData();
-  }, []);
+  const products = useProductStore((state) => state.products);
+  const reproduceData = reproduce(products, 6)
+    .data as TDataSingleProductPopulatedMenu[];
 
   const responsive = {
     desktop: {
@@ -43,7 +30,7 @@ const ProdakSlide = () => {
 
   return (
     <Carousel responsive={responsive} className="my-6">
-      {products.map((product, i) => (
+      {reproduceData.map((product, i) => (
         <Prodak
           key={i}
           _id={product._id}

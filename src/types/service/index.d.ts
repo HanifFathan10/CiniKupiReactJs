@@ -144,7 +144,7 @@ type TDataHistoryPending = TDataHistoryTrx & {
 
 type Pagination = {
   currentPage?: number;
-  totalPages?: number;
+  totalPage?: number;
 };
 
 type DataResponseMonthlySales = {

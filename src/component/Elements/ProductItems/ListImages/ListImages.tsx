@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { getAllDefaultProduct } from "../../../../services/product.service";
+import React, { useEffect } from "react";
+import useDisplayProduct from "../../../../Store/DisplayProduct";
 
 interface ListImagesProps {
   type: string;
 }
 
 const ListImages = ({ type }: ListImagesProps) => {
-  const [gambar, setGambar] = useState<TDataDefaultMenu[]>([]);
+  const [dplProduct, getDisplayProduct] = useDisplayProduct((state) => [
+    state.dplProduct,
+    state.getDisplayProduct,
+  ]);
 
   useEffect(() => {
-    const fetchDefaultMenu = async () => {
-      await getAllDefaultProduct((status, res) => {
-        if (!status) return;
-        setGambar(res.data);
-      });
-    };
-
-    fetchDefaultMenu();
+    getDisplayProduct();
   }, []);
 
   return (
@@ -43,7 +39,7 @@ const ListImages = ({ type }: ListImagesProps) => {
               : "grid grid-cols-2 gap-3 md:grid-cols-3"
           } `}
         >
-          {gambar.map((image) => {
+          {dplProduct.map((image) => {
             if (image.category === "default" && type === "default") {
               return (
                 <img

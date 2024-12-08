@@ -1,27 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import ProductItems from "../Elements/Menu/ProductItems/ProductItems";
-import { getAllMenuProduct } from "../../services/product.service";
 import BreadCrumbMenu from "../Elements/BreadCrumb/BreadCrumbMenu";
+import useProductStore from "../../Store/ProductStore";
 
 interface FragmentMenuProps {
   nameUrl: string;
 }
 
 const FragmentMenu = ({ nameUrl }: FragmentMenuProps) => {
-  const [products, setProducts] = useState<TDataProductWithMenu[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [products, getDataProduct, isLoading] = useProductStore((state) => [
+    state.products,
+    state.getDataProduct,
+    state.isLoading,
+  ]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await getAllMenuProduct((status, res) => {
-        if (status === true) {
-          setProducts(res.data.products);
-          setIsLoading(false);
-        }
-      });
-    };
-
-    fetchData();
+    getDataProduct();
   }, []);
 
   const findCategory = products.find((prod) => {

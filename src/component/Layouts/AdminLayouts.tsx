@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const AdminLayouts = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const TOKEN = sessionStorage.getItem("access_token")!;
-  const { data }: any = jwtDecode(TOKEN);
+  const data: IDataUser = jwtDecode(TOKEN);
 
   useEffect(() => {
     if (data.role !== "admin") {

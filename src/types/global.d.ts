@@ -3,3 +3,5 @@ declare global {
     snap: any; // Replace 'any' with the actual type of the 'snap' property
   }
 }
+
+export {};

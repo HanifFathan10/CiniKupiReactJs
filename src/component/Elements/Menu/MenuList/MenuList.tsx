@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { GetAllMenu } from "../../../../services/Menu.service";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@chakra-ui/react";
+import useMenuStore from "../../../../Store/MenuProduct";
 
 interface CartMenu {
   title: string;
@@ -9,21 +9,10 @@ interface CartMenu {
 }
 
 const MenuList = () => {
-  const [menus, setMenus] = useState<TDataMenu[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await GetAllMenu((status, res) => {
-        if (status === true) {
-          setMenus(res.data);
-          setIsLoading(false);
-        }
-      });
-    };
-
-    fetchData();
-  }, []);
+  const [menus, isLoading] = useMenuStore((state) => [
+    state.menus,
+    state.isLoading,
+  ]);
 
   const CartMenu = ({ title, id }: CartMenu) => {
     return (

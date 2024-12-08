@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const reproduce = (data: TDataMenu[], gap: number) => {
+export const reproduce = <T>(data: T[], gap: number): { data: T[] } => {
   const first = ~~(Math.random() * (data.length - gap) + 1);
   const last = first + gap;
 
@@ -9,7 +9,6 @@ export const reproduce = (data: TDataMenu[], gap: number) => {
   };
   return response;
 };
-
 export const GetAllMenu = async (callback: TCallback) => {
   await axios
     .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu`)
