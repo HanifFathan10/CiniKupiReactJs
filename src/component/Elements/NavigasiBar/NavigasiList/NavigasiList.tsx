@@ -39,7 +39,7 @@ const NavigasiList = () => {
         <li className="my-2 md:mx-4" key={href.name}>
           <Link
             to={href.link}
-            className="relative inline cursor-pointer rounded border-teal-600 text-sm font-bold before:absolute before:-bottom-0 before:-left-0 before:block before:h-[4px] before:w-full before:origin-bottom-right before:scale-x-0 before:bg-teal-600 before:transition before:duration-300 before:ease-in-out hover:rounded-b-none hover:before:origin-bottom-left hover:before:scale-x-100 lg:px-4 lg:py-2"
+            className="border-teriary before:bg-teriary relative inline cursor-pointer rounded text-sm font-bold before:absolute before:-bottom-0 before:-left-0 before:block before:h-[4px] before:w-full before:origin-bottom-right before:scale-x-0 before:transition before:duration-300 before:ease-in-out hover:rounded-b-none hover:before:origin-bottom-left hover:before:scale-x-100 lg:px-4 lg:py-2"
           >
             {href.name}
           </Link>
@@ -49,18 +49,18 @@ const NavigasiList = () => {
         <li>
           <button
             onClick={onOpen}
-            className="my-2 flex items-center justify-center rounded-full bg-orange-900 px-4 py-1 text-sm font-semibold md:mx-4"
+            className="my-2 flex items-center justify-center rounded-full bg-red-600 px-4 py-2 text-sm font-semibold transition-all duration-300 ease-in-out hover:bg-red-500 md:mx-4 md:px-5 md:py-3"
           >
-            LOG OUT
+            LOGOUT
           </button>
         </li>
       ) : (
         <li>
           <button
             onClick={() => Navigate("/login")}
-            className="my-2 flex items-center justify-center rounded-full bg-green-700 px-4 py-1 text-sm font-semibold md:mx-4"
+            className="my-2 flex items-center justify-center rounded-full bg-slate-400 px-4 py-2 text-sm font-semibold transition-all duration-300 ease-in-out hover:bg-slate-400 md:mx-4 md:px-5 md:py-3"
           >
-            LOG IN
+            LOGIN
           </button>
         </li>
       )}

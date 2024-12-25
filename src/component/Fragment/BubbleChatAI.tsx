@@ -40,10 +40,12 @@ const BubbleChatAI = () => {
   const converter = new Showdown.Converter();
 
   useEffect(() => {
-    const fetchGeminiChat = async () => {
-      await getResponseAI(chat, (status, res) => {
-        setChat({});
-        setMimeType("");
+    const fetchGeminiChat = () => {
+      getResponseAI(chat, (status) => {
+        if (status === true) {
+          setChat({});
+          setMimeType("");
+        }
       });
     };
 
@@ -97,7 +99,7 @@ const BubbleChatAI = () => {
       <section className="fixed bottom-4 right-5">
         <Popover placement="top-start">
           <PopoverTrigger>
-            <button className="text-ne flex items-center gap-1 rounded-full bg-chocolate px-4 py-3 text-xs font-semibold text-white">
+            <button className="text-ne bg-primary flex items-center gap-1 rounded-full px-4 py-3 text-xs font-semibold text-white">
               <ChatBubbleLeftRightIcon className="h-4 w-4" />
               Chat With AI
             </button>
@@ -115,11 +117,11 @@ const BubbleChatAI = () => {
                   {data ? data.username : "You"}
                 </span>
               </PopoverHeader>
-              <PopoverCloseButton className="border-chocolate text-neutral-800" />
+              <PopoverCloseButton className="border-primary text-neutral-800" />
               <PopoverBody className="flex min-h-52 flex-col gap-2.5 overflow-auto">
                 {histories.length === 0 ? (
                   <div className="flex justify-end gap-2.5">
-                    <div className="leading-1.5 flex w-fit max-w-[320px] flex-col rounded-s-xl rounded-ee-xl border-gray-700 bg-chocolate p-4 text-gray-100">
+                    <div className="leading-1.5 bg-primary flex w-fit max-w-[320px] flex-col rounded-s-xl rounded-ee-xl border-gray-700 p-4 text-gray-100">
                       <div className="flex items-center space-x-2 rtl:space-x-reverse">
                         <span className="text-sm font-bold tracking-wider">
                           You
@@ -154,7 +156,7 @@ const BubbleChatAI = () => {
                           <SparklesIcon className="h-7 w-7 rounded-full bg-white p-1.5 text-primary-700" />
                         )}
                         <div
-                          className={`leading-1.5 flex w-fit max-w-[320px] flex-col border p-3 ${history.sender == "user" ? "rounded-s-xl rounded-ee-xl border-gray-700 bg-chocolate text-gray-100" : "rounded-e-xl rounded-es-xl border-gray-200 bg-white text-gray-800"}`}
+                          className={`leading-1.5 flex w-fit max-w-[320px] flex-col border p-3 ${history.sender == "user" ? "bg-primary rounded-s-xl rounded-ee-xl border-gray-700 text-gray-100" : "rounded-e-xl rounded-es-xl border-gray-200 bg-white text-gray-800"}`}
                         >
                           <div className="flex items-center space-x-2 rtl:space-x-reverse">
                             <span className="text-sm font-bold tracking-wider">
@@ -203,7 +205,7 @@ const BubbleChatAI = () => {
                     onSubmit={handleGeminiChat}
                   >
                     <div className="mb-4 w-full rounded-lg border border-gray-200 bg-gray-50 ">
-                      <div className="relative rounded-t-lg bg-white px-4 py-2">
+                      <div className="relative rounded-t-lg bg-white p-4">
                         <label htmlFor="comment" className="sr-only">
                           Your comment
                         </label>
@@ -211,7 +213,7 @@ const BubbleChatAI = () => {
                           id="comment"
                           rows={2}
                           name="prompts"
-                          className={`${image ? "max-w-[80%]" : "w-full"} w-full border-0 bg-white px-0 text-sm text-gray-900 focus:ring-0`}
+                          className={`${image ? "max-w-[80%]" : "w-full"} w-full border-0 bg-white text-sm text-gray-900 outline-none focus:ring-0`}
                           placeholder="Cari apapun di CiniAI ^_^"
                           required
                         ></textarea>

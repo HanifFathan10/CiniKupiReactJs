@@ -3,7 +3,7 @@ import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 
 const ProductCOskeleton = () => {
   return (
-    <section className="grid min-h-screen w-full grid-cols-1 items-center bg-chocolate shadow-md shadow-gray-700 md:justify-center">
+    <section className="bg-primary grid min-h-screen w-full grid-cols-1 items-center shadow-md shadow-gray-700 md:justify-center">
       <div className="mt-28 grid-cols-1 items-center justify-center gap-3 md:flex md:grid-cols-2">
         <div className="flex h-full w-full items-center justify-center p-2">
           <SkeletonCircle size="40" />

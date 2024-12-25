@@ -9,7 +9,6 @@ import RegisterPage from "./Pages/RegisterPage";
 import Menu from "./Pages/Menu";
 import ProductMenuPage from "./Pages/ProductMenuPage";
 import ProductCheckout from "./Pages/ProductCheckout";
-import CoomingSoon from "./Pages/CoomingSoon";
 import CartPage from "./Pages/MenuPage/CartPage";
 import HandleAuthSuccess from "./Pages/AuthLogin";
 import HistoryTransactionPage from "./Pages/HistoryTransactionPage";
@@ -45,10 +44,6 @@ const router = createBrowserRouter([
   {
     path: "/product/:_id",
     element: <ProductCheckout />,
-  },
-  {
-    path: "/coomingsoon",
-    element: <CoomingSoon />,
   },
   {
     path: "/menu/cart",

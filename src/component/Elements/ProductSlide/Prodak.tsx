@@ -17,7 +17,7 @@ const Prodak = ({ name, price, image, alt, _id }: ProdakProps) => {
     <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-4 px-6 py-9 md:px-0">
       <button
         onClick={Navigate}
-        className="flex h-40 w-40 items-center justify-center overflow-hidden rounded-full border border-[#cba258] bg-[#212121] md:h-52 md:w-52"
+        className="flex h-40 w-40 items-center justify-center overflow-hidden rounded-full border border-teriary bg-secondary md:h-52 md:w-52"
       >
         <img
           src={image}
@@ -26,7 +26,7 @@ const Prodak = ({ name, price, image, alt, _id }: ProdakProps) => {
         />
       </button>
       <div className="flex max-w-xs flex-col">
-        <div className="px-4 text-[#eaeaea]">
+        <div className="px-4 text-white/90">
           <h1 className="mb-2 text-xl font-bold uppercase leading-none">
             {name}
           </h1>

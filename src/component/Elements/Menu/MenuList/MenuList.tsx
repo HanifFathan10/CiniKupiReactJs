@@ -15,6 +15,8 @@ const MenuList = () => {
   ]);
 
   const CartMenu = ({ title, id }: CartMenu) => {
+    let animateClass =
+      "border-teriary before:bg-teriary relative cursor-pointer rounded text-sm font-extralight before:absolute before:-bottom-0 before:-left-0 before:block before:h-[4px] before:w-full before:origin-bottom-right before:scale-x-0 before:transition before:duration-300 before:ease-in-out hover:rounded-b-none hover:before:origin-bottom-left hover:before:scale-x-100 lg:py-1";
     return (
       <>
         <span className="text-md border-[#eaeaea]-400 border-b-2 text-xl font-semibold">
@@ -62,7 +64,7 @@ const MenuList = () => {
                     <li key={index} className="my-3">
                       <Link
                         to={`/menu/${menu.nameurl}`}
-                        className="relative inline cursor-pointer rounded border-secondary text-sm font-extralight before:absolute before:-bottom-0 before:-left-0 before:block before:h-[4px] before:w-full before:origin-bottom-right before:scale-x-0 before:bg-secondary before:transition before:duration-300 before:ease-in-out hover:rounded-b-none hover:before:origin-bottom-left hover:before:scale-x-100 lg:py-1"
+                        className={animateClass}
                       >
                         {menu.name}
                       </Link>
@@ -73,7 +75,7 @@ const MenuList = () => {
                     <li key={index} className="my-3">
                       <Link
                         to={`/menu/${menu.nameurl}`}
-                        className="relative inline cursor-pointer rounded border-secondary text-sm font-extralight before:absolute before:-bottom-0 before:-left-0 before:block before:h-[4px] before:w-full before:origin-bottom-right before:scale-x-0 before:bg-secondary before:transition before:duration-300 before:ease-in-out hover:rounded-b-none hover:before:origin-bottom-left hover:before:scale-x-100 lg:py-1"
+                        className={animateClass}
                       >
                         {menu.name}
                       </Link>
@@ -87,7 +89,7 @@ const MenuList = () => {
                     <li key={index} className="my-3">
                       <Link
                         to={`/menu/${menu.nameurl}`}
-                        className="relative inline cursor-pointer rounded border-secondary text-sm font-extralight before:absolute before:-bottom-0 before:-left-0 before:block before:h-[4px] before:w-full before:origin-bottom-right before:scale-x-0 before:bg-secondary before:transition before:duration-300 before:ease-in-out hover:rounded-b-none hover:before:origin-bottom-left hover:before:scale-x-100 lg:py-1"
+                        className={animateClass}
                       >
                         {menu.name}
                       </Link>

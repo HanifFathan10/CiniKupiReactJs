@@ -7,13 +7,13 @@ import { HeadMetaData } from "../component/Elements/HeadMetaData";
 import HeaderBack from "../component/Elements/HeaderBack";
 import DetailProduct from "../component/Fragment/DetailProduct";
 import useProductStore from "../Store/ProductStore";
+import { useShallow } from "zustand/react/shallow";
 
 const ProductCheckout = () => {
   const { _id } = useParams();
-  const [products, isLoading] = useProductStore((state) => [
-    state.products,
-    state.isLoading,
-  ]);
+  const [products, isLoading] = useProductStore(
+    useShallow((state) => [state.products, state.isLoading]),
+  );
   const product = products.find((val) => val._id === _id);
 
   return (
@@ -27,7 +27,7 @@ const ProductCheckout = () => {
           {isLoading ? (
             <ProductCOskeleton />
           ) : (
-            <section className="grid min-h-screen w-full grid-cols-1 items-center bg-chocolate md:justify-center">
+            <section className="grid min-h-screen w-full grid-cols-1 items-center bg-primary md:justify-center">
               <HeaderBack className="mt-[75px]" title="Detail Product" />
               <DetailProduct
                 _id={_id}

@@ -22,7 +22,7 @@ const BreadCrumbMenu = ({
         <li className="inline-flex items-center">
           <Link
             to={hrefMenu}
-            className="inline-flex items-center text-sm font-medium uppercase text-gray-700 hover:text-blue-600"
+            className="hover:text-teriary inline-flex items-center text-sm font-semibold uppercase text-white/60"
           >
             <HomeIcon className="me-2.5 h-3 w-3" />
             {linkMenu}
@@ -37,7 +37,7 @@ const BreadCrumbMenu = ({
               />
               <Link
                 to={`/menu/${LinkProduct}`}
-                className="ml-1 text-sm font-medium uppercase text-gray-700 hover:text-blue-600"
+                className="hover:text-teriary ml-1 text-sm font-semibold uppercase text-white"
               >
                 {kebabToTitleCase(nameUrl!)}
               </Link>

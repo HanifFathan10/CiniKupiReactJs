@@ -17,7 +17,7 @@ const PopUpOrder = () => {
         <Link className="flex items-center justify-center" to={"/menu/cart"}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            fill="#00A862"
+            fill="#B79D5E"
             viewBox="0 0 24 24"
             strokeWidth={1}
             stroke="currentColor"

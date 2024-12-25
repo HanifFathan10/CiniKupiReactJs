@@ -18,11 +18,12 @@ const AuthUsers = ({ children, type }: AuthUsersProps) => {
         unstable_viewTransition: true,
       });
   }, []);
+
   return (
     <section className="container relative mx-auto flex h-screen w-full justify-center bg-[#ffffff]">
       <Link
         to="/"
-        className="absolute left-0 top-10 flex items-center justify-center gap-1 rounded-full bg-slate-700 bg-opacity-75 px-3 py-2 text-xs font-semibold text-white transition duration-300 hover:scale-105 hover:bg-opacity-100 max-xl:hidden"
+        className="absolute left-0 top-10 flex items-center justify-center gap-1 rounded-full bg-slate-700 bg-opacity-75 px-4 py-3 text-xs font-semibold text-white transition duration-300 hover:bg-slate-800 max-xl:hidden"
       >
         <ChevronLeftIcon className="h-4 w-4" />
         Back To Home

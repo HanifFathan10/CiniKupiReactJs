@@ -17,24 +17,24 @@ const AuthMenu = ({ children, title }: AuthMenuProps) => {
 
   return (
     <MainLayout>
-        <NavigationBar />
-        <div className="item-center flex min-h-screen w-full justify-center bg-[#ffffff]">
-          <div className="container mt-24 flex text-black">
-            <nav className="mx-16 hidden lg:block">
-              <ul>
-                <li className="mt-6">
-                  <MenuList />
-                </li>
-              </ul>
-            </nav>
-            <div className="w-full px-3 py-1 md:px-16 lg:w-4/6 lg:py-6">
-              <h1 className="text-2xl font-bold">{kebabToTitleCase(title)}</h1>
-              {children}
-            </div>
+      <NavigationBar />
+      <div className="item-center bg-primary flex min-h-screen w-full justify-center">
+        <div className="container mt-24 flex text-white/90">
+          <nav className="mx-16 hidden lg:block">
+            <ul>
+              <li className="mt-6">
+                <MenuList />
+              </li>
+            </ul>
+          </nav>
+          <div className="w-full px-3 py-1 md:px-16 lg:w-4/6 lg:py-6">
+            <h1 className="text-2xl font-bold">{kebabToTitleCase(title)}</h1>
+            {children}
           </div>
         </div>
-        <Footer />
-        <PopUpOrder />
+      </div>
+      <Footer />
+      <PopUpOrder />
     </MainLayout>
   );
 };

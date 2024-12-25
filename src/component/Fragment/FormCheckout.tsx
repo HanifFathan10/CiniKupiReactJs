@@ -12,6 +12,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ClearCart } from "../../services/Order.service";
+import { AxiosError } from "axios";
 
 const FormCheckout = () => {
   const dataForGetToken = useRef<{
@@ -84,10 +85,18 @@ const FormCheckout = () => {
           setHistory(res.data.data);
         }
       });
-    } catch (error) {
-      ErrorToast({
-        title: "Error during checkout",
-      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        ErrorToast({
+          id: "checkout-error",
+          title: error.message,
+        });
+      } else if (error instanceof AxiosError) {
+        ErrorToast({
+          id: "checkout-error",
+          title: error.response?.data.message,
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -96,7 +105,7 @@ const FormCheckout = () => {
   PaymentService({ token, history, accessToken, setIsLoading });
 
   return (
-    <div className=" w-full bg-chocolate px-3 py-6 text-white">
+    <div className=" w-full bg-primary px-3 py-6 text-white">
       <h1 className="mb-3 text-xl font-bold tracking-wide">CUSTOMER DETAILS</h1>
       <form onSubmit={handleCheckout}>
         <label htmlFor="name" className="mb-2 block text-sm font-medium ">
@@ -175,7 +184,7 @@ const FormCheckout = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className=" disabled:hover: flex gap-3 rounded-full bg-secondary px-6 py-4 font-semibold text-chocolate transition-all duration-300 disabled:bg-neutral-500 disabled:text-secondary disabled:hover:bg-neutral-500 disabled:hover:ring-0"
+          className="flex gap-3 rounded-full bg-teriary px-6 py-4 font-semibold text-primary transition-all duration-300 disabled:bg-neutral-500 disabled:text-secondary disabled:hover:bg-neutral-500 disabled:hover:ring-0"
         >
           Checkout
           {isLoading && <Spinner color="white" />}

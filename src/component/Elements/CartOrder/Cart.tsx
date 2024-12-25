@@ -7,30 +7,20 @@ import { useDebounce } from "use-debounce";
 import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
 import { rupiah } from "../../../utils/rupiah";
 import { AddManyItemToCart } from "../../../services/Order.service";
+import { AxiosError } from "axios";
 
 interface CartProps {
   product: TDataOrder;
 }
 
 const Cart = ({ product }: CartProps) => {
-  const [click, setClick] = useState(false);
-  const [render, setRender] = useState(false);
+  const [render, setRender] = useState<boolean>(false);
   const { SuccessToast, ErrorToast } = useCustomToast();
   const { useCount } = totalItems(
     useShallow((state) => ({
       useCount: state.useCount,
     })),
   );
-
-  useEffect(() => {
-    const fetchUseCount = async () => {
-      if (click === true) {
-        await useCount();
-      }
-    };
-
-    fetchUseCount();
-  }, [click]);
 
   const [optimisticQuantity, addOptimisticQuantity, revertOptimisticQuantity] =
     useOptimistic(product.quantity!, (currentQuantity, newQuantity) => {
@@ -67,7 +57,6 @@ const Cart = ({ product }: CartProps) => {
       const fetchDataProduct = async () => {
         await AddManyItemToCart(newDataProduct, (status, res) => {
           if (status === true) {
-            setClick(true);
             SuccessToast({
               id: "add-to-cart",
               title: res.message,
@@ -80,6 +69,8 @@ const Cart = ({ product }: CartProps) => {
             });
           }
         });
+
+        useCount();
       };
 
       if (debounceQuantity > 8) {
@@ -91,19 +82,23 @@ const Cart = ({ product }: CartProps) => {
       } else {
         fetchDataProduct();
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        ErrorToast({
+          id: "add-to-cart",
+          title: error.message,
+        });
+      } else if (error instanceof AxiosError) {
+        ErrorToast({
+          id: "remove-from-cart",
+          title: error.response?.data.message,
+        });
+      }
       revertOptimisticQuantity();
-      ErrorToast({
-        id: "remove-from-cart",
-        title: error.response.data.message,
-      });
-    } finally {
-      setClick(false);
     }
 
     return () => {
       setRender(false);
-      setClick(false);
     };
   }, [debounceQuantity]);
 
@@ -122,11 +117,11 @@ const Cart = ({ product }: CartProps) => {
           </h3>
           <div className="item-center flex gap-1 text-white">
             <button onClick={handleRemoveItem}>
-              <MinusCircleIcon className="h-7 w-7 text-chocolate lg:h-9 lg:w-9" />
+              <MinusCircleIcon className="h-7 w-7 text-primary lg:h-9 lg:w-9" />
             </button>
             <h2 className="leading-10 text-black">{optimisticQuantity}</h2>
             <button onClick={handleAddToCart}>
-              <PlusCircleIcon className="h-7 w-7 text-chocolate lg:h-9 lg:w-9" />
+              <PlusCircleIcon className="h-7 w-7 text-primary lg:h-9 lg:w-9" />
             </button>
           </div>
         </div>

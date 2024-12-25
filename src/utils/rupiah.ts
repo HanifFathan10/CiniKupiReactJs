@@ -2,5 +2,6 @@ export const rupiah = (number?: number) => {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
-  }).format(number || 0);
+    compactDisplay: "short",
+  }).format(number ?? 0);
 };

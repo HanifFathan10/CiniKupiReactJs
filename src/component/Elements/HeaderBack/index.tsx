@@ -11,7 +11,7 @@ const HeaderBack = ({ className, title }: HeaderBackProps) => {
   const Navigate = useNavigate();
   return (
     <section
-      className={`flex h-12 w-full items-center justify-between bg-[#212121] px-3 py-6 text-white  shadow-md ${className}`}
+      className={`flex h-12 w-full items-center justify-between rounded-lg bg-secondary px-3 py-6 text-white shadow-md ${className}`}
     >
       <button onClick={() => Navigate(-1)}>
         <ChevronLeftIcon className="h-6 w-6" />
