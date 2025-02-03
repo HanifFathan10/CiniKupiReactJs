@@ -18,6 +18,8 @@ import MenuDashboardPage from "./Pages/Admin/Menus/MenuDashboardPage";
 import TransactionDashboardPage from "./Pages/Admin/transactions/TransactionDashboardPage";
 import { HelmetProvider } from "react-helmet-async";
 import AdminPage from "./Pages/Admin/Admin";
+import { useShallow } from "zustand/react/shallow";
+import { RefreshToken } from "./services/auth.service";
 
 const router = createBrowserRouter([
   {
@@ -80,15 +82,22 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  const getNewToken = useGetNewToken((state) => state.getNewToken)!;
+  const fetchRefreshToken = async () => {
+    await RefreshToken((status, res) => {
+      if (status) {
+        sessionStorage.setItem("access_token", res.access_token);
+        window.location.reload();
+      }
+    });
+  };
 
   const token = sessionStorage.getItem("access_token");
 
   useEffect(() => {
-    if (!token) {
-      getNewToken();
+    if (token == null) {
+      fetchRefreshToken();
     }
-  }, [token, getNewToken]);
+  }, [fetchRefreshToken]);
 
   return (
     <ChakraProvider>

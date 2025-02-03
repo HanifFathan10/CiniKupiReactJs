@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getAllDataUser = async (callback: TCallback) => {
   await axios
-    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users`)
+    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user`)
     .then((res) => {
       callback(true, res.data);
     })
@@ -16,13 +16,17 @@ export const UpdateDataUser = async (
   callback: TCallback,
 ) => {
   await axios
-    .patch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users`, data, {
-      withCredentials: true,
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
-        "Content-Type": "application/json",
+    .patch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/user/${data._id}/update`,
+      data,
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+          "Content-Type": "application/json",
+        },
       },
-    })
+    )
     .then((res) => {
       callback(true, res.data);
     })
@@ -33,7 +37,7 @@ export const UpdateDataUser = async (
 
 export const DeleteDataUser = async (_id: string, callback: TCallback) => {
   await axios
-    .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/${_id}`, {
+    .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/${_id}`, {
       withCredentials: true,
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
@@ -98,6 +102,7 @@ export const RefreshToken = async (callback: TCallback) => {
     .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/token`, {
       withCredentials: true,
       headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
         "Content-Type": "application/json",
       },
     })

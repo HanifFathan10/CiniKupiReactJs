@@ -164,6 +164,7 @@ interface ResponsePayment {
 }
 
 interface DataUpdateUser {
+  _id: string;
   username?: string;
   email?: string;
   role?: string;

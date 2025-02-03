@@ -26,6 +26,7 @@ const Edit = ({ updated, setUpdated, fetchData }: EditUserProps) => {
 
     try {
       const data = {
+        _id: updated._id!,
         username: editRef.current.username?.value,
         email: editRef.current.email?.value,
         role: editRef.current.role?.value,

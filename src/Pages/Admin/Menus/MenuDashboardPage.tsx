@@ -143,7 +143,7 @@ const MenuDashboardPage = () => {
                           className="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                         >
                           <img
-                            src={menu.image}
+                            src={menu.image as string}
                             alt={menu.name}
                             className="mr-3 h-10 w-auto bg-cover bg-center object-contain"
                           />

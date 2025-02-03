@@ -7,8 +7,8 @@ interface IGetNewToken {
   isSuccess?: boolean;
   isError?: boolean;
   error?: any;
-  getNewToken?: () => Promise<void>;
-  setIsError?: () => void;
+  getNewToken: () => Promise<void>;
+  setIsError: () => void;
 }
 
 interface IResponseRefreshToken {
