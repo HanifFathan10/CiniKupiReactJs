@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { generateResponse } from "../services/AI.service";
+import { generateResponse } from "../services/ai.service";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 interface IGeminiAIChatStore {

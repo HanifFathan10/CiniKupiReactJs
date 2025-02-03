@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PaymentService } from "../../services/PaymentService";
+import { PaymentService } from "../../services/payment.service";
 import { CheckIcon, ClockIcon } from "@heroicons/react/24/solid";
 import { rupiah } from "../../utils/rupiah";
 
@@ -88,7 +88,7 @@ const HistoryOrder = ({
               <button
                 type="button"
                 onClick={() => handleRePayment()}
-                className="w-full rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 lg:w-auto"
+                className="bg-primary-700 hover:bg-primary-800 focus:ring-primary-300 w-full rounded-lg px-3 py-2 text-sm font-medium text-white focus:outline-none focus:ring-4 lg:w-auto"
               >
                 re-payment
               </button>

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@chakra-ui/react";
 import useMenuStore from "../../../../Store/MenuProduct";
+import { useShallow } from "zustand/react/shallow";
 
 interface CartMenu {
   title: string;
@@ -9,10 +10,9 @@ interface CartMenu {
 }
 
 const MenuList = () => {
-  const [menus, isLoading] = useMenuStore((state) => [
-    state.menus,
-    state.isLoading,
-  ]);
+  const [menus, isLoading] = useMenuStore(
+    useShallow((state) => [state.menus, state.isLoading]),
+  );
 
   const CartMenu = ({ title, id }: CartMenu) => {
     let animateClass =
@@ -59,22 +59,11 @@ const MenuList = () => {
           ) : (
             <React.Fragment>
               {menus.map((menu, index) => {
-                if (menu.category === "drinks" && id === "drinks") {
+                if (menu.category_id?.name === "drinks" && id === "drinks") {
                   return (
                     <li key={index} className="my-3">
                       <Link
-                        to={`/menu/${menu.nameurl}`}
-                        className={animateClass}
-                      >
-                        {menu.name}
-                      </Link>
-                    </li>
-                  );
-                } else if (menu.category === "food" && id === "food") {
-                  return (
-                    <li key={index} className="my-3">
-                      <Link
-                        to={`/menu/${menu.nameurl}`}
+                        to={`/menu/${menu.nameUrl}`}
                         className={animateClass}
                       >
                         {menu.name}
@@ -82,13 +71,27 @@ const MenuList = () => {
                     </li>
                   );
                 } else if (
-                  menu.category === "coffe beans" &&
-                  id === "coffe beans"
+                  menu.category_id?.name === "foods" &&
+                  id === "foods"
                 ) {
                   return (
                     <li key={index} className="my-3">
                       <Link
-                        to={`/menu/${menu.nameurl}`}
+                        to={`/menu/${menu.nameUrl}`}
+                        className={animateClass}
+                      >
+                        {menu.name}
+                      </Link>
+                    </li>
+                  );
+                } else if (
+                  menu.category_id?.name === "beans" &&
+                  id === "beans"
+                ) {
+                  return (
+                    <li key={index} className="my-3">
+                      <Link
+                        to={`/menu/${menu.nameUrl}`}
                         className={animateClass}
                       >
                         {menu.name}
@@ -111,13 +114,14 @@ const MenuList = () => {
     },
     {
       id: "Food",
-      content: <CartMenu title="Foods" id="food" />,
+      content: <CartMenu title="Foods" id="foods" />,
     },
     {
       id: "coffe beans",
-      content: <CartMenu title="Coffe Beans" id="coffe beans" />,
+      content: <CartMenu title="Coffe Beans" id="beans" />,
     },
   ];
+
   return (
     <>
       {Menu.find((menu) => menu.id === "Drinks")?.content}

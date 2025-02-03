@@ -35,21 +35,21 @@ const MenuProducts = ({ title, id, menus, isLoading }: MenuProducts) => {
         ) : (
           <React.Fragment>
             {menus.map((menu, index) => {
-              if (menu.category === "drinks" && id === "drink") {
+              if (menu.category_id?.name === "drinks" && id === "drinks") {
                 return (
-                  <Link key={index} to={`/menu/${menu.nameurl}`}>
+                  <Link key={index} to={`/menu/${menu.nameUrl}`}>
                     <Cart image={menu.image} title={menu.name} key={index} />
                   </Link>
                 );
-              } else if (menu.category === "food" && id === "food") {
+              } else if (menu.category_id?.name === "foods" && id === "foods") {
                 return (
-                  <Link key={index} to={`/menu/${menu.nameurl}`}>
+                  <Link key={index} to={`/menu/${menu.nameUrl}`}>
                     <Cart image={menu.image} title={menu.name} key={index} />
                   </Link>
                 );
-              } else if (menu.category === "coffe beans" && id === "coffe") {
+              } else if (menu.category_id?.name === "beans" && id === "beans") {
                 return (
-                  <Link key={index} to={`/menu/${menu.nameurl}`}>
+                  <Link key={index} to={`/menu/${menu.nameUrl}`}>
                     <Cart image={menu.image} title={menu.name} key={index} />
                   </Link>
                 );

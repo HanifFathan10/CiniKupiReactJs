@@ -1,27 +1,14 @@
 import React from "react";
 
-export const convertToBase64 = (
+export const handleFileChange = (
   event: React.ChangeEvent<HTMLInputElement>,
-  setImages: React.Dispatch<React.SetStateAction<string>>,
+  setImages: React.Dispatch<React.SetStateAction<File | null>>,
 ) => {
-  const file = event.target.files![0];
-  const reader = new FileReader();
+  const file = event.target.files?.[0];
   const maxSize = 3 * 1024 * 1024; // 3MB
 
-  if (file.size > maxSize) {
-    return;
-  }
+  if (!file) return;
+  if (file.size > maxSize) return;
 
-  reader.onload = () => {
-    const base64String = reader.result;
-    setImages(base64String as string);
-  };
-
-  reader.onerror = (error) => {
-    return;
-  };
-
-  if (file) {
-    reader.readAsDataURL(file);
-  }
+  setImages(file);
 };

@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 import { getAllMenuProduct } from "../services/product.service";
 
 interface TuseProductStore {
-  products: DataSingleProductPopulateMenu[];
+  products: TDataSingleProduct[];
   isLoading: boolean;
   getDataProduct: () => Promise<void>;
 }
@@ -17,17 +17,17 @@ const useProductStore = create<TuseProductStore>()(
 
       getDataProduct: async () => {
         try {
-          const products = localStorage.getItem("product-store");
+          // const products = localStorage.getItem("product-store");
 
-          if (JSON.parse(products!).length > 0) {
-            set({ products: JSON.parse(products!) });
-          } else {
-            await getAllMenuProduct((status, res) => {
-              if (status === true) {
-                set({ products: res.data.products, isLoading: false });
-              }
-            });
-          }
+          // if (JSON.parse(products!).length > 0) {
+          //   set({ products: JSON.parse(products!) });
+          // } else {
+          await getAllMenuProduct((status, res) => {
+            if (status === true) {
+              set({ products: res.data.data, isLoading: false });
+            }
+          });
+          // }
         } catch (error) {
           if (error instanceof Error) {
             console.log(error.message);

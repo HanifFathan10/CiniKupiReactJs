@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import ModalInput from "../../../InputForm/Modal";
 import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import useSlug from "../../../../../Hooks/useSlug";
-import { Select } from "flowbite-react";
-import { EditDataMenu } from "../../../../../services/Menu.service";
+import { EditDataMenu } from "../../../../../services/menu.service";
 import { useCustomToast } from "../../../../../Hooks/useToast";
+import { Select } from "@chakra-ui/react";
 
 interface ModalEditMenuProps {
+  categories: TDataCategory[];
   updated: TDataMenu;
   setUpdated: React.Dispatch<React.SetStateAction<TDataMenu>>;
   fetchDataMenu: () => void;
 }
 
-const Edit = ({ updated, setUpdated, fetchDataMenu }: ModalEditMenuProps) => {
+const Edit = ({
+  categories,
+  updated,
+  setUpdated,
+  fetchDataMenu,
+}: ModalEditMenuProps) => {
   const { slug, handleInputChange } = useSlug();
   const { SuccessToast, ErrorToast } = useCustomToast();
 
@@ -22,13 +28,13 @@ const Edit = ({ updated, setUpdated, fetchDataMenu }: ModalEditMenuProps) => {
     const data = {
       _id: updated._id,
       name: e.target.menu.value,
-      category: e.target.category.value,
-      nameurl: e.target.nameurl.value,
+      category_id: e.target.category.value,
+      nameUrl: e.target.nameUrl.value,
     };
 
     await EditDataMenu(data, (status, res) => {
       if (status === true) {
-        setUpdated({});
+        setUpdated({} as TDataMenu);
         fetchDataMenu();
         SuccessToast({
           id: "edit-menu",
@@ -44,14 +50,14 @@ const Edit = ({ updated, setUpdated, fetchDataMenu }: ModalEditMenuProps) => {
   };
 
   return Object.keys(updated).length ? (
-    <ModalInput onClose={() => setUpdated({})}>
+    <ModalInput onClose={() => setUpdated({} as TDataMenu)}>
       <div className="rounded-md bg-white p-4 shadow-md drop-shadow-md">
         <div className="mb-4 flex items-center justify-between rounded-t border-b pb-4 sm:mb-5">
           <h3 className="text-lg font-semibold text-gray-900 ">Edit Menu</h3>
           <button
             type="button"
             className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-            onClick={() => setUpdated({})}
+            onClick={() => setUpdated({} as TDataMenu)}
           >
             <XMarkIcon className="h-5 w-5" />
             <span className="sr-only">Close modal</span>
@@ -71,7 +77,7 @@ const Edit = ({ updated, setUpdated, fetchDataMenu }: ModalEditMenuProps) => {
                 name="menu"
                 onChange={handleInputChange}
                 id="name"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
+                className="focus:border-primary-600 focus:ring-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                 defaultValue={updated.name}
                 placeholder="Menu"
                 required
@@ -86,11 +92,11 @@ const Edit = ({ updated, setUpdated, fetchDataMenu }: ModalEditMenuProps) => {
               </label>
               <input
                 type="text"
-                id="nameurl"
-                aria-label="nameurl"
-                name="nameurl"
+                id="nameUrl"
+                aria-label="nameUrl"
+                name="nameUrl"
                 className="focus:ring-blue-500s mb-6 block w-full cursor-not-allowed rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm text-slate-400 focus:border-blue-500"
-                value={slug ? slug : updated.nameurl}
+                value={slug ? slug : updated.nameUrl}
                 placeholder="Menu url"
                 disabled
               />
@@ -105,16 +111,18 @@ const Edit = ({ updated, setUpdated, fetchDataMenu }: ModalEditMenuProps) => {
               <Select
                 name="category"
                 id="category"
-                defaultValue={updated.category}
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
+                defaultValue={updated.category_id?.name}
+                className="focus:border-primary-500 focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900"
                 required
               >
-                <option disabled value={updated.category}>
-                  {updated.category}
+                <option disabled defaultValue={updated.category_id?.name}>
+                  {updated.category_id?.name}
                 </option>
-                <option value="drinks">Drink</option>
-                <option value="food">Food</option>
-                <option value="coffe beans">Coffe Beans</option>
+                {categories.map((category) => (
+                  <option value={category._id} key={category._id}>
+                    {category.name}
+                  </option>
+                ))}
               </Select>
             </div>
             <div>
@@ -129,6 +137,10 @@ const Edit = ({ updated, setUpdated, fetchDataMenu }: ModalEditMenuProps) => {
                   src={updated.image}
                   alt="image"
                   className="h-32 w-full rounded-lg bg-cover object-contain"
+                  width={0}
+                  height={0}
+                  loading="lazy"
+                  draggable={false}
                 />
               </div>
             </div>

@@ -18,14 +18,16 @@ const FragmentMenu = ({ nameUrl }: FragmentMenuProps) => {
     getDataProduct();
   }, []);
 
-  const findCategory = products.find((prod) => {
-    return prod.id_menu.nameurl === nameUrl;
+  const findCategory = products.find((product) => {
+    return product.menu_id?.nameUrl === nameUrl;
   });
 
   return (
     <section className="mt-10">
       <BreadCrumbMenu
-        linkMenu={findCategory ? findCategory.id_menu.category! : "Menu"}
+        linkMenu={
+          findCategory ? findCategory.menu_id?.category_id?.name! : "Menu"
+        }
         hrefMenu={"/menu"}
         LinkProduct={nameUrl}
         nameUrl={nameUrl}

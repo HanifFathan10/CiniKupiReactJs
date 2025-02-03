@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Spinner } from "@chakra-ui/react";
 import { useShallow } from "zustand/react/shallow";
-import { PaymentRequest, PaymentService } from "../../services/PaymentService";
+import { PaymentRequest, PaymentService } from "../../services/payment.service";
 import { totalItems } from "../../Store/TotalItems";
 import { useCustomToast } from "../../Hooks/useToast";
 import {
@@ -11,7 +11,7 @@ import {
   UserIcon,
 } from "@heroicons/react/24/solid";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ClearCart } from "../../services/Order.service";
+import { ClearCart } from "../../services/order.service";
 import { AxiosError } from "axios";
 
 const FormCheckout = () => {

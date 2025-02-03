@@ -19,7 +19,6 @@ type IDataUser = {
 
 type TDataOrder = {
   _id?: string;
-  id?: string;
   image?: string;
   name?: string;
   price?: number;
@@ -27,61 +26,33 @@ type TDataOrder = {
   user_id?: string;
 };
 
+type TDataCategory = {
+  _id: string;
+  name: string;
+};
+
 type TDataMenu = {
   _id?: string;
   name?: string;
-  image?: string;
-  products?: TDataSingleProduct[];
-  category?: string;
-  nameurl?: string;
+  image?: Blob | string | null;
+  product_id?: TDataSingleProduct[];
+  category_id?: TDataCategory;
+  nameUrl?: string;
   createdAt?: string;
   updatedAt?: string;
 };
 
 type TDataSingleProduct = {
   _id?: string;
-  id_menu?: string;
   name?: string;
   price?: number;
   image?: string;
-  descriptions?: string;
+  description?: string;
   calories?: number;
   sugar?: number;
   fat?: number;
   oz?: number;
-};
-
-type TDataSingleProductPopulatedMenu = {
-  _id?: string;
-  id_menu?: TDataMenu;
-  name?: string;
-  price?: number;
-  image?: string;
-  descriptions?: string;
-  calories?: number;
-  sugar?: number;
-  fat?: number;
-  oz?: number;
-};
-
-type MenuFormData = {
-  name: string;
-  nameurl: string;
-  category: string;
-  image: string;
-};
-
-type TDataProductWithMenu = {
-  _id: string;
-  id_menu: TDataMenu;
-  name: string;
-  price: number;
-  image: string;
-  descriptions: string;
-  calories: number;
-  sugar: number;
-  fat: number;
-  oz: number;
+  menu_id?: TDataMenu;
 };
 
 type TDataDefaultMenu = {
@@ -143,8 +114,8 @@ type TDataHistoryPending = TDataHistoryTrx & {
 };
 
 type Pagination = {
-  currentPage?: number;
-  totalPage?: number;
+  current_page?: number;
+  total_page?: number;
 };
 
 type DataResponseMonthlySales = {
@@ -203,33 +174,28 @@ interface GetAllMenuWithData {
 }
 
 interface CreateProductMenu {
-  id_menu: string;
-  calories: number;
   name: string;
   price: number;
-  image: string;
-  descriptions: string;
-  sugar: number;
-  fat: number;
-  oz: number;
+  image: File | null;
+  description: string;
+  calories?: number;
+  sugar?: number;
+  fat?: number;
+  oz?: number;
+  menu_id: string;
 }
 
 interface UpdateProductMenu {
   _id: string;
-  id_menu?: string;
-  calories?: number;
-  name?: string;
-  price?: number;
-  image?: string;
-  descriptions?: string;
-  sugar?: number;
-  fat?: number;
-  oz?: number;
-}
-
-interface DeleteProductMenu {
-  _id: string;
-  id_menu: string;
+  calories: number;
+  name: string;
+  price: number;
+  image: File | string | null;
+  description: string;
+  sugar: number;
+  fat: number;
+  oz: number;
+  menu_id: string;
 }
 
 interface OrderDetailsTransaction {

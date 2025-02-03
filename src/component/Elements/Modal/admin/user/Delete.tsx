@@ -2,7 +2,7 @@ import React from "react";
 import ModalInput from "../../../InputForm/Modal";
 import { TrashIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useCustomToast } from "../../../../../Hooks/useToast";
-import { DeleteDataUser } from "../../../../../services/AuthService";
+import { DeleteDataUser } from "../../../../../services/auth.service";
 
 interface DeleteUserProps {
   deleted: IDataUser;
@@ -44,15 +44,13 @@ const Delete = ({ deleted, setDeleted, fetchData }: DeleteUserProps) => {
         <TrashIcon className="mx-auto mb-4 h-12 w-12 text-gray-400" />
         <p className="mb-4 text-gray-500 ">
           Are you sure you want to delete{" "}
-          <span className="font-bold text-neutral-600">
-            {deleted.username}
-          </span>
+          <span className="font-bold text-neutral-600">{deleted.username}</span>
         </p>
         <div className="flex items-center justify-center space-x-4">
           <button
             onClick={() => setDeleted({})}
             type="button"
-            className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300"
+            className="focus:ring-primary-300 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4"
           >
             No, cancel
           </button>

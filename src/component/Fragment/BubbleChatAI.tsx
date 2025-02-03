@@ -21,7 +21,6 @@ import { jwtDecode, JwtPayload } from "jwt-decode";
 import useGeminiAIChat from "../../Store/AIStore";
 import Showdown from "showdown";
 import parse from "html-react-parser";
-import { convertToBase64 } from "../../utils/convertToBase64";
 import PreviewImg from "../Elements/Modal/PreviewImg";
 
 const BubbleChatAI = () => {
@@ -85,7 +84,7 @@ const BubbleChatAI = () => {
   const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setMimeType(e.target.files[0].type);
-      convertToBase64(e, setImage);
+      // convertToBlob(e, setImage);
     }
   };
 
@@ -99,7 +98,7 @@ const BubbleChatAI = () => {
       <section className="fixed bottom-4 right-5">
         <Popover placement="top-start">
           <PopoverTrigger>
-            <button className="text-ne bg-primary flex items-center gap-1 rounded-full px-4 py-3 text-xs font-semibold text-white">
+            <button className="text-ne flex items-center gap-1 rounded-full bg-primary px-4 py-3 text-xs font-semibold text-white">
               <ChatBubbleLeftRightIcon className="h-4 w-4" />
               Chat With AI
             </button>
@@ -121,7 +120,7 @@ const BubbleChatAI = () => {
               <PopoverBody className="flex min-h-52 flex-col gap-2.5 overflow-auto">
                 {histories.length === 0 ? (
                   <div className="flex justify-end gap-2.5">
-                    <div className="leading-1.5 bg-primary flex w-fit max-w-[320px] flex-col rounded-s-xl rounded-ee-xl border-gray-700 p-4 text-gray-100">
+                    <div className="leading-1.5 flex w-fit max-w-[320px] flex-col rounded-s-xl rounded-ee-xl border-gray-700 bg-primary p-4 text-gray-100">
                       <div className="flex items-center space-x-2 rtl:space-x-reverse">
                         <span className="text-sm font-bold tracking-wider">
                           You
@@ -153,10 +152,10 @@ const BubbleChatAI = () => {
                         key={index}
                       >
                         {history.sender == null && (
-                          <SparklesIcon className="h-7 w-7 rounded-full bg-white p-1.5 text-primary-700" />
+                          <SparklesIcon className="text-primary-700 h-7 w-7 rounded-full bg-white p-1.5" />
                         )}
                         <div
-                          className={`leading-1.5 flex w-fit max-w-[320px] flex-col border p-3 ${history.sender == "user" ? "bg-primary rounded-s-xl rounded-ee-xl border-gray-700 text-gray-100" : "rounded-e-xl rounded-es-xl border-gray-200 bg-white text-gray-800"}`}
+                          className={`leading-1.5 flex w-fit max-w-[320px] flex-col border p-3 ${history.sender == "user" ? "rounded-s-xl rounded-ee-xl border-gray-700 bg-primary text-gray-100" : "rounded-e-xl rounded-es-xl border-gray-200 bg-white text-gray-800"}`}
                         >
                           <div className="flex items-center space-x-2 rtl:space-x-reverse">
                             <span className="text-sm font-bold tracking-wider">
@@ -233,7 +232,7 @@ const BubbleChatAI = () => {
                             type="submit"
                             className="flex items-center gap-1 rounded-md bg-neutral-200 px-4 py-2.5 font-medium"
                           >
-                            <SparklesIcon className="h-5 w-5 text-primary-700" />
+                            <SparklesIcon className="text-primary-700 h-5 w-5" />
                             Go
                           </button>
                         </Tooltip>

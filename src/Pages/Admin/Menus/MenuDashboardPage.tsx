@@ -2,36 +2,37 @@ import React, { useEffect, useState } from "react";
 import { HeadMetaData } from "../../../component/Elements/HeadMetaData";
 import AdminLayouts from "../../../component/Layouts/AdminLayouts";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
-import { GetAllMenuWithData } from "../../../services/Menu.service";
 import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
 import Plus from "../../../component/Elements/Icon/Plus";
 import Create from "../../../component/Elements/Modal/admin/menu/Create";
 import Edit from "../../../component/Elements/Modal/admin/menu/Edit";
 import Delete from "../../../component/Elements/Modal/admin/menu/Delete";
+import { GetAllMenu } from "../../../services/menu.service";
+import { GetAllCategory } from "../../../services/category.service";
 
 const MenuDashboardPage = () => {
   const [category, setCategory] = useState<string>("");
-  const [updated, setUpdated] = useState<TDataMenu>({});
-  const [deleted, setDeleted] = useState<TDataMenu>({});
+  const [updated, setUpdated] = useState<TDataMenu>({} as TDataMenu);
+  const [deleted, setDeleted] = useState<TDataMenu>({} as TDataMenu);
   const [menus, setMenus] = useState<TDataMenu[]>([]);
+  const [categories, setCategories] = useState<TDataCategory[]>([]);
   const [modal, setModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    setIsLoading(true);
-
-    fetchDataMenu();
-  }, [category]);
-
   const fetchDataMenu = async () => {
-    const data = {
-      category,
-    };
-
-    await GetAllMenuWithData(data, (status, res) => {
+    await GetAllMenu((status, res) => {
       if (status === true) {
         setMenus(res.data);
+        setIsLoading(false);
+      }
+    });
+  };
+
+  const fetchDataCategory = async () => {
+    await GetAllCategory((status, res) => {
+      if (status === true) {
+        setCategories(res.data);
         setIsLoading(false);
       }
     });
@@ -40,6 +41,13 @@ const MenuDashboardPage = () => {
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCategory(e.target.value);
   };
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    fetchDataCategory();
+    fetchDataMenu();
+  }, [category]);
 
   return (
     <React.Fragment>
@@ -72,7 +80,7 @@ const MenuDashboardPage = () => {
               <button
                 type="button"
                 onClick={() => setModal(true)}
-                className="flex items-center justify-center rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
+                className="focus:ring-primary-300 flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition duration-300 hover:bg-blue-500 focus:outline-none focus:ring-4"
               >
                 <Plus />
                 Add menu
@@ -83,7 +91,7 @@ const MenuDashboardPage = () => {
             <thead className="bg-gray-50 text-xs uppercase text-gray-700">
               <tr>
                 <th scope="col" className="px-4 py-3">
-                  No
+                  _id
                 </th>
                 <th scope="col" className="px-4 py-3">
                   Menu
@@ -127,7 +135,9 @@ const MenuDashboardPage = () => {
 
                     return (
                       <tr className="border-b" key={i}>
-                        <td className="whitespace-nowrap px-4 py-3">{i + 1}</td>
+                        <td className="whitespace-nowrap px-4 py-3">
+                          {menu._id}
+                        </td>
                         <th
                           scope="row"
                           className="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900"
@@ -139,13 +149,13 @@ const MenuDashboardPage = () => {
                           />
                           {menu.name}
                         </th>
-                        <td className="px-4 py-3">{menu.category}</td>
-                        <td className="px-4 py-3">{menu.nameurl}</td>
+                        <td className="px-4 py-3">{menu.category_id?.name}</td>
+                        <td className="px-4 py-3">{menu.nameUrl}</td>
                         <td className="px-4 py-3">{lastUpdate}</td>
                         <td className="flex items-center justify-center gap-3 px-4 py-3">
                           <button
                             type="button"
-                            className="inline-flex w-full items-center justify-center rounded-lg bg-yellow-300 px-2 py-2 text-center text-sm font-medium text-white hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-primary-300"
+                            className="focus:ring-primary-300 inline-flex w-full items-center justify-center rounded-lg bg-yellow-300 px-2 py-2 text-center text-sm font-medium text-white hover:bg-yellow-400 focus:outline-none focus:ring-4"
                             onClick={() => setUpdated(menu)}
                           >
                             <PencilSquareIcon className="-ml-1 mr-1 h-5 w-5" />
@@ -171,6 +181,7 @@ const MenuDashboardPage = () => {
       </AdminLayouts>
 
       <Create
+        categories={categories}
         modal={modal}
         setModal={setModal}
         fetchDataMenu={fetchDataMenu}
@@ -181,6 +192,7 @@ const MenuDashboardPage = () => {
         setUpdated={setUpdated}
         updated={updated}
         fetchDataMenu={fetchDataMenu}
+        categories={categories}
         key={Math.random()}
       />
 

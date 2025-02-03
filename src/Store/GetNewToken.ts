@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { RefreshToken } from "../services/AuthService";
+import { RefreshToken } from "../services/auth.service";
 
 interface IGetNewToken {
   isLoading?: boolean;

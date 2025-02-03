@@ -19,7 +19,7 @@ const ProductCheckout = () => {
   return (
     <React.Fragment>
       <HeadMetaData
-        title={product.name}
+        title={product?.name}
         metaDescription="Checkout page by CiniKupi"
       />
       <AuthDetail>
@@ -31,15 +31,15 @@ const ProductCheckout = () => {
               <HeaderBack className="mt-[75px]" title="Detail Product" />
               <DetailProduct
                 _id={_id}
-                image={product.image}
-                name={product.name}
-                fat={product.fat}
-                calories={product.calories}
-                descriptions={product.descriptions}
-                price={product.price}
-                sugar={product.sugar}
-                oz={product.oz}
-                key={product._id}
+                image={product?.image}
+                name={product?.name}
+                fat={product?.fat}
+                calories={product?.calories}
+                description={product?.description}
+                price={product?.price}
+                sugar={product?.sugar}
+                oz={product?.oz}
+                key={product?._id}
               />
               <div className="-mb-10 ml-4 mt-20 md:ml-10">
                 <h1 className="w-fit border-b-4 border-green-700 text-lg font-bold text-white">

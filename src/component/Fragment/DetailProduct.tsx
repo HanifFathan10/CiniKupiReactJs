@@ -10,7 +10,7 @@ import {
   PopoverTrigger,
   Tooltip,
 } from "@chakra-ui/react";
-import { AddToCart } from "../../services/Order.service";
+import { AddToCart } from "../../services/order.service";
 import { totalItems } from "../../Store/TotalItems";
 import { useShallow } from "zustand/react/shallow";
 import { useCustomToast } from "../../Hooks/useToast";
@@ -24,7 +24,7 @@ const DetailProduct = ({
   image,
   name,
   price,
-  descriptions,
+  description,
   fat,
   calories,
   sugar,
@@ -43,10 +43,10 @@ const DetailProduct = ({
   const products = useProductStore(useShallow((state) => state.products));
   const findProduct = products.find((prod) => prod._id === _id);
   const dataProduct = {
-    id: findProduct._id,
-    name: findProduct.name,
-    price: findProduct.price,
-    image: findProduct.image,
+    _id: findProduct?._id,
+    name: findProduct?.name,
+    price: findProduct?.price,
+    image: findProduct?.image,
     quantity: 1,
   };
 
@@ -76,7 +76,7 @@ const DetailProduct = ({
         setIsLoading(true);
       }
 
-      if (items.find((prod) => prod.id === dataProduct.id)) {
+      if (items.find((prod) => prod._id === dataProduct._id)) {
         SuccessToast({
           id: "already-added",
           title: "Item already added. Please adjust your order.",
@@ -148,7 +148,7 @@ const DetailProduct = ({
             </span>
           </Tooltip>
           <div className="mb-4 max-w-xs md:max-w-sm">
-            <p className="text-xs text-white/65 lg:text-base">{descriptions}</p>
+            <p className="text-xs text-white/65 lg:text-base">{description}</p>
           </div>
           <div className="flex items-center gap-x-2 md:gap-x-4">
             {!fat && !calories && !sugar && !oz ? (

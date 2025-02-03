@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Login, Logout, Register } from "../services/AuthService";
+import { Login, Logout, Register } from "../services/auth.service";
 
 interface useAuthStoreType {
   isLogin: boolean;
@@ -42,11 +42,7 @@ const useAuthStore = create<useAuthStoreType>((set) => ({
   },
 
   logout: async (callback: TCallback) => {
-    const data = {
-      token: sessionStorage.getItem("access_token") as string,
-    };
-
-    return await Logout(data, (status, res) => {
+    return await Logout((status, res) => {
       if (status === true) {
         set({ isLogout: true });
         sessionStorage.removeItem("access_token");

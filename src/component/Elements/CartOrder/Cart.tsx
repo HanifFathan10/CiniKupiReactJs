@@ -6,7 +6,7 @@ import { useCustomToast } from "../../../Hooks/useToast";
 import { useDebounce } from "use-debounce";
 import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
 import { rupiah } from "../../../utils/rupiah";
-import { AddManyItemToCart } from "../../../services/Order.service";
+import { AddManyItemToCart } from "../../../services/order.service";
 import { AxiosError } from "axios";
 
 interface CartProps {

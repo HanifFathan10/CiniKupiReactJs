@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import ModalInput from "../../../InputForm/Modal";
 import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Select } from "@chakra-ui/react";
-import { UpdateDataUser } from "../../../../../services/AuthService";
+import { UpdateDataUser } from "../../../../../services/auth.service";
 import { useCustomToast } from "../../../../../Hooks/useToast";
 
 interface EditUserProps {
@@ -119,7 +119,7 @@ const Edit = ({ updated, setUpdated, fetchData }: EditUserProps) => {
                 name="role"
                 id="role"
                 ref={(el) => (editRef.current.role = el)}
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
+                className="focus:border-primary-500 focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900"
                 required
                 defaultValue={updated.role}
               >

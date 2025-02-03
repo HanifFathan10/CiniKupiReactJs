@@ -20,19 +20,19 @@ const Menu = () => {
       <AuthMenu title="Menu">
         <MenuProducts
           title="Drinks"
-          id="drink"
+          id="drinks"
           menus={menus}
           isLoading={isLoading}
         />
         <MenuProducts
           title="Foods"
-          id="food"
+          id="foods"
           menus={menus}
           isLoading={isLoading}
         />
         <MenuProducts
           title="Coffe Beans"
-          id="coffe"
+          id="beans"
           menus={menus}
           isLoading={isLoading}
         />

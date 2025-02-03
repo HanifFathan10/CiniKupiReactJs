@@ -6,7 +6,7 @@ import CartSkeleton from "../CartSkeleton";
 interface ProductItemsProps {
   nameUrl: string;
   isLoading: boolean;
-  products: TDataSingleProductPopulatedMenu[];
+  products: TDataSingleProduct[];
 }
 
 const ProductItems = ({ nameUrl, isLoading, products }: ProductItemsProps) => {
@@ -17,11 +17,11 @@ const ProductItems = ({ nameUrl, isLoading, products }: ProductItemsProps) => {
       ) : (
         <React.Fragment>
           {products
-            .filter((menu) => menu.id_menu?.nameurl === nameUrl)
-            .map((menu, index) => {
+            .filter((product) => product.menu_id?.nameUrl == nameUrl)
+            .map((product, index) => {
               return (
-                <Link key={index} to={`/product/${menu._id}`}>
-                  <Cart image={menu.image} title={menu.name} />
+                <Link key={index} to={`/product/${product._id}`}>
+                  <Cart image={product.image} title={product.name} />
                 </Link>
               );
             })}

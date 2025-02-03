@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { HeadMetaData } from "../../../component/Elements/HeadMetaData";
 import AdminLayouts from "../../../component/Layouts/AdminLayouts";
-import { getAllHistoryTransaction } from "../../../services/PaymentService";
+import { getAllHistoryTransaction } from "../../../services/payment.service";
 import {
   ChevronDownIcon,
   ChevronUpDownIcon,
@@ -130,7 +130,7 @@ const TransactionDashboardPage = () => {
                       id="search-transaction"
                       value={trimSearch}
                       onChange={handleSearchTransaction}
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
+                      className="focus:border-primary-500 focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900"
                       placeholder="Search by name or email"
                       required
                     />

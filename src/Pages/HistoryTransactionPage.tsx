@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { HeadMetaData } from "../component/Elements/HeadMetaData";
 import HistoryOrder from "../component/Fragment/HistoryOrder";
 import AuthLayouth from "../component/Layouts/AuthLayouth";
-import { DeleteHistoryTransactionByOrderId } from "../services/PaymentService";
+import { DeleteHistoryTransactionByOrderId } from "../services/payment.service";
 import Pagination from "../component/Elements/Pagination/Pagination";
 import { useLocation } from "react-router-dom";
 import { Skeleton } from "@chakra-ui/react";
@@ -108,7 +108,7 @@ const HistoryTransactionPage = () => {
                     onChange={handleStatusChange}
                     value={status}
                     name="order-type"
-                    className="block w-full min-w-[8rem] rounded-lg border border-neutral-400  bg-neutral-600 p-2.5 text-sm text-white placeholder:text-gray-400 focus:border-primary-500 focus:ring-primary-500"
+                    className="focus:border-primary-500 focus:ring-primary-500 block w-full min-w-[8rem] rounded-lg  border border-neutral-400 bg-neutral-600 p-2.5 text-sm text-white placeholder:text-gray-400"
                   >
                     <option value="">All orders</option>
                     <option value="settlement">Success</option>
@@ -133,7 +133,7 @@ const HistoryTransactionPage = () => {
                     name="duration"
                     onChange={handleTimeChange}
                     value={time}
-                    className="block w-full rounded-lg border border-neutral-400  bg-neutral-600 p-2.5 text-sm text-white placeholder:text-gray-400 focus:border-primary-500 focus:ring-primary-500"
+                    className="focus:border-primary-500 focus:ring-primary-500 block w-full rounded-lg  border border-neutral-400 bg-neutral-600 p-2.5 text-sm text-white placeholder:text-gray-400"
                   >
                     <option value="">All time</option>
                     <option value="3days">the last 3 days</option>

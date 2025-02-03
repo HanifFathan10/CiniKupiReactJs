@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { AxiosError } from "axios";
-import { GetAllMenu } from "../services/Menu.service";
+import { GetAllMenu } from "../services/menu.service";
 
 interface TuseMenuStore {
-  menus: DataMenu[];
+  menus: TDataMenu[];
   isLoading: boolean;
   getDataMenu: () => Promise<void>;
 }

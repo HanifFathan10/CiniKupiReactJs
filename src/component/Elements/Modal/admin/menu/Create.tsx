@@ -1,54 +1,55 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import ModalInput from "../../../InputForm/Modal";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import useSlug from "../../../../../Hooks/useSlug";
 import { Select } from "@chakra-ui/react";
-import { convertToBase64 } from "../../../../../utils/convertToBase64";
 import Plus from "../../../Icon/Plus";
-import { CreateDataMenu } from "../../../../../services/Menu.service";
+import { CreateDataMenu } from "../../../../../services/menu.service";
 import { useCustomToast } from "../../../../../Hooks/useToast";
+import { handleFileChange } from "../../../../../utils/convertToBase64";
 
 interface ModalCreateMenuProps {
+  categories: TDataCategory[];
   modal: boolean;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
-  fetchDataMenu: () => void;
+  fetchDataMenu: VoidFunction;
 }
 
-const Create = ({ modal, setModal, fetchDataMenu }: ModalCreateMenuProps) => {
-  const [images, setImages] = useState<string>("");
-  const formRef = useRef<HTMLFormElement | null>(null);
+const Create = ({
+  categories,
+  modal,
+  setModal,
+  fetchDataMenu,
+}: ModalCreateMenuProps) => {
+  const [image, setImage] = useState<File | null>(null);
   const { SuccessToast, ErrorToast } = useCustomToast();
   const { slug, handleInputChange } = useSlug();
 
-  const handleCreateMenu = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateMenu = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (formRef.current) {
-      const formData = new FormData(formRef.current);
+    const data = {
+      name: e.target.menu_name.value,
+      nameUrl: slug,
+      category_id: e.target.category.value,
+      image,
+    };
 
-      const data: MenuFormData = {
-        name: formData.get("name") as string,
-        nameurl: slug,
-        category: formData.get("category") as string,
-        image: images,
-      };
-
-      await CreateDataMenu(data, (status, res) => {
-        if (status === true) {
-          setModal(false);
-          SuccessToast({
-            id: "create-menu",
-            title: res.message,
-          });
-          fetchDataMenu();
-        } else {
-          ErrorToast({
-            id: "error-create-menu",
-            title: res.message,
-          });
-        }
-      });
-    }
+    await CreateDataMenu(data, (status, res) => {
+      if (status === true) {
+        setModal(false);
+        SuccessToast({
+          id: "create-menu",
+          title: res.message,
+        });
+        fetchDataMenu();
+      } else {
+        ErrorToast({
+          id: "error-create-menu",
+          title: res.message,
+        });
+      }
+    });
   };
 
   return (
@@ -66,21 +67,21 @@ const Create = ({ modal, setModal, fetchDataMenu }: ModalCreateMenuProps) => {
               <span className="sr-only">Close modal</span>
             </button>
           </div>
-          <form ref={formRef} onSubmit={handleCreateMenu}>
+          <form onChange={handleCreateMenu}>
             <div className="mb-4 grid gap-4 sm:grid-cols-2">
               <div>
                 <label
-                  htmlFor="name"
+                  htmlFor="menu_name"
                   className="mb-2 block text-sm font-medium text-gray-900 "
                 >
                   Name
                 </label>
                 <input
                   type="text"
-                  name="name"
-                  id="name"
+                  name="menu_name"
+                  id="menu_name"
                   onChange={handleInputChange}
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 "
+                  className="focus:border-primary-600 focus:ring-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 "
                   placeholder="Menu"
                   required
                 />
@@ -113,16 +114,18 @@ const Create = ({ modal, setModal, fetchDataMenu }: ModalCreateMenuProps) => {
                 <Select
                   name="category"
                   id="category"
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
+                  className="focus:border-primary-500 focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900"
                   required
                   defaultValue=""
                 >
                   <option disabled value="">
                     Select Category
                   </option>
-                  <option value="drinks">Drinks</option>
-                  <option value="food">Foods</option>
-                  <option value="coffe beans">Coffe Beans</option>
+                  {categories.map((category) => (
+                    <option value={category._id} key={category._id}>
+                      {category.name}
+                    </option>
+                  ))}
                 </Select>
               </div>
               <div>
@@ -133,10 +136,10 @@ const Create = ({ modal, setModal, fetchDataMenu }: ModalCreateMenuProps) => {
                   >
                     Image
                   </label>
-                  {images ? (
+                  {image ? (
                     <div className="h-32 w-full rounded-lg border-gray-300 bg-gray-100">
                       <img
-                        src={images}
+                        src={image ? URL.createObjectURL(image) : ""}
                         alt="image"
                         className="h-32 w-full rounded-lg bg-cover object-contain"
                       />
@@ -174,7 +177,7 @@ const Create = ({ modal, setModal, fetchDataMenu }: ModalCreateMenuProps) => {
                         id="dropzone-file"
                         type="file"
                         className="hidden"
-                        onChange={(e) => convertToBase64(e, setImages)}
+                        onChange={(e) => handleFileChange(e, setImage)}
                         required
                         name="image"
                       />
@@ -185,7 +188,7 @@ const Create = ({ modal, setModal, fetchDataMenu }: ModalCreateMenuProps) => {
             </div>
             <button
               type="submit"
-              className="inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
+              className="inline-flex items-center rounded-lg bg-green-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-400"
             >
               <Plus />
               Add new product

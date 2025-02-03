@@ -3,7 +3,12 @@ import ModalInput from "../../../InputForm/Modal";
 import { rupiah } from "../../../../../utils/rupiah";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 
-const Show = ({ show, setShow }) => {
+type TShow = {
+  show: TDataSingleProduct;
+  setShow: React.Dispatch<React.SetStateAction<TDataSingleProduct>>;
+};
+
+const Show = ({ show, setShow }: TShow) => {
   return Object.keys(show).length ? (
     <ModalInput onClose={() => setShow({})}>
       <div className="relative rounded-lg bg-white p-4 shadow  sm:p-5">
@@ -39,7 +44,7 @@ const Show = ({ show, setShow }) => {
             Descriptions
           </dt>
           <dd className="mb-4 font-light text-gray-500  sm:mb-5">
-            {show.descriptions}
+            {show.description}
           </dd>
           <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="rounded-lg border border-gray-200 bg-gray-100 px-2 py-1.5 font-semibold text-gray-800">

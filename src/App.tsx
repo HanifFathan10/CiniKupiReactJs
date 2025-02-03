@@ -38,7 +38,7 @@ const router = createBrowserRouter([
     element: <Menu />,
   },
   {
-    path: "/menu/:name",
+    path: "/menu/:nameUrl",
     element: <ProductMenuPage />,
   },
   {

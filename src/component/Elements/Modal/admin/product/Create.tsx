@@ -1,16 +1,17 @@
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import React, { useState } from "react";
 import ModalInput from "../../../InputForm/Modal";
-import { convertToBase64 } from "../../../../../utils/convertToBase64";
 import { createProductMenu } from "../../../../../services/product.service";
 import { useCustomToast } from "../../../../../Hooks/useToast";
+import { handleFileChange } from "../../../../../utils/convertToBase64";
+import { boolean } from "zod";
 
 interface ModalCreateProductProps {
   create: boolean;
   setCreate: React.Dispatch<React.SetStateAction<boolean>>;
-  images: string;
+  images: File | null;
   menus: TDataMenu[];
-  setImages: React.Dispatch<React.SetStateAction<string>>;
+  setImages: React.Dispatch<React.SetStateAction<File | null>>;
   fetchDataProduct: () => void;
 }
 
@@ -22,6 +23,7 @@ const Create = ({
   setImages,
   fetchDataProduct,
 }: ModalCreateProductProps) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { SuccessToast, ErrorToast } = useCustomToast();
 
   const [price, setPrice] = useState<string>("");
@@ -37,22 +39,25 @@ const Create = ({
 
   const handleAddProduct = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const data = {
       name: e.target.product_name.value,
-      id_menu: e.target.menu.value,
       image: images,
-      descriptions: e.target.descriptions.value,
+      description: e.target.descriptions.value,
       price: Number(price.replace(/[Rp.]/g, "").replace(/,/g, ".")),
       fat: e.target.fat.value,
       sugar: e.target.sugar.value,
       calories: e.target.calories.value,
       oz: e.target.oz.value,
+      menu_id: e.target.menu.value,
     };
 
     await createProductMenu(data, (status, res) => {
       if (status) {
         setCreate(false);
+        setImages(null);
+        setIsLoading(false);
         SuccessToast({
           id: "add-product",
           title: res.message,
@@ -66,12 +71,14 @@ const Create = ({
       }
     });
   };
+
+  const imageUrl = images ? URL.createObjectURL(images) : "";
   return (
     create === true && (
       <ModalInput onClose={() => setCreate(false)}>
         <div className="relative rounded-lg bg-white p-4 shadow  sm:p-5">
           <div className="mb-4 flex items-center justify-between rounded-t border-b pb-4  sm:mb-5">
-            <h3 className="text-lg font-semibold text-gray-900 ">
+            <h3 className="text-lg font-semibold text-gray-900">
               Add New Product
             </h3>
             <button
@@ -83,7 +90,7 @@ const Create = ({
               <span className="sr-only">Close modal</span>
             </button>
           </div>
-          <form onSubmit={handleAddProduct}>
+          <form onSubmit={handleAddProduct} content="multipart/form-data">
             <div className="mb-4 grid gap-4 sm:grid-cols-2">
               <div>
                 <label
@@ -96,8 +103,9 @@ const Create = ({
                   type="text"
                   name="product_name"
                   id="name"
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
+                  className="focus:border-primary-600 focus:ring-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                   placeholder="Product name"
+                  required
                 />
               </div>
               <div>
@@ -112,6 +120,7 @@ const Create = ({
                   name="menu"
                   defaultValue="Choose a menu"
                   className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                  required
                 >
                   {menus.map((menu: TDataMenu, i: number) => (
                     <option value={menu._id} key={i}>
@@ -136,8 +145,9 @@ const Create = ({
                     value={price}
                     maxLength={6}
                     onChange={handleChange}
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
+                    className="focus:border-primary-600 focus:ring-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900"
                     placeholder="0"
+                    required
                   />
                 </div>
               </div>
@@ -155,7 +165,8 @@ const Create = ({
                 name="descriptions"
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
                 placeholder="Write your descriptions here..."
-              ></textarea>
+                required
+              />
             </div>
             <div className="mb-4 grid gap-4 sm:col-span-2 sm:grid-cols-4 md:gap-6">
               <div>
@@ -169,9 +180,8 @@ const Create = ({
                   type="number"
                   name="calories"
                   id="calories"
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
+                  className="focus:border-primary-600 focus:ring-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                   placeholder="12"
-                  required
                 />
               </div>
               <div>
@@ -185,9 +195,8 @@ const Create = ({
                   type="number"
                   name="sugar"
                   id="sugar"
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
+                  className="focus:border-primary-600 focus:ring-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                   placeholder="105"
-                  required
                 />
               </div>
               <div>
@@ -201,9 +210,8 @@ const Create = ({
                   type="number"
                   name="fat"
                   id="fat"
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
+                  className="focus:border-primary-600 focus:ring-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                   placeholder="15"
-                  required
                 />
               </div>
               <div>
@@ -217,9 +225,8 @@ const Create = ({
                   type="number"
                   name="oz"
                   id="oz"
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
+                  className="focus:border-primary-600 focus:ring-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                   placeholder="0"
-                  required
                 />
               </div>
             </div>
@@ -233,8 +240,8 @@ const Create = ({
               {images ? (
                 <div className="grid grid-cols-2 place-items-center">
                   <img
-                    src={images}
-                    alt={images}
+                    src={imageUrl}
+                    alt={imageUrl}
                     className="w-32 bg-cover bg-center object-contain"
                   />
                   <div className="flex w-full items-center justify-center">
@@ -270,7 +277,7 @@ const Create = ({
                         id="dropzone-file"
                         type="file"
                         className="hidden"
-                        onChange={(e) => convertToBase64(e, setImages)}
+                        onChange={(e) => handleFileChange(e, setImages)}
                       />
                     </label>
                   </div>
@@ -309,7 +316,7 @@ const Create = ({
                       id="dropzone-file"
                       type="file"
                       className="hidden"
-                      onChange={(e) => convertToBase64(e, setImages)}
+                      onChange={(e) => handleFileChange(e, setImages)}
                     />
                   </label>
                 </div>
@@ -318,15 +325,22 @@ const Create = ({
             <div className="items-center space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
               <button
                 type="submit"
-                className="inline-flex w-full justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300  sm:w-auto"
+                className="inline-flex w-full justify-center rounded-lg bg-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-600  sm:w-auto"
+                disabled={isLoading}
               >
-                <PlusIcon className="mr-2 h-5 w-5" />
-                Create
+                {isLoading ? (
+                  <>Loading...</>
+                ) : (
+                  <>
+                    <PlusIcon className="mr-2 h-5 w-5" />
+                    Create
+                  </>
+                )}
               </button>
               <button
                 onClick={() => setCreate(false)}
                 type="button"
-                className="inline-flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300  sm:w-auto"
+                className="inline-flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200  sm:w-auto"
               >
                 <XMarkIcon className="mr-2 h-5 w-5" />
                 Discard

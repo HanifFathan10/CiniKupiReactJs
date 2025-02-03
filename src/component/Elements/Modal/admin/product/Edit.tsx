@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import ModalInput from "../../../InputForm/Modal";
 import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/24/solid";
-import { convertToBase64 } from "../../../../../utils/convertToBase64";
-import { updateProductMenu } from "../../../../../services/product.service";
 import { useCustomToast } from "../../../../../Hooks/useToast";
+import { handleFileChange } from "../../../../../utils/convertToBase64";
+import { updateProductMenu } from "../../../../../services/product.service";
 
 interface ModalEditProductProps {
-  updated: TDataSingleProductPopulatedMenu;
-  setUpdated: React.Dispatch<
-    React.SetStateAction<TDataSingleProductPopulatedMenu>
-  >;
+  updated: TDataSingleProduct;
+  setUpdated: React.Dispatch<React.SetStateAction<TDataSingleProduct>>;
   menus: TDataMenu[];
-  imageEdit: string;
-  setImageEdit: React.Dispatch<React.SetStateAction<string>>;
+  imageEdit: File | null;
+  setImageEdit: React.Dispatch<React.SetStateAction<File | null>>;
   fetchDataProduct: () => void;
 }
 
@@ -36,21 +34,24 @@ const Edit = ({
     setPrice(formatCurrency(Number(value)));
   };
 
+  const imageUrl = imageEdit ? URL.createObjectURL(imageEdit) : "";
+
   const handleEditProduct = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const data = {
+    const data: UpdateProductMenu = {
       _id: updated._id!,
-      id_menu: e.target.menu.value,
       name: e.target.product_name.value,
-      image: imageEdit || updated.image,
-      descriptions: e.target.descriptions.value,
       price:
-        Number(price.replace(/[Rp.]/g, "").replace(/,/g, ".")) || updated.price,
-      fat: e.target.fat.value,
-      sugar: e.target.sugar.value,
+        Number(price.replace(/[Rp.]/g, "").replace(/,/g, ".")) ||
+        updated.price!,
+      image: imageEdit || updated.image!,
+      description: e.target.descriptions.value,
       calories: e.target.calories.value,
+      sugar: e.target.sugar.value,
+      fat: e.target.fat.value,
       oz: e.target.oz.value,
+      menu_id: e.target.menu.value,
     };
 
     await updateProductMenu(data, (status, res) => {
@@ -97,7 +98,7 @@ const Edit = ({
                 type="text"
                 name="product_name"
                 id="name"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
+                className="focus:border-primary-600 focus:ring-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                 placeholder="Product name"
                 defaultValue={updated.name}
               />
@@ -112,9 +113,8 @@ const Edit = ({
               <select
                 id="menu"
                 name="menu"
-                defaultValue={updated.id_menu?._id}
-                disabled
-                className="block w-full cursor-not-allowed rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                defaultValue={updated.menu_id?._id}
+                className="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
               >
                 {menus.map((menu, i) => (
                   <option value={menu._id} key={i}>
@@ -139,7 +139,7 @@ const Edit = ({
                   maxLength={6}
                   value={price ? price : updated.price}
                   onChange={handleChange}
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
+                  className="focus:border-primary-600 focus:ring-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900"
                   placeholder="0"
                 />
               </div>
@@ -158,7 +158,7 @@ const Edit = ({
               name="descriptions"
               className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
               placeholder="Write your descriptions here..."
-              defaultValue={updated.descriptions}
+              defaultValue={updated.description}
             />
           </div>
           <div className="mb-4 grid gap-4 sm:col-span-2 sm:grid-cols-4 md:gap-6">
@@ -173,7 +173,7 @@ const Edit = ({
                 type="number"
                 name="calories"
                 id="calories"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
+                className="focus:border-primary-600 focus:ring-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                 placeholder="12"
                 defaultValue={updated.calories}
                 required
@@ -190,7 +190,7 @@ const Edit = ({
                 type="number"
                 name="sugar"
                 id="sugar"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
+                className="focus:border-primary-600 focus:ring-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                 placeholder="105"
                 defaultValue={updated.sugar}
                 required
@@ -207,7 +207,7 @@ const Edit = ({
                 type="number"
                 name="fat"
                 id="fat"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
+                className="focus:border-primary-600 focus:ring-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                 placeholder="15"
                 defaultValue={updated.fat}
                 required
@@ -224,7 +224,7 @@ const Edit = ({
                 type="number"
                 name="oz"
                 id="oz"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600"
+                className="focus:border-primary-600 focus:ring-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                 placeholder="0"
                 defaultValue={updated.oz}
                 required
@@ -238,8 +238,8 @@ const Edit = ({
             {imageEdit ? (
               <div className="grid grid-cols-2 place-items-center">
                 <img
-                  src={imageEdit}
-                  alt={imageEdit}
+                  src={imageUrl}
+                  alt={imageUrl}
                   className="w-32 bg-cover bg-center object-contain"
                 />
                 <div className="flex w-full items-center justify-center">
@@ -276,7 +276,7 @@ const Edit = ({
                       type="file"
                       className="hidden"
                       name="image"
-                      onChange={(e) => convertToBase64(e, setImageEdit)}
+                      onChange={(e) => handleFileChange(e, setImageEdit)}
                     />
                   </label>
                 </div>
@@ -322,7 +322,7 @@ const Edit = ({
                       type="file"
                       className="hidden"
                       name="image"
-                      onChange={(e) => convertToBase64(e, setImageEdit)}
+                      onChange={(e) => handleFileChange(e, setImageEdit)}
                     />
                   </label>
                 </div>
@@ -332,7 +332,7 @@ const Edit = ({
           <div className="items-center space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
             <button
               type="submit"
-              className="inline-flex w-full justify-center rounded-lg bg-yellow-300 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-primary-300  sm:w-auto"
+              className="focus:ring-primary-300 inline-flex w-full justify-center rounded-lg bg-yellow-300 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-yellow-400 focus:outline-none focus:ring-4  sm:w-auto"
             >
               <PencilSquareIcon className="mr-2 h-5 w-5" />
               Edit
@@ -340,7 +340,7 @@ const Edit = ({
             <button
               onClick={() => setUpdated({})}
               type="button"
-              className="inline-flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300  sm:w-auto"
+              className="focus:ring-primary-300 inline-flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4  sm:w-auto"
             >
               <XMarkIcon className="mr-2 h-5 w-5" />
               Discard

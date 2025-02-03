@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { HeadMetaData } from "../../../component/Elements/HeadMetaData";
 import AdminLayouts from "../../../component/Layouts/AdminLayouts";
-import { getAllDataUser } from "../../../services/AuthService";
+import { getAllDataUser } from "../../../services/auth.service";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Edit from "../../../component/Elements/Modal/admin/user/Edit";
 import Delete from "../../../component/Elements/Modal/admin/user/Delete";
@@ -84,7 +84,7 @@ const UserDashboardPage = () => {
                         <td className="flex gap-4 px-6 py-4">
                           <button
                             type="button"
-                            className="inline-flex w-full items-center justify-center rounded-lg bg-yellow-300 px-2 py-2 text-center text-sm font-medium text-white hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-primary-300"
+                            className="focus:ring-primary-300 inline-flex w-full items-center justify-center rounded-lg bg-yellow-300 px-2 py-2 text-center text-sm font-medium text-white hover:bg-yellow-400 focus:outline-none focus:ring-4"
                             onClick={() => setUpdated(user)}
                           >
                             <PencilSquareIcon className="-ml-1 mr-1 h-5 w-5" />

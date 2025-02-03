@@ -5,8 +5,8 @@ import { deleteProductMenu } from "../../../../../services/product.service";
 import { useCustomToast } from "../../../../../Hooks/useToast";
 
 interface ModalDeleteProductProps {
-  deleted: TDataSingleProductPopulatedMenu;
-  setDeleted: React.Dispatch<React.SetStateAction<TDataSingleProductPopulatedMenu>>;
+  deleted: TDataSingleProduct;
+  setDeleted: React.Dispatch<React.SetStateAction<TDataSingleProduct>>;
   fetchDataProduct: () => void;
 }
 
@@ -16,10 +16,10 @@ const Delete = ({
   fetchDataProduct,
 }: ModalDeleteProductProps) => {
   const { SuccessToast, ErrorToast } = useCustomToast();
-  const handleDeleteProduct = async (_id: string, id_menu: string) => {
+  const handleDeleteProduct = async (_id: string, menu_id: string) => {
     const data = {
       _id,
-      id_menu,
+      menu_id,
     };
 
     await deleteProductMenu(data, (status, res) => {
@@ -59,7 +59,7 @@ const Delete = ({
           <button
             onClick={() => setDeleted({})}
             type="button"
-            className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 "
+            className="focus:ring-primary-300 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 "
           >
             No, cancel
           </button>
@@ -67,7 +67,7 @@ const Delete = ({
             type="submit"
             className="rounded-lg bg-red-600 px-3 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 "
             onClick={() =>
-              handleDeleteProduct(deleted._id!, deleted.id_menu?._id!)
+              handleDeleteProduct(deleted._id!, deleted.menu_id?._id!)
             }
           >
             Yes, I'm sure

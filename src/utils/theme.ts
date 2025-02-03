@@ -1,15 +1,21 @@
-// theme.ts
-
-// 1. import `extendTheme` function
+import "@fontsource/poppins";
+import "@fontsource-variable/cabin";
+import "@fontsource-variable/raleway";
+import "@fontsource/poppins";
 import { extendTheme, type ThemeConfig } from "@chakra-ui/react";
 
-// 2. Add your color mode config
 const config: ThemeConfig = {
   initialColorMode: "light",
   useSystemColorMode: false,
 };
 
-// 3. extend the theme
-const theme = extendTheme({ config });
+const theme = extendTheme({
+  config,
+  fonts: {
+    poppins: `'Poppins', sans-serif`,
+    raleway: `'Raleway', sans-serif`,
+    cabin: `'Cabin Variable', sans-serif`,
+  },
+});
 
 export default theme;

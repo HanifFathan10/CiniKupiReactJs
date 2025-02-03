@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        "hero-pattern": "url('/images/hero-pattern.webp')",
+        "hero-pattern": "url('/images/top-view-coffee-accessories-table.jpg')",
       },
       colors: {
         primary: "#0F0E0E",

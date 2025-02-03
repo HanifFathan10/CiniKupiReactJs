@@ -20,7 +20,7 @@ const FormRegister = () => {
         username: e.target.username.value,
         email: e.target.email.value,
         password: e.target.password.value,
-        confirmPassword: e.target.confirmPassword.value,
+        confirm_password: e.target.confirm_password.value,
       };
 
       await register(data, (status, res) => {
@@ -80,10 +80,10 @@ const FormRegister = () => {
       </InputForm>
 
       <InputForm
-        htmlForLabel="confirmPassword"
+        htmlForLabel="confirm_password"
         type="password"
-        name="confirmPassword"
-        id="confirmPassword"
+        name="confirm_password"
+        id="confirm_password"
         placeholder=" "
         required
       >

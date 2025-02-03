@@ -10,12 +10,11 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { truncateText } from "../../../Hooks/useTruncateText";
-import { GetAllMenu } from "../../../services/Menu.service";
+import { GetAllMenu } from "../../../services/menu.service";
 import {
   EllipsisHorizontalIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
-import "flowbite";
 import Plus from "../../../component/Elements/Icon/Plus";
 import { useDebounce } from "use-debounce";
 import Pagination from "../../../component/Elements/Pagination/Pagination";
@@ -27,16 +26,14 @@ import Edit from "../../../component/Elements/Modal/admin/product/Edit";
 import Delete from "../../../component/Elements/Modal/admin/product/Delete";
 
 const ProductDashboardPage = () => {
-  const [images, setImages] = useState<string>("");
-  const [imageEdit, setImageEdit] = useState<string>("");
+  const [images, setImages] = useState<File | null>(null);
+  const [imageEdit, setImageEdit] = useState<File | null>(null);
   const [page, setPage] = useState<number>(1);
-  const [show, setShow] = useState<TDataSingleProductPopulatedMenu>({});
-  const [deleted, setDeleted] = useState<TDataSingleProductPopulatedMenu>({});
-  const [updated, setUpdated] = useState<TDataSingleProductPopulatedMenu>({});
+  const [show, setShow] = useState<TDataSingleProduct>({});
+  const [deleted, setDeleted] = useState<TDataSingleProduct>({});
+  const [updated, setUpdated] = useState<TDataSingleProduct>({});
   const [totalPages, setTotalPages] = useState<Pagination>({});
-  const [products, setProducts] = useState<TDataSingleProductPopulatedMenu[]>(
-    [],
-  );
+  const [products, setProducts] = useState<TDataSingleProduct[]>([]);
   const [menus, setMenus] = useState<TDataMenu[]>([]);
   const [create, setCreate] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -72,7 +69,7 @@ const ProductDashboardPage = () => {
       };
       await getAllMenuProduct((status, res) => {
         if (status === true) {
-          setProducts(res.data.products);
+          setProducts(res.data.data);
           setTotalPages(res.data);
           setLoading(false);
         }
@@ -123,7 +120,7 @@ const ProductDashboardPage = () => {
                 <button
                   type="button"
                   onClick={() => setCreate(true)}
-                  className="flex items-center justify-center rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
+                  className="flex items-center justify-center rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-700"
                 >
                   <Plus />
                   Add New Product
@@ -164,8 +161,8 @@ const ProductDashboardPage = () => {
                       <img
                         src="/images/logo.png"
                         alt="logo"
-                        width="20"
-                        height="20"
+                        width={0}
+                        height={0}
                         loading="lazy"
                         className="h-8 w-8 animate-spin fill-blue-600 text-gray-200"
                       />
@@ -175,12 +172,9 @@ const ProductDashboardPage = () => {
                 ) : (
                   <React.Fragment>
                     {products.map(
-                      (
-                        product: TDataSingleProductPopulatedMenu,
-                        index: number,
-                      ) => {
+                      (product: TDataSingleProduct, index: number) => {
                         const itemNumber =
-                          (totalPages.currentPage! - 1) * 10 + index + 1;
+                          (totalPages.current_page! - 1) * 10 + index + 1;
                         return (
                           <tr
                             className="w-full border-b bg-white hover:bg-gray-50"
@@ -189,12 +183,12 @@ const ProductDashboardPage = () => {
                             <td className="whitespace-nowrap px-6 py-4">
                               {itemNumber}
                             </td>
-                            <th
+                            <td
                               scope="row"
                               className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 "
                             >
                               {product.name}
-                            </th>
+                            </td>
                             <td
                               scope="row"
                               className="whitespace-nowrap px-6 py-4"
@@ -211,7 +205,7 @@ const ProductDashboardPage = () => {
                               scope="row"
                               className="whitespace-nowrap px-6 py-4"
                             >
-                              {product.id_menu?.name}
+                              {product.menu_id?.name}
                             </td>
                             <td
                               scope="row"
@@ -220,7 +214,7 @@ const ProductDashboardPage = () => {
                               {rupiah(product.price)}
                             </td>
                             <td scope="row" className="px-6 py-4">
-                              {truncateText(product.descriptions!, 10)}
+                              {truncateText(product.description!, 10)}
                             </td>
                             <td className="flex items-center justify-center px-4 py-3">
                               <Menu>

@@ -32,7 +32,7 @@ export const getAllMenuProduct = async (
   data?: TQueryParamsHistoryTrx,
 ) => {
   await axios
-    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product`, {
+    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/product`, {
       params: {
         page: data?.page,
         limit: data?.limit,
@@ -63,10 +63,10 @@ export const createProductMenu = async (
   callback: TCallback,
 ) => {
   await axios
-    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product`, data, {
+    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/product`, data, {
       withCredentials: true,
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
       },
     })
@@ -84,13 +84,14 @@ export const updateProductMenu = async (
 ) => {
   await axios
     .patch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product/${data._id}/edit`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/product/${data._id}/update`,
       data,
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
         },
+        withCredentials: true,
       },
     )
     .then((res) => {
@@ -102,20 +103,17 @@ export const updateProductMenu = async (
 };
 
 export const deleteProductMenu = async (
-  data: DeleteProductMenu,
+  data: { _id: string; menu_id: string },
   callback: TCallback,
 ) => {
   await axios
-    .delete(
-      `${import.meta.env.VITE_BACKEND_URL}/api/v1/menu/product/${data._id}`,
-      {
-        data: { id_menu: data.id_menu },
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
-        },
+    .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/product/${data._id}`, {
+      data: { menu_id: data.menu_id },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
       },
-    )
+    })
     .then((res) => {
       callback(true, res.data);
     })

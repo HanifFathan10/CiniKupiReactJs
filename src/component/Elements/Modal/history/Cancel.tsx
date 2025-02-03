@@ -1,9 +1,9 @@
 import React from "react";
 import ModalInput from "../../InputForm/Modal";
 import { TrashIcon, XMarkIcon } from "@heroicons/react/24/solid";
-import { DeleteHistoryTransactionByOrderId } from "../../../../services/PaymentService";
-import { useCustomToast } from "../../../../Hooks/useToast";
 import { useNavigate } from "react-router-dom";
+import { DeleteHistoryTransactionByOrderId } from "../../../../services/payment.service";
+import { useCustomToast } from "../../../../Hooks/useToast";
 
 interface CancelProps {
   cancel: TDataHistoryTrx;
@@ -51,7 +51,7 @@ const Cancel = ({ cancel, setCancel }: CancelProps) => {
           <button
             onClick={() => setCancel({})}
             type="button"
-            className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300"
+            className="focus:ring-primary-300 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4"
           >
             No, cancel
           </button>

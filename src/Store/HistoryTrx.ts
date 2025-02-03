@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { AxiosError } from "axios";
-import { GetHistoryTransaction } from "../services/PaymentService";
+import { GetHistoryTransaction } from "../services/payment.service";
 
 interface TuseHistoryTrx {
   historyTrx: TDataHistoryTrx[];
