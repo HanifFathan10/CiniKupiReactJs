@@ -34,7 +34,7 @@ const ContactForm = () => {
         </div>
       </div>
       <div className="bg-[#212121] p-5 text-center text-[10px] text-[#ffffff] md:text-[12px]">
-        © 2024{" "}
+        ©{new Date().getFullYear()}{" "}
         <span className="italic">
           Cini<span className="text-neutral-400">Kupi</span>
         </span>{" "}

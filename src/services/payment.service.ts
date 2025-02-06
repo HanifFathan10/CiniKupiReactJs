@@ -1,56 +1,33 @@
 import axios from "axios";
 import { useEffect } from "react";
+import { FormCheckoutType } from "../component/Fragment/FormCheckout";
 
-export const PaymentRequest = async (
-  data: TGetTokenForPayment,
+export const GetTokenMidtrans = async (
+  data: FormCheckoutType,
   callback: TCallback,
 ) => {
   await axios
-    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/token`, data, {
+    .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/token-midtrans`, data, {
+      withCredentials: true,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
       },
     })
     .then((res) => {
-      callback(true, res);
+      callback(true, res.data);
     })
     .catch((error) => {
       callback(false, error);
     });
 };
 
-export const GetHistoryTransaction = async (
+export const GetAllHistoryTransaction = async (
   callback: TCallback,
   data: TQueryParamsHistoryTrx,
 ) => {
   await axios
     .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/history`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
-      },
-      params: {
-        page: data.page,
-        limit: data.limit,
-        status: data.status,
-        time: data.time,
-      },
-    })
-    .then((res) => {
-      callback(true, res);
-    })
-    .catch((error) => {
-      callback(false, error);
-    });
-};
-
-export const getAllHistoryTransaction = async (
-  callback: TCallback,
-  data: TQueryParamsHistoryTrx,
-) => {
-  await axios
-    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/histories`, {
       params: {
         page: data.page,
         search: data.search,
@@ -72,6 +49,35 @@ export const getAllHistoryTransaction = async (
     });
 };
 
+export const GetHistoryTransactionById = async (
+  callback: TCallback,
+  data: TQueryParamsHistoryTrx,
+) => {
+  await axios
+    .get(
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/history/${data.historyTrxId}`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+        },
+        params: {
+          page: data.page,
+          limit: data.limit,
+          status: data.status,
+          time: data.time,
+        },
+      },
+    )
+    .then((res) => {
+      callback(true, res);
+    })
+    .catch((error) => {
+      callback(false, error);
+    });
+};
+
 export const HistoryTransaction = async (
   data: TDataOrder,
   callback: TCallback,
@@ -85,25 +91,6 @@ export const HistoryTransaction = async (
     })
     .then((res) => {
       callback(true, res);
-    })
-    .catch((error) => {
-      callback(false, error);
-    });
-};
-
-export const DeleteHistoryTransaction = async (
-  _id: string,
-  callback: TCallback,
-) => {
-  await axios
-    .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/history/${_id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
-      },
-    })
-    .then((res) => {
-      callback(true, res.data);
     })
     .catch((error) => {
       callback(false, error);
@@ -132,6 +119,10 @@ export const DeleteHistoryTransactionByOrderId = async (
     });
 };
 
+interface CreateHistoryTrx extends TDataOrder {
+  status: string;
+}
+
 export const PaymentService = ({
   history,
   token,
@@ -143,7 +134,7 @@ export const PaymentService = ({
       try {
         setIsLoading(true);
 
-        const newHistory = {
+        const newHistory: CreateHistoryTrx = {
           ...history,
           status: res.transaction_status,
         };

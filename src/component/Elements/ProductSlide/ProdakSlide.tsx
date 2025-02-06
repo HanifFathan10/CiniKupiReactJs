@@ -8,8 +8,7 @@ import useProductStore from "../../../Store/ProductStore";
 
 const ProdakSlide = () => {
   const products = useProductStore((state) => state.products);
-  const reproduceData = reproduce(products, 6)
-    .data as TDataSingleProductPopulatedMenu[];
+  const reproduceData = reproduce(products, 6).data as TDataSingleProduct[];
 
   const responsive = {
     desktop: {
@@ -37,7 +36,6 @@ const ProdakSlide = () => {
           name={product.name}
           image={product.image}
           price={product.price}
-          alt={product.name}
         />
       ))}
     </Carousel>

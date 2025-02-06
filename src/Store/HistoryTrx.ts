@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { AxiosError } from "axios";
-import { GetHistoryTransaction } from "../services/payment.service";
+import { GetHistoryTransactionById } from "../services/payment.service";
 
 interface TuseHistoryTrx {
   historyTrx: TDataHistoryTrx[];
@@ -26,7 +26,7 @@ const useHistoryTrxStore = create<TuseHistoryTrx>()(
           if (JSON.parse(historyTrx!).length > 0) {
             set({ historyTrx: JSON.parse(historyTrx!) });
           } else {
-            await GetHistoryTransaction((status, res) => {
+            await GetHistoryTransactionById((status, res) => {
               if (status === true) {
                 set({
                   historyTrx: res.data.data,

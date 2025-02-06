@@ -77,24 +77,23 @@ export const Register = async (data: IDataUser, callback: TCallback) => {
 };
 
 export const Logout = async (callback: TCallback) => {
-  await axios
-    .post(
+  try {
+    const response = await axios.post(
       `${import.meta.env.VITE_BACKEND_URL}/api/v1/logout`,
+      {}, // Body request kosong
       {
         headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
           "Content-Type": "application/json",
         },
-      },
-      {
         withCredentials: true,
       },
-    )
-    .then((res) => {
-      callback(true, res);
-    })
-    .catch((error) => {
-      callback(false, error);
-    });
+    );
+
+    callback(true, response);
+  } catch (error) {
+    callback(false, error);
+  }
 };
 
 export const RefreshToken = async (callback: TCallback) => {

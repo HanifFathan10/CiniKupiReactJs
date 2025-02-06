@@ -3,11 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useScrollTop } from "../../../Hooks/useScrollTop";
 import { rupiah } from "../../../utils/rupiah";
 
-interface ProdakProps extends TDataSingleProductPopulatedMenu {
-  alt?: string;
-}
-
-const Prodak = ({ name, price, image, alt, _id }: ProdakProps) => {
+const Prodak = ({ name, price, image, _id }: TDataSingleProduct) => {
   const navigate = useNavigate();
   const Navigate = () => {
     navigate(`/product/${_id}`);
@@ -21,7 +17,7 @@ const Prodak = ({ name, price, image, alt, _id }: ProdakProps) => {
       >
         <img
           src={image}
-          alt={alt}
+          alt={name}
           className="w-[132px] bg-cover bg-center p-2"
         />
       </button>

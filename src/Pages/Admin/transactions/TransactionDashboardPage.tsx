@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { HeadMetaData } from "../../../component/Elements/HeadMetaData";
 import AdminLayouts from "../../../component/Layouts/AdminLayouts";
-import { getAllHistoryTransaction } from "../../../services/payment.service";
+import { GetAllHistoryTransaction } from "../../../services/payment.service";
 import {
   ChevronDownIcon,
   ChevronUpDownIcon,
@@ -46,7 +46,7 @@ const TransactionDashboardPage = () => {
       endDate: date.endDate,
     };
 
-    await getAllHistoryTransaction((status, res) => {
+    await GetAllHistoryTransaction((status, res) => {
       if (status === true) {
         setTransaction(res.data);
         setTotalPages(res);

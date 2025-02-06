@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import useGetNewToken from "./Store/GetNewToken";
 import { ChakraProvider } from "@chakra-ui/react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LandingPage from "./Pages/LandingPage";
@@ -18,8 +17,7 @@ import MenuDashboardPage from "./Pages/Admin/Menus/MenuDashboardPage";
 import TransactionDashboardPage from "./Pages/Admin/transactions/TransactionDashboardPage";
 import { HelmetProvider } from "react-helmet-async";
 import AdminPage from "./Pages/Admin/Admin";
-import { useShallow } from "zustand/react/shallow";
-import { RefreshToken } from "./services/auth.service";
+import useAuthStore from "./Store/AuthStore";
 
 const router = createBrowserRouter([
   {
@@ -82,22 +80,21 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  const fetchRefreshToken = async () => {
-    await RefreshToken((status, res) => {
-      if (status) {
-        sessionStorage.setItem("access_token", res.access_token);
-        window.location.reload();
-      }
-    });
-  };
+  const [isRefreshToken, refreshToken] = useAuthStore((state) => [
+    state.isRefreshToken,
+    state.refreshToken,
+  ]);
 
   const token = sessionStorage.getItem("access_token");
 
   useEffect(() => {
     if (token == null) {
-      fetchRefreshToken();
+      refreshToken(() => {});
+    } else if (isRefreshToken === true) {
+      sessionStorage.removeItem("access_token");
+      refreshToken(() => {});
     }
-  }, [fetchRefreshToken]);
+  }, [isRefreshToken, refreshToken]);
 
   return (
     <ChakraProvider>

@@ -28,11 +28,10 @@ const HistoryTransactionPage = () => {
     ]);
 
   const dataPending = JSON.parse(localStorage.getItem("pendingTransaction")!);
-  const totalPages = { currentPage, totalPage };
+  const paginate = { current_page: currentPage, total_page: totalPage };
 
   useEffect(() => {
     const data: TQueryParamsHistoryTrx = {
-      page,
       limit: 10,
       status,
       time,
@@ -88,7 +87,7 @@ const HistoryTransactionPage = () => {
         metaDescription="Order status by CiniKupi"
       />
       <AuthLayouth>
-        <section className="bg-zinc-800 py-6 pt-24 text-white antialiased">
+        <section className="flex min-h-screen flex-col justify-between bg-primary py-6 pt-24 text-white antialiased">
           <div className="px-4">
             <div className="gap-4 sm:flex sm:items-center sm:justify-between">
               <h2 className="text-xl font-semibold text-white sm:text-2xl">
@@ -172,33 +171,41 @@ const HistoryTransactionPage = () => {
               </>
             ) : (
               <React.Fragment>
-                {historyTrx.map((trx: TDataHistoryTrx, i: number) => {
-                  const date = new Date(trx.createdAt!);
-                  const formatDate = date.toLocaleString("id-ID", {
-                    day: "numeric",
-                    month: "short",
-                    year: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  });
+                {historyTrx.length > 0 ? (
+                  historyTrx.map((trx: TDataHistoryTrx, i: number) => {
+                    const date = new Date(trx.createdAt!);
+                    const formatDate = date.toLocaleString("id-ID", {
+                      day: "numeric",
+                      month: "short",
+                      year: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    });
 
-                  return (
-                    <HistoryOrder
-                      trx={trx}
-                      formatDate={formatDate}
-                      setDetails={setDetails}
-                      setCancel={setCancel}
-                      key={i}
-                    />
-                  );
-                })}
+                    return (
+                      <HistoryOrder
+                        trx={trx}
+                        formatDate={formatDate}
+                        setDetails={setDetails}
+                        setCancel={setCancel}
+                        key={i}
+                      />
+                    );
+                  })
+                ) : (
+                  <>
+                    <h1 className="text-center text-xl font-medium">
+                      Belum ada transaksi...
+                    </h1>
+                  </>
+                )}
               </React.Fragment>
             )}
           </div>
           <div className="px-3">
             <Pagination
               page={page}
-              totalPages={totalPages}
+              paginate={paginate}
               handlePageChange={handlePageChange}
             />
           </div>

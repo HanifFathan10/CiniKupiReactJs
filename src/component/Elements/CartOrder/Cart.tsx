@@ -6,8 +6,8 @@ import { useCustomToast } from "../../../Hooks/useToast";
 import { useDebounce } from "use-debounce";
 import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
 import { rupiah } from "../../../utils/rupiah";
-import { AddManyItemToCart } from "../../../services/order.service";
 import { AxiosError } from "axios";
+import { AddToCart } from "../../../services/order.service";
 
 interface CartProps {
   product: TDataOrder;
@@ -51,11 +51,15 @@ const Cart = ({ product }: CartProps) => {
       return;
     }
 
-    let newDataProduct = { ...product, quantity: debounceQuantity };
+    let newDataProduct = {
+      _id: product._id,
+      name: product.name,
+      quantity: debounceQuantity,
+    };
 
     try {
       const fetchDataProduct = async () => {
-        await AddManyItemToCart(newDataProduct, (status, res) => {
+        await AddToCart(newDataProduct, (status, res) => {
           if (status === true) {
             SuccessToast({
               id: "add-to-cart",

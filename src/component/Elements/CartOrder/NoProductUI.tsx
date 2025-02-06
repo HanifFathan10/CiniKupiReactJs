@@ -13,7 +13,7 @@ const NoProductUI = () => {
         review before placing your order.
       </h3>
       <button
-        className="h-12 w-32 rounded-full border border-[#cba258]"
+        className="h-12 w-32 rounded-full border border-teriary"
         onClick={() => Navigate("/menu")}
       >
         Add Items

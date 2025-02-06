@@ -10,13 +10,14 @@ import { useScrollTop } from "../../Hooks/useScrollTop";
 
 const CartProduct = () => {
   let count = totalItems(useShallow((state) => state.count));
+  console.log("🚀 ~ CartProduct ~ count:", count);
   useScrollTop();
 
   return (
     <React.Fragment>
       <HeadMetaData title="Order" metaDescription="Order page by CiniKupi" />
       <section className="grid grid-cols-1 md:grid-cols-2">
-        <div className="bg-primary w-full text-white">
+        <div className="w-full bg-primary text-white">
           <div className="px-2 py-4 md:fixed md:h-screen md:px-6">
             <NavCart />
             <div className="flex h-full w-full items-center px-3 py-4">

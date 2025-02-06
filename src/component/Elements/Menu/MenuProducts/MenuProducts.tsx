@@ -38,19 +38,31 @@ const MenuProducts = ({ title, id, menus, isLoading }: MenuProducts) => {
               if (menu.category_id?.name === "drinks" && id === "drinks") {
                 return (
                   <Link key={index} to={`/menu/${menu.nameUrl}`}>
-                    <Cart image={menu.image} title={menu.name} key={index} />
+                    <Cart
+                      image={menu.image as string}
+                      title={menu.name}
+                      key={index}
+                    />
                   </Link>
                 );
               } else if (menu.category_id?.name === "foods" && id === "foods") {
                 return (
                   <Link key={index} to={`/menu/${menu.nameUrl}`}>
-                    <Cart image={menu.image} title={menu.name} key={index} />
+                    <Cart
+                      image={menu.image as string}
+                      title={menu.name}
+                      key={index}
+                    />
                   </Link>
                 );
               } else if (menu.category_id?.name === "beans" && id === "beans") {
                 return (
                   <Link key={index} to={`/menu/${menu.nameUrl}`}>
-                    <Cart image={menu.image} title={menu.name} key={index} />
+                    <Cart
+                      image={menu.image as string}
+                      title={menu.name}
+                      key={index}
+                    />
                   </Link>
                 );
               }

@@ -33,20 +33,14 @@ const DetailProduct = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [click, setClick] = useState<boolean>(false);
   const { SuccessToast, ErrorToast } = useCustomToast();
-  const { count, items, useCount } = totalItems(
-    useShallow((state) => ({
-      count: state.count,
-      items: state.items,
-      useCount: state.useCount,
-    })),
+  const [count, items, useCount] = totalItems(
+    useShallow((state) => [state.count, state.items, state.useCount]),
   );
   const products = useProductStore(useShallow((state) => state.products));
   const findProduct = products.find((prod) => prod._id === _id);
   const dataProduct = {
     _id: findProduct?._id,
     name: findProduct?.name,
-    price: findProduct?.price,
-    image: findProduct?.image,
     quantity: 1,
   };
 
@@ -76,7 +70,7 @@ const DetailProduct = ({
         setIsLoading(true);
       }
 
-      if (items.find((prod) => prod._id === dataProduct._id)) {
+      if (items.find((prod) => prod.name === dataProduct.name)) {
         SuccessToast({
           id: "already-added",
           title: "Item already added. Please adjust your order.",
@@ -84,12 +78,12 @@ const DetailProduct = ({
       } else {
         await AddToCart(dataProduct, (status, res) => {
           if (status === true) {
-            SuccessToast({
-              id: "success-order",
-              title: res.data.message,
-            });
             setClick(true);
             useCount();
+            SuccessToast({
+              id: "success-order",
+              title: res.message,
+            });
           } else {
             ErrorToast({
               id: "error-order",

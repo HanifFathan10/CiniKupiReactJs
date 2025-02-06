@@ -18,12 +18,12 @@ type IDataUser = {
 };
 
 type TDataOrder = {
-  _id?: string;
-  image?: string;
-  name?: string;
-  price?: number;
-  quantity?: number;
-  user_id?: string;
+  _id: string;
+  image: string;
+  name: string;
+  price: number;
+  quantity: number;
+  user_id: string;
 };
 
 type TDataCategory = {
@@ -63,15 +63,8 @@ type TDataDefaultMenu = {
   image: string;
 };
 
-type TGetTokenForPayment = {
-  products?: TDataSingleProduct[];
-  customer_name: string;
-  customer_email: string;
-  customer_phone: string;
-  customer_address: string;
-};
-
 type TQueryParamsHistoryTrx = {
+  historyTrxId?: string;
   page?: number;
   limit?: number;
   search?: string;
@@ -114,8 +107,8 @@ type TDataHistoryPending = TDataHistoryTrx & {
 };
 
 type Pagination = {
-  current_page?: number;
-  total_page?: number;
+  current_page: number;
+  total_page: number;
 };
 
 type DataResponseMonthlySales = {
@@ -136,12 +129,12 @@ type DataResponseTopSellingProducts = {
 // INTERFACE
 
 interface PrevDataPayment {
-  history?: TDataOrder;
+  history: TDataOrder;
   token?: string;
 }
 
 interface PaymentServiceProps {
-  history?: TDataOrder;
+  history: TDataOrder;
   token?: string;
   accessToken?: string;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;

@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Spinner } from "@chakra-ui/react";
 import { useShallow } from "zustand/react/shallow";
-import { PaymentRequest, PaymentService } from "../../services/payment.service";
+import {
+  GetTokenMidtrans,
+  PaymentService,
+} from "../../services/payment.service";
 import { totalItems } from "../../Store/TotalItems";
 import { useCustomToast } from "../../Hooks/useToast";
 import {
@@ -13,6 +16,22 @@ import {
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ClearCart } from "../../services/order.service";
 import { AxiosError } from "axios";
+import { z } from "zod";
+
+const FormCheckoutZodSchema = z.object({
+  products: z.array(
+    z.object({
+      _id: z.string(),
+      user_id: z.string(),
+    }),
+  ),
+  customer_name: z.string().min(3).max(20),
+  customer_email: z.string().email(),
+  customer_phone: z.string(),
+  customer_address: z.string().min(3),
+});
+
+export type FormCheckoutType = z.infer<typeof FormCheckoutZodSchema>;
 
 const FormCheckout = () => {
   const dataForGetToken = useRef<{
@@ -23,9 +42,9 @@ const FormCheckout = () => {
     phone: null,
     address: null,
   });
-  const [token, setToken] = useState("");
-  const [history, setHistory] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [token, setToken] = useState<string>("");
+  const [history, setHistory] = useState<TDataOrder>({} as TDataOrder);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const Navigate = useNavigate();
   const location = useLocation();
 
@@ -71,7 +90,7 @@ const FormCheckout = () => {
         });
       }
 
-      const data: TGetTokenForPayment = {
+      const data: FormCheckoutType = {
         customer_name: dataForGetToken.current.name?.value!,
         customer_email: dataForGetToken.current.email?.value!,
         customer_phone: dataForGetToken.current.phone?.value!,
@@ -79,10 +98,10 @@ const FormCheckout = () => {
         products: product,
       };
 
-      await PaymentRequest(data, (status, res) => {
+      await GetTokenMidtrans(data, (status, res) => {
         if (status) {
-          setToken(res.data.token);
-          setHistory(res.data.data);
+          setToken(res.token);
+          setHistory(res.data);
         }
       });
     } catch (error: unknown) {

@@ -36,7 +36,7 @@ const NavCart = () => {
       </svg>
       <Link
         to={"/menu"}
-        className="flex transition duration-300 hover:text-secondary"
+        className="flex transition duration-300 hover:text-teriary"
       >
         <ChevronLeftIcon className="h-6 w-6" />
         <h3 className="ml-1 hidden font-semibold md:block">Back To Menu</h3>

@@ -14,7 +14,7 @@ const ListOrder = () => {
   }, []);
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-[#eaeaea]">
+    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-slate-200">
       {count > 0 ? (
         <React.Fragment>
           {Array.isArray(items) &&
