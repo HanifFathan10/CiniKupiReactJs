@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { HeadMetaData } from "../../../component/Elements/HeadMetaData";
 import AdminLayouts from "../../../component/Layouts/AdminLayouts";
-import { getAllDataUser } from "../../../services/auth.service";
+import { getAllDataUser } from "../../../services/Auth.service";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Edit from "../../../component/Elements/Modal/admin/user/Edit";
 import Delete from "../../../component/Elements/Modal/admin/user/Delete";

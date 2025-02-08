@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { HeadMetaData } from "../component/Elements/HeadMetaData";
 import HistoryOrder from "../component/Fragment/HistoryOrder";
 import AuthLayouth from "../component/Layouts/AuthLayouth";
-import { DeleteHistoryTransactionByOrderId } from "../services/payment.service";
+import { DeleteHistoryTransactionByOrderId } from "../services/Payment.service";
 import Pagination from "../component/Elements/Pagination/Pagination";
 import { useLocation } from "react-router-dom";
 import { Skeleton } from "@chakra-ui/react";

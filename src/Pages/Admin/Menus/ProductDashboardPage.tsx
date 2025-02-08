@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllMenuProduct } from "../../../services/product.service";
+import { getAllMenuProduct } from "../../../services/Product.service";
 import { HeadMetaData } from "../../../component/Elements/HeadMetaData";
 import AdminLayouts from "../../../component/Layouts/AdminLayouts";
 import {
@@ -10,7 +10,6 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { truncateText } from "../../../Hooks/useTruncateText";
-import { GetAllMenu } from "../../../services/menu.service";
 import {
   EllipsisHorizontalIcon,
   MagnifyingGlassIcon,
@@ -24,6 +23,7 @@ import Show from "../../../component/Elements/Modal/admin/product/Show";
 import { rupiah } from "../../../utils/rupiah";
 import Edit from "../../../component/Elements/Modal/admin/product/Edit";
 import Delete from "../../../component/Elements/Modal/admin/product/Delete";
+import { GetAllMenu } from "../../../services/Menu.service";
 
 const ProductDashboardPage = () => {
   const [images, setImages] = useState<File | null>(null);
@@ -32,7 +32,7 @@ const ProductDashboardPage = () => {
   const [show, setShow] = useState<TDataSingleProduct>({});
   const [deleted, setDeleted] = useState<TDataSingleProduct>({});
   const [updated, setUpdated] = useState<TDataSingleProduct>({});
-  const [totalPages, setTotalPages] = useState<Pagination>({});
+  const [totalPages, setTotalPages] = useState<Pagination>({} as Pagination);
   const [products, setProducts] = useState<TDataSingleProduct[]>([]);
   const [menus, setMenus] = useState<TDataMenu[]>([]);
   const [create, setCreate] = useState<boolean>(false);
@@ -247,7 +247,7 @@ const ProductDashboardPage = () => {
           </div>
 
           <Pagination
-            totalPages={totalPages}
+            paginate={totalPages}
             page={page}
             handlePageChange={handlePageChange}
           />

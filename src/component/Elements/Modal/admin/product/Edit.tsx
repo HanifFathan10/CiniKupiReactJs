@@ -3,7 +3,7 @@ import ModalInput from "../../../InputForm/Modal";
 import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useCustomToast } from "../../../../../Hooks/useToast";
 import { handleFileChange } from "../../../../../utils/convertToBase64";
-import { updateProductMenu } from "../../../../../services/product.service";
+import { updateProductMenu } from "../../../../../services/Product.service";
 
 interface ModalEditProductProps {
   updated: TDataSingleProduct;

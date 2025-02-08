@@ -4,7 +4,7 @@ import {
   Logout,
   RefreshToken,
   Register,
-} from "../services/auth.service";
+} from "../services/Auth.service";
 
 interface useAuthStoreType {
   isLogin: boolean;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ModalInput from "../../../InputForm/Modal";
 import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import useSlug from "../../../../../Hooks/useSlug";
-import { EditDataMenu } from "../../../../../services/menu.service";
+import { EditDataMenu } from "../../../../../services/Menu.service";
 import { useCustomToast } from "../../../../../Hooks/useToast";
 import { Select } from "@chakra-ui/react";
 
@@ -134,7 +134,7 @@ const Edit = ({
                   Image
                 </label>
                 <img
-                  src={updated.image}
+                  src={updated.image as string}
                   alt="image"
                   className="h-32 w-full rounded-lg bg-cover object-contain"
                   width={0}

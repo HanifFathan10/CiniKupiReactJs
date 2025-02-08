@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { AxiosError } from "axios";
-import { GetAllMenu } from "../services/menu.service";
+import { GetAllMenu } from "../services/Menu.service";
 
 interface TuseMenuStore {
   menus: TDataMenu[];

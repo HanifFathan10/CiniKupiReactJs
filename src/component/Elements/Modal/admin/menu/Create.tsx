@@ -4,7 +4,7 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import useSlug from "../../../../../Hooks/useSlug";
 import { Select } from "@chakra-ui/react";
 import Plus from "../../../Icon/Plus";
-import { CreateDataMenu } from "../../../../../services/menu.service";
+import { CreateDataMenu } from "../../../../../services/Menu.service";
 import { useCustomToast } from "../../../../../Hooks/useToast";
 import { handleFileChange } from "../../../../../utils/convertToBase64";
 
