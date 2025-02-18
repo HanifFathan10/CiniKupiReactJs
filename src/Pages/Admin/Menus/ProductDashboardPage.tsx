@@ -32,7 +32,7 @@ const ProductDashboardPage = () => {
   const [show, setShow] = useState<TDataSingleProduct>({});
   const [deleted, setDeleted] = useState<TDataSingleProduct>({});
   const [updated, setUpdated] = useState<TDataSingleProduct>({});
-  const [totalPages, setTotalPages] = useState<Pagination>({});
+  const [totalPages, setTotalPages] = useState<Pagination>({} as Pagination);
   const [products, setProducts] = useState<TDataSingleProduct[]>([]);
   const [menus, setMenus] = useState<TDataMenu[]>([]);
   const [create, setCreate] = useState<boolean>(false);
@@ -247,7 +247,7 @@ const ProductDashboardPage = () => {
           </div>
 
           <Pagination
-            totalPages={totalPages}
+            paginate={totalPages}
             page={page}
             handlePageChange={handlePageChange}
           />

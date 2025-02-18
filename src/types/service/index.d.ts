@@ -108,7 +108,7 @@ type TDataHistoryPending = TDataHistoryTrx & {
 
 type Pagination = {
   current_page: number;
-  total_page: number;
+  total_pages: number;
 };
 
 type DataResponseMonthlySales = {
@@ -192,30 +192,27 @@ interface UpdateProductMenu {
   menu_id: string;
 }
 
-interface OrderDetailsTransaction {
+interface CustomerDetails {
   _id: string;
   name: string;
   email: string;
   phone: number;
   address: string;
-  order_id: string;
   gross_amount: number;
 }
 
-interface ItemDetailsTransaction {
+interface ItemDetails {
   _id: string;
-  id: string;
-  name: string;
-  price: number;
+  product_id: string;
   quantity: number;
 }
 
 interface AllDataTransaction {
-  _id?: string;
-  order?: OrderDetailsTransaction;
-  item_details?: ItemDetailsTransaction[];
-  user_id?: string;
-  status?: string;
+  _id: string;
+  customer_details: OrderDetailsTransaction;
+  item_details: ItemDetailsTransaction[];
+  user_id: string;
+  status: string;
   createdAt?: string;
   updatedAt?: string;
 }

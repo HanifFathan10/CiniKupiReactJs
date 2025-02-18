@@ -19,8 +19,10 @@ import Datepicker from "react-tailwindcss-datepicker";
 
 const TransactionDashboardPage = () => {
   const [page, setPage] = useState<number>(1);
-  const [deleted, setDeleted] = useState<AllDataTransaction>({});
-  const [totalPages, setTotalPages] = useState<Pagination>({});
+  const [deleted, setDeleted] = useState<AllDataTransaction>(
+    {} as AllDataTransaction,
+  );
+  const [totalPages, setTotalPages] = useState<Pagination>({} as Pagination);
   const [sortConfig, setSortConfig] = useState({
     key: "createdAt",
     direction: "desc",
@@ -30,6 +32,7 @@ const TransactionDashboardPage = () => {
     endDate: null,
   });
   const [transaction, setTransaction] = useState<AllDataTransaction[]>([]);
+  console.log("🚀 ~ TransactionDashboardPage ~ transaction:", transaction);
   const [loading, setLoading] = useState<boolean>(false);
 
   const { trimSearch, setTrimSearch, trimmedValue, handleSubmitChange } =
@@ -242,7 +245,7 @@ const TransactionDashboardPage = () => {
                           minute: "numeric",
                         });
                         const itemNumber =
-                          (totalPages.currentPage! - 1) * 10 + index + 1;
+                          (totalPages.current_page! - 1) * 10 + index + 1;
 
                         return (
                           <tr className="border-b" key={index}>
@@ -252,14 +255,18 @@ const TransactionDashboardPage = () => {
                             >
                               {itemNumber}
                             </td>
-                            <td className="px-4 py-3">{trx.order?.name}</td>
-                            <td className="px-4 py-3">{trx.order?.email}</td>
+                            <td className="px-4 py-3">
+                              {trx.customer_details?.name}
+                            </td>
+                            <td className="px-4 py-3">
+                              {trx.customer_details?.email}
+                            </td>
 
                             <td className="px-4 py-3">
                               {trx.item_details?.length}
                             </td>
                             <td className="px-4 py-3">
-                              {rupiah(trx.order?.gross_amount)}
+                              {rupiah(trx.customer_details?.gross_amount)}
                             </td>
                             <td className="px-4 py-3">{formatDate}</td>
                             <td className="flex items-center justify-center px-4 py-3">
@@ -286,7 +293,7 @@ const TransactionDashboardPage = () => {
           <Pagination
             handlePageChange={handlePageChange}
             page={page}
-            totalPages={totalPages}
+            paginate={totalPages}
           />
         </div>
       </AdminLayouts>
