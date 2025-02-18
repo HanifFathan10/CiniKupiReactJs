@@ -1,7 +1,7 @@
 import { TrashIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import React from "react";
 import ModalInput from "../../../InputForm/Modal";
-import { deleteProductMenu } from "../../../../../services/product.service";
+import { deleteProductMenu } from "../../../../../services/Product.service";
 import { useCustomToast } from "../../../../../Hooks/useToast";
 
 interface ModalDeleteProductProps {

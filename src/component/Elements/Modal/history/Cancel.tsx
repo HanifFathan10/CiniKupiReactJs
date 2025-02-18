@@ -2,7 +2,7 @@ import React from "react";
 import ModalInput from "../../InputForm/Modal";
 import { TrashIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
-import { DeleteHistoryTransactionByOrderId } from "../../../../services/payment.service";
+import { DeleteHistoryTransactionByOrderId } from "../../../../services/Payment.service";
 import { useCustomToast } from "../../../../Hooks/useToast";
 
 interface CancelProps {

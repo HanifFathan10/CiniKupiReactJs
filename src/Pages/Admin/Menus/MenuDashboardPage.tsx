@@ -8,8 +8,8 @@ import Plus from "../../../component/Elements/Icon/Plus";
 import Create from "../../../component/Elements/Modal/admin/menu/Create";
 import Edit from "../../../component/Elements/Modal/admin/menu/Edit";
 import Delete from "../../../component/Elements/Modal/admin/menu/Delete";
-import { GetAllMenu } from "../../../services/menu.service";
-import { GetAllCategory } from "../../../services/category.service";
+import { GetAllMenu } from "../../../services/Menu.service";
+import { GetAllCategory } from "../../../services/Category.service";
 
 const MenuDashboardPage = () => {
   const [category, setCategory] = useState<string>("");

@@ -7,7 +7,7 @@ import { useDebounce } from "use-debounce";
 import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
 import { rupiah } from "../../../utils/rupiah";
 import { AxiosError } from "axios";
-import { AddToCart } from "../../../services/order.service";
+import { AddToCart } from "../../../services/Order.service";
 
 interface CartProps {
   product: TDataOrder;

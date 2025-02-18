@@ -2,9 +2,9 @@ import React from "react";
 import Prodak from "./Prodak";
 import "react-multi-carousel/lib/styles.css";
 import Carousel from "react-multi-carousel";
-import { reproduce } from "../../../services/menu.service";
 import "react-multi-carousel/lib/styles.css";
 import useProductStore from "../../../Store/ProductStore";
+import { reproduce } from "../../../services/Menu.service";
 
 const ProdakSlide = () => {
   const products = useProductStore((state) => state.products);

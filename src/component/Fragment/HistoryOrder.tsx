@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PaymentService } from "../../services/payment.service";
+import { PaymentService } from "../../services/Payment.service";
 import { CheckIcon, ClockIcon } from "@heroicons/react/24/solid";
 import { rupiah } from "../../utils/rupiah";
 

@@ -4,7 +4,7 @@ import { useShallow } from "zustand/react/shallow";
 import {
   GetTokenMidtrans,
   PaymentService,
-} from "../../services/payment.service";
+} from "../../services/Payment.service";
 import { totalItems } from "../../Store/TotalItems";
 import { useCustomToast } from "../../Hooks/useToast";
 import {
@@ -14,7 +14,7 @@ import {
   UserIcon,
 } from "@heroicons/react/24/solid";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ClearCart } from "../../services/order.service";
+import { ClearCart } from "../../services/Order.service";
 import { AxiosError } from "axios";
 import { z } from "zod";
 

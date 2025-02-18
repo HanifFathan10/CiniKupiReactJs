@@ -10,7 +10,7 @@ import {
   PopoverTrigger,
   Tooltip,
 } from "@chakra-ui/react";
-import { AddToCart } from "../../services/order.service";
+import { AddToCart } from "../../services/Order.service";
 import { totalItems } from "../../Store/TotalItems";
 import { useShallow } from "zustand/react/shallow";
 import { useCustomToast } from "../../Hooks/useToast";
@@ -39,8 +39,8 @@ const DetailProduct = ({
   const products = useProductStore(useShallow((state) => state.products));
   const findProduct = products.find((prod) => prod._id === _id);
   const dataProduct = {
-    _id: findProduct?._id,
-    name: findProduct?.name,
+    _id: findProduct!._id!,
+    name: findProduct!.name!,
     quantity: 1,
   };
 
