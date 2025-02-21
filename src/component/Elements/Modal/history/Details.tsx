@@ -5,12 +5,12 @@ import { rupiah } from "../../../../utils/rupiah";
 import useFormatDate from "../../../../Hooks/useFormatDate";
 
 interface DetailsProps {
-  details: TDataHistoryTrx;
-  setDetails: React.Dispatch<React.SetStateAction<TDataHistoryTrx>>;
+  details: AllDataTransaction;
+  setDetails: React.Dispatch<React.SetStateAction<AllDataTransaction>>;
 }
 
 const Details = ({ details, setDetails }: DetailsProps) => {
-  const formatDateDetails = useFormatDate(details.createdAt, {
+  const formatDateDetails = useFormatDate(details.createdAt!, {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -19,7 +19,7 @@ const Details = ({ details, setDetails }: DetailsProps) => {
   });
 
   return Object.keys(details).length ? (
-    <ModalInput onClose={() => setDetails({})}>
+    <ModalInput onClose={() => setDetails({} as AllDataTransaction)}>
       <div className="relative rounded-lg bg-white p-4 shadow">
         <div className=" flex items-end justify-between rounded-t">
           <h1 className="text-xl font-semibold">Detail Order</h1>
@@ -27,7 +27,7 @@ const Details = ({ details, setDetails }: DetailsProps) => {
             <button
               type="button"
               className="inline-flex rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-              onClick={() => setDetails({})}
+              onClick={() => setDetails({} as AllDataTransaction)}
             >
               <XMarkIcon className="h-6 w-6" />
               <span className="sr-only">Close modal</span>
@@ -42,7 +42,7 @@ const Details = ({ details, setDetails }: DetailsProps) => {
                 Name
               </dt>
               <dd className="mb-4 font-light text-gray-500 sm:mb-5">
-                {details.order?.name}
+                {details.customer_detail?.name}
               </dd>
             </div>
             <div>
@@ -50,7 +50,7 @@ const Details = ({ details, setDetails }: DetailsProps) => {
                 Email
               </dt>
               <dd className="mb-4 font-light text-gray-500 sm:mb-5">
-                {details.order?.email}
+                {details.customer_detail?.email}
               </dd>
             </div>
             <div>
@@ -58,7 +58,7 @@ const Details = ({ details, setDetails }: DetailsProps) => {
                 Phone
               </dt>
               <dd className="mb-4 font-light text-gray-500 sm:mb-5">
-                {details.order?.phone}
+                {details.customer_detail?.phone}
               </dd>
             </div>
             <div>
@@ -66,7 +66,7 @@ const Details = ({ details, setDetails }: DetailsProps) => {
                 Adress
               </dt>
               <dd className="mb-4 font-light text-gray-500 sm:mb-5">
-                {details.order?.address}
+                {details.customer_detail?.address}
               </dd>
             </div>
             <div>
@@ -74,7 +74,7 @@ const Details = ({ details, setDetails }: DetailsProps) => {
                 Total Price
               </dt>
               <dd className="mb-4 font-light text-gray-500 sm:mb-5">
-                {rupiah(details.order?.gross_amount!)}
+                {rupiah(details.customer_detail?.gross_amount!)}
               </dd>
             </div>
             <div>
@@ -98,7 +98,9 @@ const Details = ({ details, setDetails }: DetailsProps) => {
                   <dt className="mb-2 font-semibold leading-none text-gray-900">
                     Product Name
                   </dt>
-                  <dd className=" font-light text-gray-500">{item.name}</dd>
+                  <dd className=" font-light text-gray-500">
+                    {item.product_id.name}
+                  </dd>
                 </div>
 
                 <div>
@@ -106,7 +108,7 @@ const Details = ({ details, setDetails }: DetailsProps) => {
                     Price
                   </dt>
                   <dd className=" font-light text-gray-500">
-                    {rupiah(item.price!)}
+                    {rupiah(item.product_id.price)}
                   </dd>
                 </div>
                 <div>
@@ -114,6 +116,22 @@ const Details = ({ details, setDetails }: DetailsProps) => {
                     Quantity
                   </dt>
                   <dd className=" font-light text-gray-500">{item.quantity}</dd>
+                </div>
+                <div>
+                  <dt className="mb-2 font-semibold leading-none text-gray-900">
+                    Image
+                  </dt>
+                  <dd className="flex justify-center">
+                    <img
+                      src={item.product_id.image}
+                      alt={item.product_id.image}
+                      width={0}
+                      height={0}
+                      loading="lazy"
+                      className="h-44 w-44 object-contain md:h-32 md:w-32"
+                      draggable={false}
+                    />
+                  </dd>
                 </div>
               </div>
             ))}

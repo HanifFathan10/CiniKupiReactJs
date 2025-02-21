@@ -17,6 +17,23 @@ type IDataUser = {
   token?: string;
 };
 
+type CustomerDetailResponse = {
+  first_name: string;
+  email: string;
+  phone: number;
+  shipping_address: {
+    address: string;
+    country_id: string;
+  };
+};
+
+type ItemDetailsResponse = {
+  _id: string;
+  name: string;
+  price: number;
+  quantity: number;
+};
+
 type TDataOrder = {
   _id: string;
   image: string;
@@ -24,6 +41,16 @@ type TDataOrder = {
   price: number;
   quantity: number;
   user_id: string;
+  product_id: string;
+};
+
+type THistoryResponseOrder = {
+  customer_details: CustomerDetailResponse;
+  item_details: ItemDetailsResponse[];
+  transaction_details: {
+    gross_amount: number;
+    order_id: string;
+  };
 };
 
 type TDataCategory = {
@@ -64,42 +91,16 @@ type TDataDefaultMenu = {
 };
 
 type TQueryParamsHistoryTrx = {
-  historyTrxId?: string;
-  page?: number;
-  limit?: number;
+  user_id?: string;
+  page: number;
+  limit: number;
   search?: string;
   sortKey?: string;
   sortDirection?: string;
-  startDate?: string | null;
-  endDate?: string | null;
-  status?: string;
-  time?: string;
-};
-
-type TDataOrderDetails = {
-  name?: string;
-  email?: string;
-  phone?: string;
-  address?: string;
-  order_id?: sring;
-  gross_amount?: number;
-};
-
-type TDataItemDetails = {
-  id?: string;
-  name?: string;
-  price?: number;
-  quantity?: number;
-};
-
-type TDataHistoryTrx = {
-  _id?: string;
-  order?: TDataOrderDetails;
-  item_details?: TDataItemDetails[];
-  user_id?: IDataUser;
-  status?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  startDate?: string;
+  endDate?: string;
+  status: string;
+  time: string;
 };
 
 type TDataHistoryPending = TDataHistoryTrx & {
@@ -128,13 +129,8 @@ type DataResponseTopSellingProducts = {
 
 // INTERFACE
 
-interface PrevDataPayment {
-  history: TDataOrder;
-  token?: string;
-}
-
 interface PaymentServiceProps {
-  history: TDataOrder;
+  history: THistoryResponseOrder;
   token?: string;
   accessToken?: string;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -203,14 +199,14 @@ interface CustomerDetails {
 
 interface ItemDetails {
   _id: string;
-  product_id: string;
+  product_id: TDataSingleProduct;
   quantity: number;
 }
 
 interface AllDataTransaction {
   _id: string;
-  customer_details: OrderDetailsTransaction;
-  item_details: ItemDetailsTransaction[];
+  customer_detail: CustomerDetails;
+  item_details: ItemDetails[];
   user_id: string;
   status: string;
   createdAt?: string;

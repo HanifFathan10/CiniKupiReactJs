@@ -4,15 +4,15 @@ import { CheckIcon, ClockIcon } from "@heroicons/react/24/solid";
 import { rupiah } from "../../utils/rupiah";
 
 interface HistoryOrderProps {
-  trx: TDataHistoryTrx;
+  trx: AllDataTransaction;
   formatDate: string;
-  setDetails: React.Dispatch<React.SetStateAction<TDataHistoryTrx>>;
-  setCancel: React.Dispatch<React.SetStateAction<TDataHistoryTrx>>;
+  setDetails: React.Dispatch<React.SetStateAction<AllDataTransaction>>;
+  setCancel: React.Dispatch<React.SetStateAction<AllDataTransaction>>;
 }
 
 interface DataPending {
-  history?: TDataOrder;
-  token?: string;
+  history: THistoryResponseOrder;
+  token: string;
 }
 
 const HistoryOrder = ({
@@ -21,7 +21,9 @@ const HistoryOrder = ({
   setDetails,
   setCancel,
 }: HistoryOrderProps) => {
-  const [dataPending, setDataPending] = useState<DataPending>({});
+  const [dataPending, setDataPending] = useState<DataPending>(
+    {} as DataPending,
+  );
 
   const accessToken = sessionStorage.getItem("access_token")!;
 
@@ -30,7 +32,7 @@ const HistoryOrder = ({
   };
 
   PaymentService({
-    history: dataPending.history,
+    history: dataPending.history!,
     accessToken,
     token: dataPending.token,
     setIsLoading: () => {},
@@ -56,7 +58,7 @@ const HistoryOrder = ({
           <dl className="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
             <dt className="text-base font-medium text-gray-300">Price:</dt>
             <dd className="mt-1.5 text-xs font-semibold text-white md:text-base">
-              {rupiah(trx.order!.gross_amount!)}
+              {rupiah(trx.customer_detail?.gross_amount)}
             </dd>
           </dl>
 

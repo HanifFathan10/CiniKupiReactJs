@@ -51,7 +51,6 @@ const useAuthStore = create<useAuthStoreType>((set) => ({
 
   logout: async (callback: TCallback) => {
     return await Logout((status, res) => {
-      console.log("🚀 ~ returnawaitLogout ~ res:", res);
       if (status === true) {
         set({ isLogout: true });
         sessionStorage.removeItem("access_token");

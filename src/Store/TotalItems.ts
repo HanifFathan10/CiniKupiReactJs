@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { GetAllOrders } from "../services/Order.service";
+import { GetAllOrders } from "../services/order.service";
 
 export type TTotalItems = {
   count: number;

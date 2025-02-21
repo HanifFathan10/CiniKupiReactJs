@@ -17,11 +17,11 @@ import {
   SparklesIcon,
 } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
-import { jwtDecode, JwtPayload } from "jwt-decode";
 import useGeminiAIChat from "../../Store/AIStore";
 import Showdown from "showdown";
 import parse from "html-react-parser";
 import PreviewImg from "../Elements/Modal/PreviewImg";
+import { getPersonalData } from "../../utils/profile";
 
 const BubbleChatAI = () => {
   const [image, setImage] = useState<string>("");
@@ -33,8 +33,7 @@ const BubbleChatAI = () => {
   const histories = useGeminiAIChat((state) => state.histories);
   const setHistories = useGeminiAIChat((state) => state.setHistories);
 
-  const token = sessionStorage.getItem("access_token");
-  const data: IDataUser = jwtDecode(token!);
+  const data = getPersonalData();
 
   const converter = new Showdown.Converter();
 
@@ -84,7 +83,6 @@ const BubbleChatAI = () => {
   const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setMimeType(e.target.files[0].type);
-      // convertToBlob(e, setImage);
     }
   };
 

@@ -32,7 +32,6 @@ const TransactionDashboardPage = () => {
     endDate: null,
   });
   const [transaction, setTransaction] = useState<AllDataTransaction[]>([]);
-  console.log("🚀 ~ TransactionDashboardPage ~ transaction:", transaction);
   const [loading, setLoading] = useState<boolean>(false);
 
   const { trimSearch, setTrimSearch, trimmedValue, handleSubmitChange } =
@@ -40,13 +39,16 @@ const TransactionDashboardPage = () => {
   const [debounceSearch] = useDebounce(trimmedValue, 1500);
 
   const fetchTransactionData = async () => {
-    const data = {
+    const data: TQueryParamsHistoryTrx = {
       page,
       search: debounceSearch,
       sortKey: sortConfig.key,
       sortDirection: sortConfig.direction,
-      startDate: date.startDate,
-      endDate: date.endDate,
+      startDate: date.startDate!,
+      endDate: date.endDate!,
+      limit: 10,
+      status: "",
+      time: "",
     };
 
     await GetAllHistoryTransaction((status, res) => {
@@ -256,17 +258,17 @@ const TransactionDashboardPage = () => {
                               {itemNumber}
                             </td>
                             <td className="px-4 py-3">
-                              {trx.customer_details?.name}
+                              {trx.customer_detail?.name}
                             </td>
                             <td className="px-4 py-3">
-                              {trx.customer_details?.email}
+                              {trx.customer_detail?.email}
                             </td>
 
                             <td className="px-4 py-3">
                               {trx.item_details?.length}
                             </td>
                             <td className="px-4 py-3">
-                              {rupiah(trx.customer_details?.gross_amount)}
+                              {rupiah(trx.customer_detail?.gross_amount)}
                             </td>
                             <td className="px-4 py-3">{formatDate}</td>
                             <td className="flex items-center justify-center px-4 py-3">

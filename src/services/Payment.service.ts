@@ -54,22 +54,19 @@ export const GetHistoryTransactionById = async (
   data: TQueryParamsHistoryTrx,
 ) => {
   await axios
-    .get(
-      `${import.meta.env.VITE_BACKEND_URL}/api/v1/history/${data.historyTrxId}`,
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
-        },
-        params: {
-          page: data.page,
-          limit: data.limit,
-          status: data.status,
-          time: data.time,
-        },
+    .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/history/${data.user_id}`, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
       },
-    )
+      params: {
+        page: data.page,
+        limit: data.limit,
+        status: data.status,
+        time: data.time,
+      },
+    })
     .then((res) => {
       callback(true, res);
     })
@@ -79,11 +76,12 @@ export const GetHistoryTransactionById = async (
 };
 
 export const HistoryTransaction = async (
-  data: TDataOrder,
+  data: THistoryResponseOrder,
   callback: TCallback,
 ) => {
   await axios
     .post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/history`, data, {
+      withCredentials: true,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
@@ -119,7 +117,7 @@ export const DeleteHistoryTransactionByOrderId = async (
     });
 };
 
-interface CreateHistoryTrx extends TDataOrder {
+interface CreateHistoryTrx extends THistoryResponseOrder {
   status: string;
 }
 

@@ -14,7 +14,7 @@ import {
   UserIcon,
 } from "@heroicons/react/24/solid";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ClearCart } from "../../services/Order.service";
+import { ClearCart } from "../../services/order.service";
 import { AxiosError } from "axios";
 import { z } from "zod";
 
@@ -22,7 +22,7 @@ const FormCheckoutZodSchema = z.object({
   products: z.array(
     z.object({
       _id: z.string(),
-      user_id: z.string(),
+      quantity: z.number(),
     }),
   ),
   customer_name: z.string().min(3).max(20),
@@ -43,12 +43,14 @@ const FormCheckout = () => {
     address: null,
   });
   const [token, setToken] = useState<string>("");
-  const [history, setHistory] = useState<TDataOrder>({} as TDataOrder);
+  const [history, setHistory] = useState<THistoryResponseOrder>(
+    {} as THistoryResponseOrder,
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const Navigate = useNavigate();
   const location = useLocation();
 
-  const product = totalItems(useShallow((state) => state.items));
+  const productFromCart = totalItems(useShallow((state) => state.items));
   const { WarningToast, ErrorToast } = useCustomToast();
   const accessToken = sessionStorage.getItem("access_token")!;
   const dataPending = localStorage.getItem("pendingTransaction");
@@ -75,7 +77,7 @@ const FormCheckout = () => {
 
       let errorMessage = "";
 
-      if (!product.length) {
+      if (!productFromCart.length) {
         errorMessage = "Please order at least 1 item";
       } else if (!isValidEmail) {
         errorMessage = "Please enter a valid email!!";
@@ -95,7 +97,10 @@ const FormCheckout = () => {
         customer_email: dataForGetToken.current.email?.value!,
         customer_phone: dataForGetToken.current.phone?.value!,
         customer_address: dataForGetToken.current.address?.value!,
-        products: product,
+        products: productFromCart.map((product) => ({
+          _id: product.product_id,
+          quantity: product.quantity,
+        })),
       };
 
       await GetTokenMidtrans(data, (status, res) => {

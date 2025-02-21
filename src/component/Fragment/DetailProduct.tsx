@@ -10,7 +10,7 @@ import {
   PopoverTrigger,
   Tooltip,
 } from "@chakra-ui/react";
-import { AddToCart } from "../../services/Order.service";
+import { AddToCart } from "../../services/order.service";
 import { totalItems } from "../../Store/TotalItems";
 import { useShallow } from "zustand/react/shallow";
 import { useCustomToast } from "../../Hooks/useToast";

@@ -10,7 +10,6 @@ import { useScrollTop } from "../../Hooks/useScrollTop";
 
 const CartProduct = () => {
   let count = totalItems(useShallow((state) => state.count));
-  console.log("🚀 ~ CartProduct ~ count:", count);
   useScrollTop();
 
   return (

@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 import { GetHistoryTransactionById } from "../services/Payment.service";
 
 interface TuseHistoryTrx {
-  historyTrx: TDataHistoryTrx[];
+  historyTrx: AllDataTransaction[];
   currentPage: number;
   totalPage: number;
   isLoading: boolean;
