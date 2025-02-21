@@ -4,7 +4,7 @@ import "react-multi-carousel/lib/styles.css";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import useProductStore from "../../../Store/ProductStore";
-import { reproduce } from "../../../services/Menu.service";
+import { reproduce } from "../../../services/menu.service";
 
 const ProdakSlide = () => {
   const products = useProductStore((state) => state.products);

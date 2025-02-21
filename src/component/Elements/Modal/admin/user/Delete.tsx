@@ -2,7 +2,7 @@ import React from "react";
 import ModalInput from "../../../InputForm/Modal";
 import { TrashIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useCustomToast } from "../../../../../Hooks/useToast";
-import { DeleteDataUser } from "../../../../../services/Auth.service";
+import { DeleteDataUser } from "../../../../../services/auth.service";
 
 interface DeleteUserProps {
   deleted: AllDataTransaction;

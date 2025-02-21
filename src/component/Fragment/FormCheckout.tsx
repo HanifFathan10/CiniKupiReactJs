@@ -4,7 +4,7 @@ import { useShallow } from "zustand/react/shallow";
 import {
   GetTokenMidtrans,
   PaymentService,
-} from "../../services/Payment.service";
+} from "../../services/payment.service";
 import { totalItems } from "../../Store/TotalItems";
 import { useCustomToast } from "../../Hooks/useToast";
 import {

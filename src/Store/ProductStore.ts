@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { AxiosError } from "axios";
-import { getAllMenuProduct } from "../services/Product.service";
+import { getAllMenuProduct } from "../services/product.service";
 
 interface TuseProductStore {
   products: TDataSingleProduct[];

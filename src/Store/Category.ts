@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { AxiosError } from "axios";
-import { GetAllCategory } from "../services/Category.service";
+import { GetAllCategory } from "../services/category.service";
 
 interface TuseCategoryStore {
   categories: TDataCategory[];

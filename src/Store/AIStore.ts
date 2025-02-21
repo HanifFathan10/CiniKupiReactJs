@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { generateResponse } from "../services/AI.service";
+import { generateResponse } from "../services/ai.service";
 
 interface IGeminiAIChatStore {
   histories: HistoryGeminiAIResponse[];

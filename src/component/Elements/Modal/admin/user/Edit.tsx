@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import ModalInput from "../../../InputForm/Modal";
 import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Select } from "@chakra-ui/react";
-import { UpdateDataUser } from "../../../../../services/Auth.service";
+import { UpdateDataUser } from "../../../../../services/auth.service";
 import { useCustomToast } from "../../../../../Hooks/useToast";
 
 interface EditUserProps {

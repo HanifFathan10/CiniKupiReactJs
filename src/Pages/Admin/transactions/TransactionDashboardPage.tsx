@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { HeadMetaData } from "../../../component/Elements/HeadMetaData";
 import AdminLayouts from "../../../component/Layouts/AdminLayouts";
-import { GetAllHistoryTransaction } from "../../../services/Payment.service";
+import { GetAllHistoryTransaction } from "../../../services/payment.service";
 import {
   ChevronDownIcon,
   ChevronUpDownIcon,

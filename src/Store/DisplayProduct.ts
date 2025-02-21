@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { getAllDefaultProduct } from "../services/Product.service";
+import { getAllDefaultProduct } from "../services/product.service";
 import { AxiosError } from "axios";
 
 interface TuseDisplayProduct {

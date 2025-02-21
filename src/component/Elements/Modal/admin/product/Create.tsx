@@ -1,10 +1,9 @@
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import React, { useState } from "react";
 import ModalInput from "../../../InputForm/Modal";
-import { createProductMenu } from "../../../../../services/Product.service";
+import { createProductMenu } from "../../../../../services/product.service";
 import { useCustomToast } from "../../../../../Hooks/useToast";
 import { handleFileChange } from "../../../../../utils/convertToBase64";
-import { boolean } from "zod";
 
 interface ModalCreateProductProps {
   create: boolean;
